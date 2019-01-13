@@ -30,6 +30,7 @@ window.onload = () => {
             ua: GetLanguageString(StringUA),
             ua_placeholder: GetLanguageString(''),
             ua_default: GetLanguageString(MenuUseragentDefaultText),
+            save_cookies: GetLanguageString('string_save'),
           },
           data,
         },

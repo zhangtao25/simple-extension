@@ -73,5 +73,8 @@
   },
   "string_default_ua": {
     "message": "Default"
+  },
+  "string_save": {
+    "message": "Save"
   }
 }
