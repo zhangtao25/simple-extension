@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑器</title>
+    <script src="libs/vue.min.js"></script>
+    <script src="extension_js/i18_string_name.js"></script>
+    <script src="extension_js/promise.js"></script>
+    <script src="extension_js/setting.js"></script>
+    <script src="extension_js/utils.js"></script>
+    <script src="extension_js/ua_list.js"></script>
+    <script src="popup/js/index.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            cursor: default;
+        }
+
+        body {
+            min-width: 200px;
+        }
+
+        .block {
+            padding: 5px;
+        }
+
+        .block + .block {
+            border-top: 1px solid black;
+        }
+
+        .block .title {
+            display: flex;
+            font-size: 1.2rem;
+        }
+
+        .block .title .right {
+            font-size: 1.2rem;
+        }
+
+        .block .content {
+            margin: 0 0 0 10px;
+        }
+
+        .cookies div {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .cookies div:hover {
+            cursor: pointer;
+            background: aquamarine;
+        }
+
+        .cookies div + .cookies div {
+            border-top: 1px solid #aaa;
+        }
+
+        .cookies div.selected {
+            background: aqua;
+            cursor: default;
+        }
+
+        .cookies div .delete {
+            width: 20px;
+            height: 20px;
+        }
+
+        .cookies-save-button {
+            padding: 5px;
+            display: inline-flex;
+            font-size: .8rem;
+        }
+
+        .cookies-save-button img {
+            width: 18px;
+            height: 18px;
+        }
+
+        .ua-input {
+            resize: none;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="container">
+        <div>
+            <div class="block">
+                <div class="title">{{domain}}</div>
+            </div>
+            <!--<div>{{Notifications}}</div>-->
+            <div class="block">
+                <div class="title">
+                    {{ui.cookies}}
+                    <div class="right">
+                        <div class="cookies-save-button" @click="saveCookie">
+                            <img src="popup/img/save.png"/>
+                            保存
+                        </div>
+                    </div>
+                </div>
+                <div class="content cookies">
+                    <div v-for="(v,k) in data.cookies.cookies" :class="{selected:k===data.cookies.selected}"
+                         @click="selectCookie(k)"><span>{{k}}</span> <img class="delete" src="popup/img/delete.png"/>
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <div class="title">User-Agent</div>
+                <div class="content">
+                    <select v-model="selectedUA">
+                        <option value="default">{{ui.ua_default}}</option>
+                        <optgroup v-for="(os, os_name) in ua_list" :label="os_name" :key="os_name">
+                            <option v-for="(browser, name) in os" :value="os_name + '_' + name" :key="name">{{name}}
+                            </option>
+                        </optgroup>
+                    </select>
+                    <!--<textarea class="ua-input" rows="4" v-model="uaEditor"
+                              @keydown.enter.exact.prevent :placeholder="ui.ua_placeholder"></textarea>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{
+  "name": "__MSG_pluginName__",
+  "version": "1.0.1",
+  "description": "__MSG_pluginDesc__",
+  "default_locale": "en",
+  "manifest_version": 2,
+  "minimum_chrome_version": "51.0",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "permissions": [
+    "contextMenus",
+    "tabs",
+    "cookies",
+    "notifications",
+    "unlimitedStorage",
+    "webNavigation",
+    "webRequest",
+    "webRequestBlocking",
+    "declarativeContent",
+    "clipboardRead",
+    "clipboardWrite",
+    "storage",
+    "privacy",
+    "unlimitedStorage",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "incognito": "split",
+  "icons": {
+    "16": "img/icon_16.png",
+    "48": "img/icon_48.png",
+    "128": "img/icon_128.png"
+  },
+  "background": {
+    "page": "background.html",
+    "persistent": true
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "content_js/index.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    "inject_js/replace_request.js"
+  ],
+  "browser_action": {
+    "default_icon": "img/icon_128.png",
+    "default_popup": "popup.html"
+  }
+}

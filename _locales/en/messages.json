@@ -1,0 +1,77 @@
+{
+  "pluginName": {
+    "message": "Simple extension"
+  },
+  "pluginDesc": {
+    "message": "Each website can save/switch cookies, switch User-Agent and simply listen for network requests."
+  },
+  "badge_working": {
+    "message": "On"
+  },
+  "badge_not_working": {
+    "message": "Off"
+  },
+  "menu_root_text": {
+    "message": "%domain"
+  },
+  "menu_cookie_root_text": {
+    "message": "Cookie"
+  },
+  "menu_cookie_save_text": {
+    "message": "Save Cookies"
+  },
+  "menu_cookie_empty_text": {
+    "message": "Save Cookies(But %domain Cookies Empty)"
+  },
+  "menu_cookie_remove_text": {
+    "message": "Remove saved Cookies"
+  },
+  "menu_cookie_use_text": {
+    "message": "Switch Cookies"
+  },
+  "menu_useragent_text": {
+    "message": "Switch User-Agent"
+  },
+  "menu_useragent_default_text": {
+    "message": "Default"
+  },
+  "menu_ajax_text": {
+    "message": "Network Request"
+  },
+  "alert_no_cookies": {
+    "message": "%domain No Cookies Data"
+  },
+  "alert_save_cookies_fail_empty_name": {
+    "message": "Save Fail: Empty Name"
+  },
+  "prompt_save_cookies_name": {
+    "message": "Enter Cookies Name"
+  },
+  "prompt_how_to_get_the_request_url": {
+    "message": "Open the dev tools，Network tab will list all network requests\nJust enter the keyword for the request URL, for example: master.m3u8"
+  },
+  "notification_request_title": {
+    "message": "%domain"
+  },
+  "notification_request_message": {
+    "message": "Click to copy:\n%url"
+  },
+  "string_cookies": {
+    "message": "Cookies"
+  },
+  "string_requests": {
+    "message": "Requests"
+  },
+  "string_ua": {
+    "message": "User-Agent"
+  },
+  "string_browser_action_enable": {
+    "message": "%domain settings"
+  },
+  "string_browser_action_disabled": {
+    "message": "Disabled"
+  },
+  "string_default_ua": {
+    "message": "Default"
+  }
+}

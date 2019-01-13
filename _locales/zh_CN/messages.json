@@ -1,0 +1,80 @@
+{
+  "pluginName": {
+    "message": "简易扩展"
+  },
+  "pluginDesc": {
+    "message": "让每个网站都可以保存/切换Cookies、切换User-Agent，简单地监听网络请求。"
+  },
+  "badge_working": {
+    "message": "On"
+  },
+  "badge_not_working": {
+    "message": "Off"
+  },
+  "menu_root_text": {
+    "message": "%domain"
+  },
+  "menu_cookie_root_text": {
+    "message": "Cookie"
+  },
+  "menu_cookie_save_text": {
+    "message": "保存"
+  },
+  "menu_cookie_empty_text": {
+    "message": "保存(但 %domain 没有Cookies)"
+  },
+  "menu_cookie_remove_text": {
+    "message": "清空"
+  },
+  "menu_cookie_use_text": {
+    "message": "切换"
+  },
+  "menu_useragent_text": {
+    "message": "切换User-Agent"
+  },
+  "menu_useragent_default_text": {
+    "message": "默认"
+  },
+  "menu_ajax_text": {
+    "message": "监听网络请求"
+  },
+  "alert_no_cookies": {
+    "message": "%domain 没有Cookie数据"
+  },
+  "alert_save_cookies_fail_empty_name": {
+    "message": "保存失败: 名称为空"
+  },
+  "prompt_save_cookies_name": {
+    "message": "输入保存的名称，同名将会覆盖"
+  },
+  "prompt_how_to_get_the_request_url": {
+    "message": "打开开发者工具，Network功能会列出所有网络请求\n输入网络请求的关键字即可，例如：master.m3u8"
+  },
+  "prompt_request_example": {
+    "message": "video.m3u8"
+  },
+  "notification_request_title": {
+    "message": "%domain"
+  },
+  "notification_request_message": {
+    "message": "点击复制:\n%url"
+  },
+  "string_cookies": {
+    "message": "Cookies"
+  },
+  "string_requests": {
+    "message": "简易网络请求检测"
+  },
+  "string_ua": {
+    "message": "User-Agent"
+  },
+  "string_browser_action_enable": {
+    "message": "%domain 设置"
+  },
+  "string_browser_action_disabled": {
+    "message": "不适合当前页面使用"
+  },
+  "string_default_ua": {
+    "message": "默认"
+  }
+}
