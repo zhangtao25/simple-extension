@@ -49,10 +49,10 @@ class Setting {
    * @param domain
    * @param name
    * @param cookies
-   * @returns {Promise<any>}
+   * @returns {Promise}
    */
   setCookie(domain, name, cookies) {
-    this.setDomain(domain);
+    this.initDomain(domain);
     this.data[domain].cookies.selected = name;
     this.data[domain].cookies.cookies[name] = cookies;
     return this.save();
@@ -62,7 +62,7 @@ class Setting {
    * 选择Cookie
    * @param domain
    * @param name
-   * @returns {Promise<any>}
+   * @returns {Promise}
    */
   selectCookie(domain, name) {
     if (this.hasDomain(domain) && this.data[domain].cookies.cookies[name]) {
@@ -86,7 +86,7 @@ class Setting {
    * @param domain
    */
   setDefaultUA(domain) {
-    this.setDomain(domain);
+    this.initDomain(domain);
     this.data[domain].ua = {selected: null, value: null};
     return this.save();
   }
@@ -98,7 +98,7 @@ class Setting {
    * @param value
    */
   setUA(domain, selected, value) {
-    this.setDomain(domain);
+    this.initDomain(domain);
     this.data[domain].ua.selected = selected;
     this.data[domain].ua.value = value;
     return this.save();
@@ -116,20 +116,36 @@ class Setting {
 
   /**
    *
-   * @param domain
-   * @param keyword
+   * @param domain {String}
+   * @param keyword {String}
+   * @return Promise
    */
   setRequest(domain, keyword) {
-    this.setDomain(domain);
-    this.data.request[domain].push(keyword);
-    this.save();
+    this.initDomain(domain);
+    this.data[domain].requests.push(keyword);
+    return this.save();
+  }
+
+  /**
+   *
+   * @param domain {String}
+   * @param keyword {String}
+   * @returns Promise
+   */
+  deleteRequest(domain, keyword) {
+    if (this.hasDomain(domain)) {
+      const index = this.data[domain].requests.indexOf(keyword);
+      this.data[domain].requests.splice(index, 1);
+      return this.save();
+    }
+    return Promise.all([]);
   }
 
   hasDomain(domain) {
     return this.data.hasOwnProperty(domain);
   }
 
-  setDomain(domain) {
+  initDomain(domain) {
     if (this.hasDomain(domain))
       return;
     this.data[domain] = {requests: [], cookies: {selected: null, cookies: {}}, ua: {selected: null, value: null}};

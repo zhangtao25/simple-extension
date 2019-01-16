@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>编辑器</title>
     <script src="libs/vue.min.js"></script>
     <script src="extension_js/i18_string_name.js"></script>
     <script src="extension_js/promise.js"></script>
@@ -15,6 +14,7 @@
             margin: 0;
             padding: 0;
             cursor: default;
+            color: #333333;
         }
 
         body {
@@ -30,40 +30,42 @@
         }
 
         .block .title {
-            display: flex;
-            font-size: 1.2rem;
-        }
-
-        .block .title .right {
-            font-size: 1.2rem;
+            margin-bottom: 5px;
+            font-size: 1.5em;
         }
 
         .block .content {
             margin: 0 0 0 10px;
+            font-size: 14px;
         }
 
-        .cookies div {
+        .flex-between-spaced {
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
-        .cookies div:hover {
+        .cookies > div {
+            padding: 5px;
+        }
+
+        .cookies > div:hover {
             cursor: pointer;
-            background: aquamarine;
+            background: #ccc;
         }
 
-        .cookies div + .cookies div {
+        .cookies > div + .cookies > div {
             border-top: 1px solid #aaa;
         }
 
-        .cookies div.selected {
-            background: aqua;
+        .cookies > div.selected {
+            background: #eee;
             cursor: default;
         }
 
-        .cookies div .delete {
-            width: 20px;
-            height: 20px;
+        .cookies > div .delete {
+            width: 14px;
+            height: 14px;
         }
 
         .cookies-save-button {
@@ -81,6 +83,34 @@
             resize: none;
             width: 200px;
         }
+
+        .btn {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            background-size: cover;
+        }
+
+        .delete {
+            background-image: url("popup/img/delete.png");
+        }
+
+        .delete:hover {
+            background-image: url("popup/img/deletefill.png") !important;
+        }
+
+        .add {
+            background-image: url("popup/img/roundadd.png");
+        }
+
+        .add:hover {
+            background-image: url("popup/img/roundaddfill.png");
+        }
+
+        .url-list {
+            max-height: 80px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
@@ -90,19 +120,26 @@
             <div class="block">
                 <div class="title">{{domain}}</div>
             </div>
-            <!--<div>{{Notifications}}</div>-->
-            <div class="block">
-                <div class="title">
-                    {{ui.cookies}}
-                    <div class="right">
-                        <div class="cookies-save-button" @click="saveCookie">
-                            <img src="popup/img/save.png"/>{{ui.save_cookies}}
-                        </div>
+            <div class="block" v-if="urls.length > 0">
+                <div class="title flex-between-spaced">
+                    {{ui.requests}}
+                    <div class="btn delete" @click.stop="clearUrls"></div>
+                </div>
+                <div class="content url-list">
+                    <div v-for="(item,index) in urls" :key="index">
+                        <input :value="item.url" @focus="e=>e.currentTarget.select()">
                     </div>
+                </div>
+            </div>
+            <div class="block">
+                <div class="title flex-between-spaced">
+                    {{ui.cookies}}
+                    <div class="btn add" @click="saveCookie"></div>
                 </div>
                 <div class="content cookies">
                     <div v-for="(v,k) in data.cookies.cookies" :class="{selected:k===data.cookies.selected}"
-                         @click="selectCookie(k)"><span>{{k}}</span> <img class="delete" src="popup/img/delete.png"/>
+                         @click="selectCookie(k)" class="flex-between-spaced"><span>{{k}}</span>
+                        <div class="btn delete" @click.stop="deleteCookie(k)"></div>
                     </div>
                 </div>
             </div>
@@ -118,6 +155,18 @@
                     </select>
                     <!--<textarea class="ua-input" rows="4" v-model="uaEditor"
                               @keydown.enter.exact.prevent :placeholder="ui.ua_placeholder"></textarea>-->
+                </div>
+            </div>
+            <div class="block">
+                <div class="title flex-between-spaced">
+                    {{ui.requests}}
+                    <div class="btn add" @click="addRequest"></div>
+                </div>
+                <div class="content">
+                    <div v-for="(value, index) in data.requests" :key="index" class="flex-between-spaced">
+                        <input v-model.trim="data.requests[index]" @input="save"/>
+                        <div class="btn delete" @click="deleteRequest(value)"></div>
+                    </div>
                 </div>
             </div>
         </div>

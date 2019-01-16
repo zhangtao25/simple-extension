@@ -12,7 +12,7 @@ function injectCustomJs(jsPath = null) {
 }
 
 //注入页面js，监听ajax请求
-injectCustomJs('inject_js/replace_request.js');
+// injectCustomJs('inject_js/replace_request.js');
 
 //监听注入js发回的消息，转发给background.js
 window.addEventListener('message', e => {

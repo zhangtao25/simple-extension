@@ -1,3 +1,6 @@
+{
+
+}
 const __menu__ = {
   title: MenuRootText,
   documentUrlPatterns: ['http://*/*', 'https://*/*'],
@@ -60,11 +63,8 @@ const __menu__ = {
   ],
 };
 
-let setting;
-
 class MyMenu {
-  constructor(_setting) {
-    setting = _setting;
+  constructor() {
     this.menus = {};
     this.cookiesMenus = [];
     this.uaMenus = [];

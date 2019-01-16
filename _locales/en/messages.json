@@ -56,6 +56,12 @@
   "notification_request_message": {
     "message": "Click to copy:\n%url"
   },
+  "confirm_delete_cookie": {
+    "message": "Confirm to delete the cookies called %name?"
+  },
+  "confirm_delete_request": {
+    "message": "Confirm to delete this request keyword?"
+  },
   "string_cookies": {
     "message": "Cookies"
   },

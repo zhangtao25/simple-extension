@@ -18,7 +18,7 @@ function GetCookies(url) {
           value: cookie.value,
           expirationDate: cookie.expirationDate,
           httpOnly: cookie.httpOnly,
-          url,
+          url: 'http://' + domain,
         };
       });
       // console.log('获取Cookies 2', cookies);
@@ -93,5 +93,17 @@ function GetStorage(get, defaultValue = {}) {
         return resolve(defaultValue);
       resolve(items)
     });
+  });
+}
+
+/**
+ *
+ * @param message
+ * @returns {Promise<Boolean>}
+ * @constructor
+ */
+function Confirm(message) {
+  return new Promise(resolve => {
+    resolve(confirm(message));
   });
 }

@@ -10,17 +10,15 @@
     "contextMenus",
     "tabs",
     "cookies",
-    "notifications",
-    "unlimitedStorage",
     "webNavigation",
     "webRequest",
     "webRequestBlocking",
     "declarativeContent",
-    "clipboardRead",
     "clipboardWrite",
-    "storage",
     "privacy",
+    "storage",
     "unlimitedStorage",
+    "activeTab",
     "http://*/*",
     "https://*/*"
   ],
@@ -34,21 +32,7 @@
     "page": "background.html",
     "persistent": true
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "http://*/*",
-        "https://*/*"
-      ],
-      "js": [
-        "content_js/index.js"
-      ],
-      "run_at": "document_start"
-    }
-  ],
-  "web_accessible_resources": [
-    "inject_js/replace_request.js"
-  ],
+  "options_page": "options.html",
   "browser_action": {
     "default_icon": "img/icon_128.png",
     "default_popup": "popup.html"
