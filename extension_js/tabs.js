@@ -11,14 +11,7 @@ class Tabs {
 
     events.addListener('tab_start', ({tabId, url}) => {
       const domain = GetDomain(url);
-      if (setting.hasDomain(domain)) {
-        if (this.has(tabId)) {
-          this.reset(tabId);
-        } else {
-          this.data[tabId] = {domain, badge: 0, urls: []};
-          this.update(tabId);
-        }
-      }
+      this.reset(tabId, domain);
     });
     events.addListener('tab_load', ({tabId, url}) => {
       if (this.has(tabId)) {
@@ -28,7 +21,7 @@ class Tabs {
           let hasUrl = false;
           domainSetting.requests.forEach(keyword => {
             if (url.indexOf(keyword) !== -1) {
-              data.urls.splice(0, 0, {url, keyword});
+              data.urls.push({url, keyword});
               data.badge++;
               hasUrl = true;
             }
@@ -63,11 +56,14 @@ class Tabs {
     return this.data.hasOwnProperty(tabId);
   }
 
-  reset(tabId) {
+  reset(tabId, domain) {
     if (this.has(tabId)) {
       this.data[tabId].urls.length = 0;
       this.data[tabId].badge = 0;
-      this.update(tabId);
+      this.data[tabId].domain = domain;
+    } else {
+      this.data[tabId] = {domain, badge: 0, urls: []};
     }
+    this.update(tabId);
   }
 }

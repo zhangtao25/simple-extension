@@ -111,6 +111,35 @@
             max-height: 80px;
             overflow-y: auto;
         }
+
+        .url-list input {
+            border: none;
+            width: 90%;
+            display: block;
+        }
+
+        .list-item + .list-item {
+            border-top: 1px solid #aaa;
+            margin-top: 3px;
+        }
+
+        .list-item {
+        }
+
+        .list-move {
+            transition: transform .3s;
+        }
+
+        .list-enter-active, .list-leave-active {
+            transition: all .3s;
+        }
+
+        .list-enter, .list-leave-to
+            /* .list-leave-active for below version 2.1.8 */
+        {
+            opacity: 0;
+            transform: translateX(30px);
+        }
     </style>
 </head>
 <body>
@@ -125,9 +154,10 @@
                     {{ui.requests}}
                     <div class="btn delete" @click.stop="clearUrls"></div>
                 </div>
-                <div class="content url-list">
-                    <div v-for="(item,index) in urls" :key="index">
-                        <input :value="item.url" @focus="e=>e.currentTarget.select()">
+                <div class="url-list">
+                    <div v-for="(item,index) in requestsList" :key="index" class="list-item">
+                        <input :value="item.url" @focus="e=>e.currentTarget.select()"/>
+                        <!--{{item.url}}-->
                     </div>
                 </div>
             </div>
@@ -153,8 +183,6 @@
                             </option>
                         </optgroup>
                     </select>
-                    <!--<textarea class="ua-input" rows="4" v-model="uaEditor"
-                              @keydown.enter.exact.prevent :placeholder="ui.ua_placeholder"></textarea>-->
                 </div>
             </div>
             <div class="block">
@@ -162,12 +190,12 @@
                     {{ui.requests}}
                     <div class="btn add" @click="addRequest"></div>
                 </div>
-                <div class="content">
+                <transition-group name="list" tag="div" class="content">
                     <div v-for="(value, index) in data.requests" :key="index" class="flex-between-spaced">
                         <input v-model.trim="data.requests[index]" @input="save"/>
                         <div class="btn delete" @click="deleteRequest(value)"></div>
                     </div>
-                </div>
+                </transition-group>
             </div>
         </div>
     </div>

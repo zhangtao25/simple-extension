@@ -8,6 +8,9 @@ window.onload = () => {
       window.close();
       return;
     }
+    if (!bg.tabs.has(tab.id)) {
+      bg.tabs.reset(tab.id, domain);
+    }
 
     const setting = new Setting(() => {
 
@@ -58,6 +61,9 @@ window.onload = () => {
               setting.data[domain].ua.selected = value;
               this.save();
             }
+          },
+          requestsList() {
+            return this.urls.reverse();
           },
         },
         methods: {

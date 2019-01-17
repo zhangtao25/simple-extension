@@ -18,8 +18,7 @@ const tabs = window.tabs = new Tabs({events, setting});
 chrome.webRequest.onBeforeSendHeaders.addListener(details => {
     const {tabId, url} = details;
     if (tabs.has(tabId)) {
-      const domain = tabs.data[tabId].domain;
-      const ua = setting.getUA(domain);
+      const ua = setting.getUA(tabs.data[tabId].domain);
       if (ua && ua.value) {
         for (let i = 0; i < details.requestHeaders.length; i++) {
           const header = details.requestHeaders[i];
