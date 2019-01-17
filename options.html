@@ -22,6 +22,8 @@
             align-items: center;
             justify-content: center;
             background: #aaaaaa;
+            font-weight: 200;
+            font-size: 18px;
         }
 
         #app {
@@ -30,10 +32,42 @@
             height: 400px;
             box-shadow: rgba(0, 0, 0, 0.3) 0 0 15px;
         }
+
+        .center {
+            text-align: center;
+        }
+
+        .title {
+            font-size: 30px;
+        }
+
+        .content {
+            margin-top: 15px;
+            display: inline-block;
+            width: 200px;
+        }
+
+        .left {
+            text-align: left
+        }
     </style>
 </head>
 <body>
 <div id="app">
+    <div class="center">
+        <div><img src="img/icon_128.png"/></div>
+        <div class="title">{{ui.title}} {{ui.version}}</div>
+        <div class="content">
+            <div class="left">{{ui.libraries}}:</div>
+            <div><a href="https://vuejs.org" target="_blank">Vue</a></div>
+            <div class="left">{{ui.author}}:</div>
+            <div><a href="https://github.com/gzlock" target="_blank">Gzlock</a></div>
+            <div class="left"> {{ui.open_source}}:</div>
+            <div><a href="https://github.com/gzlock/simple-extension" target="_blank">{{ui.project_home}}</a></div>
+            <div class="left"> {{ui.thanks}}:</div>
+            <div></div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

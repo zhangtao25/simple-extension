@@ -4,7 +4,16 @@ window.onload = () => {
     new Vue({
       el: '#app',
       data: {
-        ui: {network_notification_type: GetLanguageString('string_network_notification_type')},
+        ui: {
+          title: GetLanguageString('pluginName'),
+          version: 'v' + chrome.runtime.getManifest().version,
+          network_notification_type: GetLanguageString('string_network_notification_type'),
+          author: GetLanguageString('string_author'),
+          libraries: GetLanguageString('string_libraries'),
+          project_home: GetLanguageString('string_open_source_project_home'),
+          open_source: GetLanguageString('string_open_source'),
+          thanks: GetLanguageString('string_thanks'),
+        },
       },
 
     });

@@ -10,7 +10,7 @@ const __menu__ = {
       children: [
         {
           //菜单保存Cookies
-          title: MenuCookieSaveText,
+          title: StringSave,
           onclick: async (info, tab) => {
             const domain = GetDomain(info.pageUrl);
             const cookies = await GetCookies(info.pageUrl);
@@ -48,17 +48,6 @@ const __menu__ = {
           }
         }
       ]
-    },
-    {
-      title: MenuAjaxText,
-      onclick: (info, tab) => {
-        const domain = GetDomain(tab.url);
-        if (!domain)
-          return;
-        const keyword = prompt(GetLanguageString(PromptHowToGetTheRequestUrl), GetLanguageString(PromptRequestExample));
-        if (keyword)
-          setting.setRequest(domain, keyword);
-      },
     },
   ],
 };
@@ -138,8 +127,8 @@ class MyMenu {
     //保存Cookie的菜单
     GetCookies(url).then(cookies => {
       const enabled = cookies.length > 0;
-      const title = GetLanguageString(cookies.length > 0 ? MenuCookieSaveText : MenuCookieEmptyText, [['%domain', domain]]);
-      chrome.contextMenus.update(this.menus[MenuCookieSaveText], {enabled, title});
+      const title = GetLanguageString(cookies.length > 0 ? StringSave : MenuCookieEmptyText, [['%domain', domain]]);
+      chrome.contextMenus.update(this.menus[StringSave], {enabled, title});
     });
 
     // 切换Cookie
@@ -176,7 +165,7 @@ class MyMenu {
       }
     } else {
       chrome.contextMenus.create({
-        parentId: this.menus[MenuCookieUseText], title: '无', enabled: false,
+        parentId: this.menus[MenuCookieUseText], title: GetLanguageString('string_empty'), enabled: false,
       });
     }
   }

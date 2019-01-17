@@ -5,26 +5,14 @@
   "pluginDesc": {
     "message": "让每个网站都可以保存/切换Cookies、切换User-Agent，简单地监听网络请求。"
   },
-  "badge_working": {
-    "message": "On"
-  },
-  "badge_not_working": {
-    "message": "Off"
-  },
   "menu_root_text": {
     "message": "%domain"
   },
   "menu_cookie_root_text": {
     "message": "Cookie"
   },
-  "menu_cookie_save_text": {
-    "message": "保存"
-  },
   "menu_cookie_empty_text": {
     "message": "保存(但 %domain 没有Cookies)"
-  },
-  "menu_cookie_remove_text": {
-    "message": "清空"
   },
   "menu_cookie_use_text": {
     "message": "切换"
@@ -79,5 +67,23 @@
   },
   "string_save": {
     "message": "保存"
+  },
+  "string_open_source": {
+    "message": "开源"
+  },
+  "string_open_source_project_home": {
+    "message": "项目主页"
+  },
+  "string_libraries": {
+    "message": "使用到的项目"
+  },
+  "string_author": {
+    "message": "开发者"
+  },
+  "string_thanks": {
+    "message": "感谢名单"
+  },
+  "string_empty": {
+    "message": "无"
   }
 }

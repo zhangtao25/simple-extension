@@ -3,18 +3,13 @@ const
 
 const
   MenuCookieRootText = 'menu_cookie_root_text',
-  MenuCookieSaveText = 'menu_cookie_save_text',
   MenuCookieUseText = 'menu_cookie_use_text',
-  MenuCookieRemoveText = 'menu_cookie_remove_text',
   MenuCookieEmptyText = 'menu_cookie_empty_text';
 
 const
   MenuUseragentRootText = 'menu_useragent_text',
   MenuUseragentDefaultText = 'menu_useragent_default_text',
   MenuAjaxText = 'menu_ajax_text';
-
-const BadgeWorking = 'badge_working',
-  BadgeNotWorking = 'badge_not_working';
 
 const AlertNoCookies = 'alert_no_cookies',
   AlertSaveCookiesFailEmptyName = 'alert_save_cookies_fail_empty_name';
@@ -29,6 +24,7 @@ const NotificationRequestTitle = 'notification_request_title',
 const StringCookies = 'string_cookies',
   StringRequests = 'string_requests',
   StringUA = 'string_ua',
+  StringSave = 'string_save',
   StringBrowserActionEnable = 'string_browser_action_enable',
   StringBrowserActionDisabled = 'string_browser_action_disabled';
 

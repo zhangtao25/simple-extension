@@ -5,26 +5,14 @@
   "pluginDesc": {
     "message": "Each website can save/switch cookies, switch User-Agent and simply listen for network requests."
   },
-  "badge_working": {
-    "message": "On"
-  },
-  "badge_not_working": {
-    "message": "Off"
-  },
   "menu_root_text": {
     "message": "%domain"
   },
   "menu_cookie_root_text": {
     "message": "Cookie"
   },
-  "menu_cookie_save_text": {
-    "message": "Save Cookies"
-  },
   "menu_cookie_empty_text": {
-    "message": "Save Cookies(But %domain Cookies Empty)"
-  },
-  "menu_cookie_remove_text": {
-    "message": "Remove saved Cookies"
+    "message": "Save(But %domain Cookies Empty)"
   },
   "menu_cookie_use_text": {
     "message": "Switch Cookies"
@@ -82,5 +70,23 @@
   },
   "string_save": {
     "message": "Save"
+  },
+  "string_open_source": {
+    "message": "Open Source"
+  },
+  "string_open_source_project_home": {
+    "message": "Project Home"
+  },
+  "string_libraries": {
+    "message": "Used Libraries"
+  },
+  "string_author": {
+    "message": "Author"
+  },
+  "string_thanks": {
+    "message": "Thanks"
+  },
+  "string_empty": {
+    "message": "Empty"
   }
 }
