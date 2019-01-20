@@ -3,15 +3,30 @@ class Tabs {
    *
    * @param setting {Setting}
    * @param events {ExtensionEvent}
+   * @param menu {Menu}
    */
-  constructor({setting, events}) {
+  constructor({setting, events, menu}) {
     this.data = {};
     this.events = events;
     this.setting = setting;
+    this.menu = menu;
 
     events.addListener('tab_start', ({tabId, url}) => {
       const domain = GetDomain(url);
-      this.reset(tabId, domain);
+      if (domain) {
+        chrome.browserAction.enable(tabId);
+        chrome.browserAction.setTitle({
+          tabId,
+          title: GetLanguageString(StringBrowserActionEnable, [['%domain', domain]])
+        });
+        this.reset(tabId, domain);
+      } else {
+        chrome.browserAction.disable(tabId);
+        chrome.browserAction.setTitle({
+          tabId,
+          title: GetLanguageString(StringBrowserActionDisabled)
+        });
+      }
     });
     events.addListener('tab_load', ({tabId, url}) => {
       if (this.has(tabId)) {
@@ -33,6 +48,36 @@ class Tabs {
     events.addListener('tab_close', ({tabId, url}) => {
       this.remove(tabId);
     });
+    events.addListener('tab_update', ({tabId, url}) => {
+      if (this.has(tabId)) {
+        const data = this.data[tabId];
+        menu.update(url, data.domain)
+      }
+    });
+
+    /**
+     * 改变网络请求User-Agent
+     */
+    chrome.webRequest.onBeforeSendHeaders.addListener(details => {
+        const {tabId, url} = details;
+        if (this.has(tabId)) {
+          const ua = setting.getUA(this.data[tabId].domain);
+          if (ua && ua.value) {
+            for (let i = 0; i < details.requestHeaders.length; i++) {
+              const header = details.requestHeaders[i];
+              if (header.name.toLowerCase() === 'user-agent') {
+                // console.log('替换UA', header.value, ua.value);
+                header.value = ua.value;
+                break;
+              }
+            }
+          }
+        }
+        return {requestHeaders: details.requestHeaders};
+      },
+      {urls: ["http://*/*", "https://*/*"]},
+      ["blocking", "requestHeaders"]
+    );
   }
 
   update(tabId) {

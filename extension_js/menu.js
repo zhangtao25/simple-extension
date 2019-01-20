@@ -1,6 +1,3 @@
-{
-
-}
 const __menu__ = {
   title: MenuRootText,
   documentUrlPatterns: ['http://*/*', 'https://*/*'],
@@ -52,7 +49,7 @@ const __menu__ = {
   ],
 };
 
-class MyMenu {
+class Menu {
   constructor() {
     this.menus = {};
     this.cookiesMenus = [];
@@ -125,6 +122,7 @@ class MyMenu {
    */
   __updateCookiesMenu(url, domain) {
     //保存Cookie的菜单
+
     GetCookies(url).then(cookies => {
       const enabled = cookies.length > 0;
       const title = GetLanguageString(cookies.length > 0 ? StringSave : MenuCookieEmptyText, [['%domain', domain]]);
@@ -140,7 +138,7 @@ class MyMenu {
     const parentId = this.menus[MenuCookieRootText];
     const domainCookies = setting.getCookies(domain);
 
-    console.log('更新菜单', domain, domainCookies);
+    // console.log('更新菜单', domain, domainCookies);
     this.menus[MenuCookieUseText] = chrome.contextMenus.create({
       parentId,
       title: GetLanguageString(MenuCookieUseText),
@@ -204,8 +202,5 @@ class MyMenu {
         });
       }
     }
-  }
-
-  removeMenu() {
   }
 }

@@ -37,6 +37,27 @@ class ExtensionEvent {
     chrome.tabs.onRemoved.addListener(tabId => {
       this.trigger('tab_close', {tabId});
     });
+
+    //tab切换
+    chrome.tabs.onActivated.addListener(activeInfo => {
+      chrome.tabs.get(activeInfo.tabId, tab => {
+        this.trigger('tab_update', {tabId: tab.id, url: tab.url});
+      });
+    });
+
+    //tab内容变化
+    chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+      this.trigger('tab_update', {tabId, url: tab.url});
+    });
+
+    //窗口焦点变化
+    chrome.windows.onFocusChanged.addListener(windowId => {
+      chrome.tabs.query({currentWindow: true, active: true}, tabs => {
+        if (tabs.length > 0) {
+          this.trigger('tab_update', {tabId: tabs[0].id, url: tabs[0].url});
+        }
+      });
+    });
   }
 
   /**

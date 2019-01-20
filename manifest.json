@@ -1,6 +1,6 @@
 {
   "name": "__MSG_pluginName__",
-  "version": "0.3",
+  "version": "0.4",
   "description": "__MSG_pluginDesc__",
   "default_locale": "zh_CN",
   "manifest_version": 2,
