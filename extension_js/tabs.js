@@ -62,21 +62,22 @@ class Tabs {
         const {tabId, url} = details;
         if (this.has(tabId)) {
           const ua = setting.getUA(this.data[tabId].domain);
-          if (ua && ua.value) {
-            for (let i = 0; i < details.requestHeaders.length; i++) {
-              const header = details.requestHeaders[i];
-              if (header.name.toLowerCase() === 'user-agent') {
-                // console.log('替换UA', header.value, ua.value);
-                header.value = ua.value;
-                break;
-              }
+          for (let i = 0; i < details.requestHeaders.length; i++) {
+            const header = details.requestHeaders[i];
+            const name = header.name.toLowerCase()
+            if (name === 'user-agent' && ua && ua.value) {
+              // console.log('替换UA', header.value, ua.value);
+              header.value = ua.value;
+              break;
+            } else if (name === 'accept-language') {
+              // header.value = 'fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5';
             }
           }
         }
         return {requestHeaders: details.requestHeaders};
       },
-      {urls: ["http://*/*", "https://*/*"]},
-      ["blocking", "requestHeaders"]
+      {urls: ['http://*/*', 'https://*/*']},
+      ['blocking', 'requestHeaders']
     );
   }
 

@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <script src="libs/vue.min.js"></script>
-    <script src="extension_js/i18_string_name.js"></script>
-    <script src="extension_js/utils.js"></script>
-    <script src="extension_js/setting.js"></script>
-    <script src="extension_js/ua_list.js"></script>
-    <script src="options/js/index.js"></script>
+    <script src="../libs/vue.min.js"></script>
+    <script src="../extension_js/i18_string_name.js"></script>
+    <script src="../extension_js/utils.js"></script>
+    <script src="../extension_js/setting.js"></script>
+    <script src="../extension_js/ua_list.js"></script>
+    <script src="js/index.js"></script>
     <style>
         html, body {
             margin: 0;
@@ -30,13 +30,17 @@
             width: 600px;
             height: 400px;
             box-shadow: rgba(0, 0, 0, 0.3) 0 0 15px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .center {
             text-align: center;
         }
 
-        .title {
+        .center > .title {
             font-size: 30px;
         }
 
@@ -46,25 +50,26 @@
             width: 200px;
         }
 
-        .left {
-            text-align: left
+        .content > .title {
+            text-align: left;
+            margin-top: 8px;
         }
     </style>
 </head>
 <body>
 <div id="app">
     <div class="center">
-        <div><img src="img/icon_128.png"/></div>
+        <div><img src="../img/icon_128.png" style="width: 80px;"/></div>
         <div class="title">{{ui.title}} {{ui.version}}</div>
         <div class="content">
-            <div class="left">{{ui.libraries}}:</div>
+            <div class="title">{{ui.libraries}}:</div>
             <div><a href="https://vuejs.org" target="_blank">Vue</a></div>
-            <div class="left">{{ui.author}}:</div>
+            <div class="title">{{ui.author}}:</div>
             <div><a href="https://github.com/gzlock" target="_blank">Gzlock</a></div>
-            <div class="left"> {{ui.open_source}}:</div>
-            <div><a href="https://github.com/gzlock/simple-extension" target="_blank">{{ui.project_home}}</a></div>
-            <div class="left"> {{ui.thanks}}:</div>
-            <div></div>
+            <div class="title"> {{ui.open_source}}:</div>
+            <div><a href="https://github.com/gzlock/simple-extension" target="_blank">Github</a></div>
+            <!--<div class="left"> {{ui.thanks}}:</div>-->
+            <!--<div></div>-->
         </div>
     </div>
 </div>

@@ -35,6 +35,7 @@ window.onload = () => {
             ua_placeholder: GetLanguageString(''),
             ua_default: GetLanguageString(MenuUseragentDefaultText),
             save_cookies: GetLanguageString('string_save'),
+            url_list: GetLanguageString('string_url_list'),
             confirm_delete_cookie: GetLanguageString('confirm_delete_cookie'),
             confirm_delete_request: GetLanguageString('confirm_delete_request'),
           },

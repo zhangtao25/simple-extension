@@ -1,6 +1,6 @@
 {
   "pluginName": {
-    "message": "Simple extension"
+    "message": "Simple Extension"
   },
   "pluginDesc": {
     "message": "Each website can save/switch cookies, switch User-Agent and simply listen for network requests."
@@ -74,9 +74,6 @@
   "string_open_source": {
     "message": "Open Source"
   },
-  "string_open_source_project_home": {
-    "message": "Project Home"
-  },
   "string_libraries": {
     "message": "Used Libraries"
   },
@@ -88,5 +85,8 @@
   },
   "string_empty": {
     "message": "Empty"
+  },
+  "string_url_list": {
+    "message": "Listened URL"
   }
 }

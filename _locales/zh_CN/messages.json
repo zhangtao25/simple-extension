@@ -69,10 +69,7 @@
     "message": "保存"
   },
   "string_open_source": {
-    "message": "开源"
-  },
-  "string_open_source_project_home": {
-    "message": "项目主页"
+    "message": "开源项目主页"
   },
   "string_libraries": {
     "message": "使用到的项目"
@@ -85,5 +82,8 @@
   },
   "string_empty": {
     "message": "无"
+  },
+  "string_url_list": {
+    "message": "监听到的网址"
   }
 }

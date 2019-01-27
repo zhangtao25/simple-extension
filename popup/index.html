@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="libs/vue.min.js"></script>
-    <script src="extension_js/i18_string_name.js"></script>
-    <script src="extension_js/utils.js"></script>
-    <script src="extension_js/setting.js"></script>
-    <script src="extension_js/ua_list.js"></script>
-    <script src="popup/js/index.js"></script>
+    <script src="../libs/vue.min.js"></script>
+    <script src="../extension_js/i18_string_name.js"></script>
+    <script src="../extension_js/utils.js"></script>
+    <script src="../extension_js/setting.js"></script>
+    <script src="../extension_js/ua_list.js"></script>
+    <script src="js/index.js"></script>
     <style>
         html, body {
             margin: 0;
@@ -91,19 +91,19 @@
         }
 
         .delete {
-            background-image: url("popup/img/delete.png");
+            background-image: url("img/delete.png");
         }
 
         .delete:hover {
-            background-image: url("popup/img/deletefill.png") !important;
+            background-image: url("img/deletefill.png") !important;
         }
 
         .add {
-            background-image: url("popup/img/roundadd.png");
+            background-image: url("img/roundadd.png");
         }
 
         .add:hover {
-            background-image: url("popup/img/roundaddfill.png");
+            background-image: url("img/roundaddfill.png");
         }
 
         .url-list {
@@ -150,7 +150,7 @@
             </div>
             <div class="block" v-if="urls.length > 0">
                 <div class="title flex-between-spaced">
-                    {{ui.requests}}
+                    {{ui.url_list}}
                     <div class="btn delete" @click.stop="clearUrls"></div>
                 </div>
                 <div class="url-list">
