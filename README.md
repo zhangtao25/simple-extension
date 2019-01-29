@@ -1,7 +1,8 @@
 Languages: [English](#simple-plugin), [Chinese(Simplified)](#简易扩展)
 
 # Simple Plugin
-Each website can save/switch cookies, switch User-Agent and simply listen for network requests.
+Let each website save/switch cookies, switch User-Agent and simply listen for network requests.
+
 [Chrome Store Page](https://chrome.google.com/webstore/detail/ofhbnimjijmnaigdfhhmhegnlmcbilba)
 
 
@@ -9,6 +10,7 @@ Each website can save/switch cookies, switch User-Agent and simply listen for ne
 
 # 简易扩展
 让每个网站都可以保存/切换Cookies、切换User-Agent，简单地监听网络请求。
+
 [Chrome商店页面](https://chrome.google.com/webstore/detail/ofhbnimjijmnaigdfhhmhegnlmcbilba)
 
 

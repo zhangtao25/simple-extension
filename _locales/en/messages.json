@@ -3,7 +3,7 @@
     "message": "Simple Extension"
   },
   "pluginDesc": {
-    "message": "Each website can save/switch cookies, switch User-Agent and simply listen for network requests."
+    "message": "Let each website save/switch cookies, switch User-Agent and simply listen for network requests."
   },
   "menu_root_text": {
     "message": "%domain"
