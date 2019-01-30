@@ -54,6 +54,17 @@ event.tab_start事件视为tab读取网页的起点</pre>
 
 在chrome.webRequest.onCompleted监听事件</pre>
 
+#### tab\_update
+- NOTE
+<pre>切换Chrome窗口，切换Tab，Tab的状态变化 都会激发tab_update事件
+监听原生Chrome API：
+chrome.webNavigation.onBeforeNavigate
+chrome.webRequest.onCompleted
+chrome.tabs.onRemoved
+chrome.tabs.onActivated
+chrome.tabs.onUpdated
+chrome.windows.onFocusChanged</pre>
+
 #### tab\_close
 - NOTE
 <pre>监听chrome.tabs.onRemoved</pre>

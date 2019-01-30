@@ -54,6 +54,17 @@ Listen from chrome.webNavigation.onBeforeNavigate and the parentFrameId equal -1
 and
 chrome.webNavigation.onBeforeNavigate and the parentFrameId not equal -1</pre>
 
+#### tab\_update
+- NOTE
+<pre>When switch Chrome windows, switch Chrome tabs, Chrome tab state changed, will trigger tab_update event.
+Listen from:
+chrome.webNavigation.onBeforeNavigate
+chrome.webRequest.onCompleted
+chrome.tabs.onRemoved
+chrome.tabs.onActivated
+chrome.tabs.onUpdated
+chrome.windows.onFocusChanged</pre>
+
 #### tab\_close
 - NOTE
 <pre>Listen from chrome.tabs.onRemoved</pre>
