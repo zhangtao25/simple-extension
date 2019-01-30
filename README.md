@@ -13,6 +13,8 @@ Let each website save/switch cookies, switch User-Agent and simply listen for ne
 
 [Chrome商店页面](https://chrome.google.com/webstore/detail/ofhbnimjijmnaigdfhhmhegnlmcbilba)
 
+[源码介绍](https://www.v2ex.com/t/531963)
+
 
 
 # License

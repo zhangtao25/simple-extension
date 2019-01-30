@@ -1,5 +1,5 @@
-window.onload = () => {
-  console.log('%c window onload ' + Date.now(), 'color: red');
+window.addEventListener('load', () => {
+  console.log('%c 浮动页面 onload ' + Date.now(), 'color: red');
   window.bg = chrome.extension.getBackgroundPage();
   chrome.tabs.query({active: true, currentWindow: true}, tabs => {
     const tab = tabs[0], domain = GetDomain(tab.url);
@@ -148,4 +148,4 @@ window.onload = () => {
       });
     });
   });
-};
+});
