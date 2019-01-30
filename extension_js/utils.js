@@ -30,7 +30,7 @@ function GetCookies(url) {
           expirationDate: cookie.expirationDate,
           httpOnly: cookie.httpOnly,
           url: 'http://' + domain,
-          path: '/',
+          path: cookie.path,
         };
       });
       // console.log('获取Cookies 2', cookies);
