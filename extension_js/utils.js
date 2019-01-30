@@ -9,34 +9,6 @@ function GetDomain(url) {
   return match ? match[1] : null;
 }
 
-
-/**
- * 创建或定位到tab
- * @param url
- * @param domain
- */
-function FocusOrCreateTab(url, domain) {
-  chrome.windows.getAll({"populate": true}, function (windows) {
-    let existing_tab = null;
-    for (let i in windows) {
-      const tabs = windows[i].tabs;
-      for (let j in tabs) {
-        const tab = tabs[j];
-        if (tab.url === url) {
-          existing_tab = tab;
-          break;
-        }
-      }
-    }
-    if (existing_tab) {
-      chrome.tabs.update(existing_tab.id, {"selected": true, url: url + '#' + domain});
-    } else {
-      chrome.tabs.create({"url": url + '#' + domain});
-    }
-  });
-}
-
-
 /**
  * 读取Chrome的Cookies
  * @param url {String}
@@ -58,6 +30,7 @@ function GetCookies(url) {
           expirationDate: cookie.expirationDate,
           httpOnly: cookie.httpOnly,
           url: 'http://' + domain,
+          path: '/',
         };
       });
       // console.log('获取Cookies 2', cookies);
@@ -75,7 +48,7 @@ function GetCookies(url) {
  */
 function RemoveCookie(url, name) {
   return new Promise(resolve => {
-    console.log('删除Cookie', JSON.stringify({url, name}));
+    // console.log('删除Cookie', JSON.stringify({url, name}));
     // resolve();
     chrome.cookies.remove({url, name}, resolve);
   });
@@ -88,7 +61,7 @@ function RemoveCookie(url, name) {
  * @function
  */
 function SetCookies(data) {
-  console.log('设置Chrome Cookies', data);
+  // console.log('设置Chrome Cookies', data);
   if (data.constructor === Array) {
     const queue = data.map(cookie => {
       return new Promise(resolve => {
@@ -111,11 +84,11 @@ function SetCookies(data) {
  */
 async function ClearCookies(url) {
   const cookies = await GetCookies(url);
-  console.log('删除Cookies前', cookies);
+  // console.log('删除Cookies前', cookies);
   await Promise.all(cookies.map(cookie => {
     return RemoveCookie(url, cookie.name);
   }));
-  console.log('删除Cookies后', await GetCookies(url));
+  // console.log('删除Cookies后', await GetCookies(url));
 }
 
 /**
