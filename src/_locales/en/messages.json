@@ -42,7 +42,7 @@
     "message": "Please enter a name for rewrite\nThe same name will be overwritten"
   },
   "prompt_host_rewrite_rule": {
-    "message": "Please enter a URL keyword to rewrite\nIf you use regular expressions, enter a format like /regexp/"
+    "message": "Use path-to-regexp expressions\nDocument https://github.com/pillarjs/path-to-regexp\nOnline test https://forbeslindesay.github.io/express-route-tester"
   },
   "prompt_host_rewrite_value": {
     "message": "Please enter a destination URL\nSupport placeholders, like http://a.com/path/{0}"
@@ -60,7 +60,7 @@
     "message": "Confirm to delete the cookies called %name?"
   },
   "confirm_delete_request": {
-    "message": "Confirm to delete this request keyword?"
+    "message": "Confirm to delete this request URL keyword?\n%value"
   },
   "confirm_delete_rewrite": {
     "message": "Confirm to delete the URL rewrite called %name?"
@@ -109,5 +109,11 @@
   },
   "string_host_rewrite": {
     "message": "Host Rewrite"
+  },
+  "string_host_rewrite_to": {
+    "message": "Rewrite to"
+  },
+  "string_host_redirect_to": {
+    "message": "Redirect to"
   }
 }

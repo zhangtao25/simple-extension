@@ -35,8 +35,10 @@ export class Setting {
       if (Object.keys(changes).length > 0) {
         for (let key in changes) {
           const change = changes[key];
-          if (change['newValue'])
-            this.data[key] = change['newValue'];
+          if (change['newValue']) {
+            Object.assign(this.data[key], change['newValue']);
+            // this.data[key] = change['newValue'];
+          }
         }
       }
     });

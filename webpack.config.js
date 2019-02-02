@@ -22,6 +22,7 @@ if (fileSystem.existsSync(secretsPath)) {
 const copyPluginPatterns = [{from: 'src/manifest.json'}];
 
 {
+  //监测多语言文件夹
   const i18n_folder_path = path.join(__dirname, 'src', '_locales');
   if (fileSystem.existsSync(i18n_folder_path)) {
     copyPluginPatterns.push({from: 'src/_locales', to: '_locales'});
@@ -82,7 +83,8 @@ const options = {
     ]
   },
   resolve: {
-    alias: alias
+    alias: alias,
+    extensions: ['.js', '.vue'],
   },
   plugins: [
     // clean the build folder

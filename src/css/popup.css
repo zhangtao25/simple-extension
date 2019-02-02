@@ -151,7 +151,7 @@ body {
 
 /*cell*/
 .table .row > .cell {
-    padding: 4px 0;
+    padding: 4px;
     min-width: 0;
     flex-grow: 1;
 }
@@ -169,7 +169,9 @@ body {
 
 .table .cell.operator {
     border-left: 1px solid grey;
-    width: 30px;
+    width: 29px;
+    padding: 0;
+    text-align: center;
     flex-grow: 0 !important;
 }
 
@@ -180,7 +182,13 @@ body {
     max-width: 200px;
 }
 
+.text-wrap {
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
 .toggle {
+    display: inline-block;
     width: 20px;
     height: 20px;
     transform: rotate(180deg);

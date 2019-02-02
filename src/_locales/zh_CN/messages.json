@@ -42,7 +42,7 @@
     "message": "请输入方便辨别的 URL改写 名称\n同名将会覆盖"
   },
   "prompt_host_rewrite_rule": {
-    "message": "请输入要改写的URL关键字\n支持正则表达式，需要用 /xx/ 包裹"
+    "message": "使用 path-to-regexp 表达式\n说明 https://github.com/pillarjs/path-to-regexp\n在线测试 https://forbeslindesay.github.io/express-route-tester"
   },
   "prompt_host_rewrite_value": {
     "message": "请输入将改写的网址\n支持{0}格式的占位符，例如 http://a.com/?search={0}"
@@ -63,7 +63,7 @@
     "message": "确认删除 cookies %name?"
   },
   "confirm_delete_request": {
-    "message": "确认删除这个网络请求监测?"
+    "message": "确认删除这个网络请求监测?\n%value"
   },
   "confirm_delete_rewrite": {
     "message": "确认删除 URL改写 %name?"
@@ -115,5 +115,11 @@
   },
   "string_host_redirect": {
     "message": "重定向"
+  },
+  "string_host_rewrite_to": {
+    "message": "改写到"
+  },
+  "string_host_redirect_to": {
+    "message": "重定向到"
   }
 }

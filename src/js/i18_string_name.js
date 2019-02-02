@@ -34,6 +34,8 @@ export const
   StringHostRedirect = 'string_host_redirect',
   StringUA = 'string_ua',
   StringSave = 'string_save',
+  StringRewriteTo = 'string_host_rewrite_to',
+  StringRedirectTo = 'string_host_redirect_to',
   StringBrowserActionEnable = 'string_browser_action_enable',
   StringBrowserActionDisabled = 'string_browser_action_disabled';
 

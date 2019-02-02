@@ -47,20 +47,7 @@
                 </div>
             </div>
             <!--网络监测-->
-            <div class="block">
-                <div class="title flex-between-spaced">
-                    {{ui.requests}}
-                    <div class="btn add" @click="addRequest"></div>
-                </div>
-                <transition-group name="list" tag="div" class="content">
-                    <div v-for="(value, index) in data.requests"
-                         :key="'requests'+index"
-                         class="flex-between-spaced">
-                        <input v-model.trim="data.requests[index]" @input="save"/>
-                        <div class="btn delete" @click="deleteRequest(value)"></div>
-                    </div>
-                </transition-group>
-            </div>
+            <url-detect-editor :list="data.requests" @changed="changed"/>
             <!--URL重写-->
             <host-editor type="rewrite"
                          :domain="domain"
@@ -106,33 +93,26 @@
   import {
     AlertNoCookies,
     ConfirmDeleteCookie,
-    ConfirmDeleteRequest,
     GetLanguageString,
     MenuUseragentDefaultText,
-    PromptHowToGetTheRequestUrl, PromptRedirectName, PromptRedirectRule, PromptRedirectValue,
-    PromptRewriteName,
-    PromptRewriteRule,
-    PromptRewriteValue,
     PromptSaveCookiesName,
     StringCookies,
-    StringHostRedirect,
-    StringHostRewrite,
     StringRequests,
     StringSave,
     StringUA,
     StringUrlList
-  } from "../js/i18_string_name";
-  import {DefaultDomainData} from "../js/setting";
-  import {GetCookies, GetRegExp, Prompt, SetCookies} from "../js/utils";
-  import {UA} from "../js/ua_list";
-  import HostEditor from "./host_editor.vue";
+  } from "../../js/i18_string_name";
+  import {GetCookies, Prompt, SetCookies} from "../../js/utils";
+  import {UA} from "../../js/ua_list";
+  import HostEditor from "./host_editor";
+  import UrlDetectEditor from "./url_detect_editor";
 
   const {tabs, setting} = window.bg = chrome.extension.getBackgroundPage();
 
   let saveTimeout;
   export default {
-    components: {HostEditor},
-    props: ['domain', 'tab'],
+    components: {UrlDetectEditor, HostEditor},
+    props: ['domain', 'tab', 'data', 'urls'],
     data() {
       return {
         ui: {
@@ -145,8 +125,6 @@
         },
         setting,
         ua_list: UA,
-        data: null,
-        urls: tabs.data[this.tab.id].urls,
       }
     },
     computed: {
@@ -208,24 +186,6 @@
         await setting.save();
         this.updateData();
       },
-      async addRequest() {
-        let keyword = Prompt(GetLanguageString(PromptHowToGetTheRequestUrl), 'video.m3u8');
-        if (!keyword)
-          return;
-
-        if (this.data.requests.indexOf(keyword) !== -1)
-          return;
-
-        await setting.setRequest(this.domain, keyword);
-        this.updateData();
-      },
-      async deleteRequest(value) {
-        if (confirm(GetLanguageString(ConfirmDeleteRequest)) === false)
-          return;
-
-        await setting.deleteRequest(this.domain, value);
-        this.updateData();
-      },
       async clearUrls() {
         this.urls.length = 0;
         tabs.reset(this.tab.id);
@@ -255,14 +215,9 @@
     updated() {
       setting.save();
     },
-    created() {
-      if (!setting.hasDomain(this.domain))
-        setting.initDomain(this.domain);
-      this.data = setting.data[this.domain];
-    },
     mounted() {
     }
   }
 </script>
 
-<style src="../css/popup.css" lang="css"></style>
+<style src="../../css/popup.css" lang="css"></style>

@@ -8,11 +8,11 @@
             <transition-group name="list" tag="div">
                 <div v-for="(value, index) in list" :key="type+'_'+index" class="row">
                     <div class="name cell">
-                        <div class="text-ellipsis" v-text="value.name" @click="modifyItem(index, 'name')"></div>
+                        <div class="text-wrap" v-text="value.name" @click="modifyItem(index, 'name')"></div>
                     </div>
                     <div class="cell">
                         <div class="text-ellipsis" v-text="value.rule" @click="modifyItem(index, 'rule')"></div>
-                        <div>改写到</div>
+                        <div>{{ui.to}}</div>
                         <div class="text-ellipsis" v-text="value.value" @click="modifyItem(index, 'value')"></div>
                     </div>
                     <div class="cell operator">
@@ -27,8 +27,8 @@
 </template>
 
 <script>
-  import {GetRegExp, Prompt} from "../js/utils";
-  import {ConfirmDeleteRewrite, GetLanguageString} from "../js/i18_string_name";
+  import {GetDomain, GetRegExp, Prompt} from "../../js/utils";
+  import {ConfirmDeleteRewrite, GetLanguageString} from "../../js/i18_string_name";
 
   export default {
     props: {
@@ -45,7 +45,10 @@
     },
     data() {
       return {
-        ui: {title: GetLanguageString('string_host_' + this.type)}
+        ui: {
+          title: GetLanguageString('string_host_' + this.type),
+          to: GetLanguageString(`string_host_${this.type}_to`),
+        }
       };
     },
     methods: {
@@ -67,10 +70,11 @@
             return false;
           }
         });
+        const ruleHasDomain = GetDomain(rule) ? 1 : 0, valueHasDomain = GetDomain(value) ? 1 : 0;
         if (index === -1)
-          this.list.push({enable: 1, name, rule, value});
+          this.list.push({enable: 1, name, rule, value, ruleHasDomain, valueHasDomain});
         else
-          Object.assign(this.list[index], {name, rule, value});
+          Object.assign(this.list[index], {name, rule, value, ruleHasDomain, valueHasDomain});
         this.$emit('changed');
       },
       async toggleItem(index) {
@@ -88,11 +92,14 @@
           if (!input)
             return;
           data[attr] = input;
+          if (attr === 'rule' || attr === 'value') {
+            data[attr + 'HasDomain'] = GetDomain(input) ? 1 : 0;
+          }
           this.$emit('changed');
         }
       },
       async deleteItem(index) {
-        if (confirm(GetLanguageString(ConfirmDeleteRewrite, [['%name', this.list[index].name]]))) {
+        if (confirm(GetLanguageString(`confirm_delete_${this.type}`, [['%name', this.list[index].name]]))) {
           this.list.splice(index, 1);
           this.$emit('changed');
         }

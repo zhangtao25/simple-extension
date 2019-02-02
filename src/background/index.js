@@ -4,6 +4,7 @@ import {Menu} from "../js/menu";
 import {Tabs} from "../js/tabs";
 import {SetCookies} from "../js/utils";
 
+//启动Chrome就填充所有Cookies
 const setting = window.setting = new Setting(() => {
   for (const domain in setting.data) {
     const data = setting.data[domain];

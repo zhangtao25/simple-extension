@@ -1,15 +1,18 @@
 import {GetLanguageString, PromptRegexpError} from "./i18_string_name";
 
+const url = require('url');
 
 /**
  * 从url提取域名
- * @param url {String}
+ * @param _url {String}
  * @returns {String || null}
  * @function
  */
-export function GetDomain(url) {
-  const match = /https?:\/\/([^\/]+)/.exec(url);
-  return match ? match[1] : null;
+export function GetDomain(_url) {
+  if (!_url) return null;
+  return url.parse(_url).host;
+  // const match = /https?:\/\/([^\/]+)/.exec(_url);
+  // return match ? match[1] : null;
 }
 
 
