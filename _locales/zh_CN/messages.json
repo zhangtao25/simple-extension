@@ -38,14 +38,38 @@
   "prompt_how_to_get_the_request_url": {
     "message": "打开开发者工具，Network功能会列出所有网络请求\n输入网络请求的关键字即可，例如：master.m3u8"
   },
-  "prompt_request_example": {
-    "message": "video.m3u8"
+  "prompt_host_rewrite_name": {
+    "message": "请输入方便辨别的 URL改写 名称\n同名将会覆盖"
   },
-  "notification_request_title": {
-    "message": "%domain"
+  "prompt_host_rewrite_rule": {
+    "message": "请输入要改写的URL关键字\n支持正则表达式，需要用 /xx/ 包裹"
   },
-  "notification_request_message": {
-    "message": "点击复制:\n%url"
+  "prompt_host_rewrite_value": {
+    "message": "请输入将改写的网址\n支持{0}格式的占位符，例如 http://a.com/?search={0}"
+  },
+  "prompt_host_redirect_name": {
+    "message": "请输入方便辨别的 重定向 名称\n同名将会覆盖"
+  },
+  "prompt_host_redirect_rule": {
+    "message": "请输入要重定向的URL关键字\n支持正则表达式，需要用 /xx/ 包裹"
+  },
+  "prompt_host_redirect_value": {
+    "message": "请输入将改写的网址\n支持{0}格式的占位符，例如 {0}.a.com"
+  },
+  "prompt_regexp_error": {
+    "message": "⚠️没有通过正则表达式检查"
+  },
+  "confirm_delete_cookie": {
+    "message": "确认删除 cookies %name?"
+  },
+  "confirm_delete_request": {
+    "message": "确认删除这个网络请求监测?"
+  },
+  "confirm_delete_rewrite": {
+    "message": "确认删除 URL改写 %name?"
+  },
+  "confirm_delete_redirect": {
+    "message": "确认删除 Host重定向 %name?"
   },
   "string_cookies": {
     "message": "Cookies"
@@ -85,5 +109,11 @@
   },
   "string_url_list": {
     "message": "监听到的网址"
+  },
+  "string_host_rewrite": {
+    "message": "改写网址"
+  },
+  "string_host_redirect": {
+    "message": "重定向网络请求"
   }
 }

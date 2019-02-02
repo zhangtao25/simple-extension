@@ -1,7 +1,10 @@
 Languages: [English](#simple-extension), [Chinese(Simplified)](#简易扩展)
 
 # Simple Extension
-Let each website save/switch cookies, switch User-Agent and simply listen for network requests.
+
+* Let each website save/switch cookies, switch User-Agent
+* Simply listen for network requests.
+* Host rewrite.
 
 [Chrome Store Page](https://chrome.google.com/webstore/detail/ofhbnimjijmnaigdfhhmhegnlmcbilba)
 
@@ -9,7 +12,11 @@ Let each website save/switch cookies, switch User-Agent and simply listen for ne
 
 
 # 简易扩展
-让每个网站都可以保存/切换Cookies、切换User-Agent，简单地监听网络请求。
+
+* 让每个网站都可以保存/切换Cookies、切换User-Agent
+* 简单的监听网络请求功能
+* Host重定向
+
 
 [Chrome商店页面](https://chrome.google.com/webstore/detail/ofhbnimjijmnaigdfhhmhegnlmcbilba)
 

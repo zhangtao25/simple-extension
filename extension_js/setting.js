@@ -1,3 +1,11 @@
+const defaultDomainDataString = JSON.stringify({
+  requests: [],
+  cookies: {selected: null, cookies: {}},
+  ua: {selected: null, value: null},
+  rewrites: [],
+  redirects: [],
+});
+
 class Setting {
   /**
    *
@@ -11,6 +19,10 @@ class Setting {
 
   async init() {
     this.data = await GetStorage(null, {});
+    //验证现存数据的格式
+    Object.keys(this.data).forEach(key => {
+      this.data[key] = Object.assign(JSON.parse(defaultDomainDataString), this.data[key]);
+    });
     chrome.storage.onChanged.addListener((changes, areaName) => {
       console.log('%c storage Change', 'color: green', changes, areaName);
       if (Object.keys(changes).length > 0) {
@@ -115,7 +127,7 @@ class Setting {
   }
 
   /**
-   *
+   * 设置URL监测
    * @param domain {String}
    * @param keyword {String}
    * @return Promise
@@ -127,7 +139,7 @@ class Setting {
   }
 
   /**
-   *
+   * 删除URL监测
    * @param domain {String}
    * @param keyword {String}
    * @returns Promise
@@ -136,24 +148,132 @@ class Setting {
     if (this.hasDomain(domain)) {
       const index = this.data[domain].requests.indexOf(keyword);
       this.data[domain].requests.splice(index, 1);
-      return this.save();
     }
-    return Promise.all([]);
+    return this.save();
   }
 
+  /**
+   * 添加URL改写
+   * @param domain {String}
+   * @param name {String}
+   * @param rule {String}
+   * @param value {String}
+   * @returns {Promise}
+   */
+  setRewrite(domain, name, rule, value) {
+    this.initDomain(domain);
+    const data = {enable: 1, name, rule, value};
+    let index = -1;
+    for (let i = 0; i < this.data[domain].rewrites; i++) {
+      const re = this.data[domain].rewrites[i];
+      if (re.name === name) {
+        index = i;
+        break;
+      }
+    }
+    if (index !== -1)
+      this.data[domain].rewrites[index] = data;
+    else
+      this.data[domain].rewrites.push(data);
+    return this.save();
+  }
+
+  /**
+   * 删除URL改写
+   * @param domain
+   * @param index
+   * @returns {Promise}
+   */
+  deleteRewrite(domain, index) {
+    if (this.hasDomain(domain) && this.data[domain].rewrites.length > index)
+      this.data[domain].rewrites.splice(index, 1);
+    return this.save();
+  }
+
+  /**
+   * 启用/禁用URL改写
+   * @param domain
+   * @param index
+   * @returns {Promise}
+   */
+  toggleRewrite(domain, index) {
+    if (this.hasDomain(domain) && this.data[domain].rewrites.length > index)
+      this.data[domain].rewrites[index].enable = this.data[domain].rewrites[index].enable === 0 ? 1 : 0;
+    return this.save();
+  }
+
+  /**
+   * 添加重定向
+   * @param domain
+   * @param name
+   * @param rule
+   * @param value
+   * @returns {Promise}
+   */
+  setRedirect(domain, name, rule, value) {
+    this.initDomain(domain);
+    const data = {enable: 1, name, rule, value};
+    let index = -1;
+    for (let i = 0; i < this.data[domain].redirects; i++) {
+      const re = this.data[domain].redirects[i];
+      if (re.name === name) {
+        index = i;
+        break;
+      }
+    }
+    if (index !== -1)
+      this.data[domain].redirects[index] = data;
+    else
+      this.data[domain].redirects.push(data);
+    return this.save();
+  }
+
+  /**
+   * 删除重定向
+   * @param domain
+   * @param index
+   * @returns {Promise}
+   */
+  deleteRedirect(domain, index) {
+    if (this.hasDomain(domain) && this.data[domain].redirects.length > index)
+      this.data[domain].redirects.splice(index, 1);
+    return this.save();
+  }
+
+  /**
+   * 启用/禁用 重定向
+   * @param domain
+   * @param index
+   * @returns {Promise}
+   */
+  toggleRedirect(domain, index) {
+    if (this.hasDomain(domain) && this.data[domain].redirects.length > index)
+      this.data[domain].redirects[index].enable = this.data[domain].redirects[index].enable === 0 ? 1 : 0;
+    return this.save();
+  }
+
+  /**
+   * 是否有domain的数据
+   * @param domain
+   * @returns {boolean}
+   */
   hasDomain(domain) {
     return this.data.hasOwnProperty(domain);
   }
 
+  /**
+   * 初始化域名，但没有保存
+   * @param domain
+   */
   initDomain(domain) {
     if (this.hasDomain(domain))
       return;
-    this.data[domain] = {requests: [], cookies: {selected: null, cookies: {}}, ua: {selected: null, value: null}};
+    this.data[domain] = JSON.parse(defaultDomainDataString);
   }
 
   /**
-   *
-   * @returns {Promise<any>}
+   * 保存扩展数据
+   * @returns {Promise}
    */
   save() {
     return new Promise(resolve => {
@@ -163,6 +283,9 @@ class Setting {
     });
   }
 
+  /**
+   * 清空所有扩展数据
+   */
   clear() {
     chrome.storage.local.clear()
   }

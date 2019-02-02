@@ -14,12 +14,18 @@ const
 const AlertNoCookies = 'alert_no_cookies',
   AlertSaveCookiesFailEmptyName = 'alert_save_cookies_fail_empty_name';
 
+const ConfirmDeleteCookie = 'confirm_delete_cookie',
+  ConfirmDeleteRequest = 'confirm_delete_request';
+
 const PromptSaveCookiesName = 'prompt_save_cookies_name',
   PromptHowToGetTheRequestUrl = 'prompt_how_to_get_the_request_url',
-  PromptRequestExample = 'prompt_request_example';
-
-const NotificationRequestTitle = 'notification_request_title',
-  NotificationRequestMessage = 'notification_request_message';
+  PromptRewriteName = 'prompt_host_rewrite_name',
+  PromptRewriteRule = 'prompt_host_rewrite_rule',
+  PromptRewriteValue = 'prompt_host_rewrite_value',
+  PromptRedirectName = 'prompt_host_redirect_name',
+  PromptRedirectRule = 'prompt_host_redirect_rule',
+  PromptRedirectValue = 'prompt_host_redirect_value',
+  PromptRegexpError = 'prompt_regexp_error';
 
 const StringCookies = 'string_cookies',
   StringRequests = 'string_requests',

@@ -8,138 +8,7 @@
     <script src="../extension_js/setting.js"></script>
     <script src="../extension_js/ua_list.js"></script>
     <script src="js/index.js"></script>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            cursor: default;
-            color: #333333;
-        }
-
-        body {
-            min-width: 200px;
-        }
-
-        .block {
-            padding: 5px;
-        }
-
-        .block + .block {
-            border-top: 1px solid black;
-        }
-
-        .block .title {
-            margin-bottom: 5px;
-            font-size: 1.5em;
-        }
-
-        .block .content {
-            margin: 0 0 0 10px;
-            font-size: 14px;
-        }
-
-        .flex-between-spaced {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cookies > div {
-            padding: 5px;
-        }
-
-        .cookies > div:hover {
-            cursor: pointer;
-            background: #ccc;
-        }
-
-        .cookies > div + .cookies > div {
-            border-top: 1px solid #aaa;
-        }
-
-        .cookies > div.selected {
-            background: #eee;
-            cursor: default;
-        }
-
-        .cookies > div .delete {
-            width: 14px;
-            height: 14px;
-        }
-
-        .cookies-save-button {
-            padding: 5px;
-            display: inline-flex;
-            font-size: .8rem;
-        }
-
-        .cookies-save-button img {
-            width: 18px;
-            height: 18px;
-        }
-
-        .ua-input {
-            resize: none;
-            width: 200px;
-        }
-
-        .btn {
-            display: inline-block;
-            width: 14px;
-            height: 14px;
-            background-size: cover;
-        }
-
-        .delete {
-            background-image: url("img/delete.png");
-        }
-
-        .delete:hover {
-            background-image: url("img/deletefill.png") !important;
-        }
-
-        .add {
-            background-image: url("img/roundadd.png");
-        }
-
-        .add:hover {
-            background-image: url("img/roundaddfill.png");
-        }
-
-        .url-list {
-            max-height: 80px;
-            overflow-y: auto;
-        }
-
-        .url-list input {
-            border: none;
-            width: 90%;
-            display: block;
-        }
-
-        .list-item + .list-item {
-            border-top: 1px solid #aaa;
-            margin-top: 3px;
-        }
-
-        .list-item {
-        }
-
-        .list-move {
-            transition: transform .3s;
-        }
-
-        .list-enter-active, .list-leave-active {
-            transition: all .3s;
-        }
-
-        .list-enter, .list-leave-to
-            /* .list-leave-active for below version 2.1.8 */
-        {
-            opacity: 0;
-            transform: translateX(30px);
-        }
-    </style>
+    <link rel="stylesheet" href="index.css"/>
 </head>
 <body>
 <div id="app">
@@ -148,6 +17,7 @@
             <div class="block">
                 <div class="title">{{domain}}</div>
             </div>
+            <!--监测到的网址-->
             <div class="block" v-if="urls.length > 0">
                 <div class="title flex-between-spaced">
                     {{ui.url_list}}
@@ -160,6 +30,7 @@
                     </div>
                 </div>
             </div>
+            <!--Cookies切换-->
             <div class="block">
                 <div class="title flex-between-spaced">
                     {{ui.cookies}}
@@ -172,6 +43,7 @@
                     </div>
                 </div>
             </div>
+            <!--UA切换-->
             <div class="block">
                 <div class="title">User-Agent</div>
                 <div class="content">
@@ -184,6 +56,7 @@
                     </select>
                 </div>
             </div>
+            <!--网络监测-->
             <div class="block">
                 <div class="title flex-between-spaced">
                     {{ui.requests}}
@@ -193,6 +66,56 @@
                     <div v-for="(value, index) in data.requests" :key="index" class="flex-between-spaced">
                         <input v-model.trim="data.requests[index]" @input="save"/>
                         <div class="btn delete" @click="deleteRequest(value)"></div>
+                    </div>
+                </transition-group>
+            </div>
+            <!--URL重写-->
+            <div class="block">
+                <div class="title flex-between-spaced">
+                    {{ui.rewrite}}
+                    <div class="btn add" @click="addRewrite"></div>
+                </div>
+                <div class="flex-between-around">
+                    <span>名称</span>
+                    <span>将</span>
+                    <span>改写到</span>
+                </div>
+                <transition-group name="list" tag="div" class="content">
+                    <div v-for="(value, index) in data.rewrites" :key="index" class="flex-between-spaced">
+                        <div class="flex-between-spaced">
+                            <input :value="value.name"
+                                   @click="modifyRewriteOrRedirect(index, 'rewrites', 'name')"/>
+                            <input :value="value.rule"
+                                   @click="modifyRewriteOrRedirect(index, 'rewrites', 'rule')"/>
+                            <input :value="value.value"
+                                   @click="modifyRewriteOrRedirect(index, 'rewrites', 'value')"/>
+                        </div>
+                        <div class="btn delete" @click="deleteRewrite(index)"></div>
+                    </div>
+                </transition-group>
+            </div>
+            <!--Host 重定向-->
+            <div class="block">
+                <div class="title flex-between-spaced">
+                    {{ui.redirect}}
+                    <div class="btn add" @click="addRedirect"></div>
+                </div>
+                <div class="flex-between-around">
+                    <span>名称</span>
+                    <span>将</span>
+                    <span>重定向到</span>
+                </div>
+                <transition-group name="list" tag="div" class="content">
+                    <div v-for="(value, index) in data.redirects" :key="index" class="flex-between-spaced">
+                        <div class="flex-between-spaced">
+                            <input :value="value.name"
+                                   @click="modifyRewriteOrRedirect(index, 'redirects', 'name')"/>
+                            <input :value="value.rule"
+                                   @click="modifyRewriteOrRedirect(index, 'redirects', 'rule')"/>
+                            <input :value="value.value"
+                                   @click="modifyRewriteOrRedirect(index, 'redirects', 'value')"/>
+                        </div>
+                        <div class="btn delete" @click="deleteRedirect(index)"></div>
                     </div>
                 </transition-group>
             </div>
