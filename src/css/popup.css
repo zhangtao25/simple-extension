@@ -1,0 +1,194 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    cursor: default;
+    color: #333333;
+}
+
+body {
+    min-width: 240px;
+}
+
+.block {
+    padding: 5px;
+}
+
+.block + .block {
+    border-top: 1px solid black;
+}
+
+.block .title {
+    margin-bottom: 5px;
+    font-size: 1.5em;
+}
+
+.block .content {
+    margin: 0 0 0 10px;
+    font-size: 14px;
+}
+
+.flex-between-spaced {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex-between-around {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.cookies > div {
+    padding: 5px;
+}
+
+.cookies > div:hover {
+    cursor: pointer;
+    background: #ccc;
+}
+
+.cookies > div + .cookies > div {
+    border-top: 1px solid #aaa;
+}
+
+.cookies > div.selected {
+    background: #eee;
+    cursor: default;
+}
+
+.cookies > div .delete {
+    width: 14px;
+    height: 14px;
+}
+
+.cookies-save-button {
+    padding: 5px;
+    display: inline-flex;
+    font-size: .8rem;
+}
+
+.cookies-save-button img {
+    width: 18px;
+    height: 18px;
+}
+
+.ua-input {
+    resize: none;
+    width: 200px;
+}
+
+.btn {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background-size: cover;
+}
+
+.delete {
+    background-image: url("/img/delete.png");
+}
+
+.delete:hover {
+    background-image: url("/img/deletefill.png") !important;
+}
+
+.add {
+    background-image: url("/img/roundadd.png");
+}
+
+.add:hover {
+    background-image: url("/img/roundaddfill.png");
+}
+
+.url-list {
+    max-height: 80px;
+    overflow-y: auto;
+}
+
+.url-list input {
+    border: none;
+    width: 90%;
+    display: block;
+}
+
+.list-item + .list-item {
+    border-top: 1px solid #aaa;
+    margin-top: 3px;
+}
+
+.list-item {
+}
+
+.list-move {
+    transition: transform .3s;
+}
+
+.list-enter-active, .list-leave-active {
+    transition: all .3s;
+}
+
+.list-enter, .list-leave-to
+    /* .list-leave-active for below version 2.1.8 */
+{
+    opacity: 0;
+    transform: translateX(30px);
+}
+
+.table {
+}
+
+/*row*/
+.table .row {
+    display: flex;
+    width: 100%;
+    border: 1px solid gray;
+}
+
+.table .row + .row {
+    border-top: none !important;
+}
+
+/*cell*/
+.table .row > .cell {
+    padding: 4px 0;
+    min-width: 0;
+    flex-grow: 1;
+}
+
+.table .cell.name {
+    width: 20%;
+    min-width: 20%;
+    max-width: 20%;
+    flex-grow: 0;
+    background: #eee;
+    border-right: 1px solid gray;
+    display: flex;
+    align-items: center;
+}
+
+.table .cell.operator {
+    border-left: 1px solid grey;
+    width: 30px;
+    flex-grow: 0 !important;
+}
+
+.cell .text-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+.toggle {
+    width: 20px;
+    height: 20px;
+    transform: rotate(180deg);
+    background: url("/img/toggle-off.png") center center;
+    background-size: 100% 100%;
+}
+
+.toggle.enable {
+    transform: rotate(0deg);
+    background-image: url("/img/toggle-on.png");
+}

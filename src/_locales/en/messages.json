@@ -1,0 +1,113 @@
+{
+  "pluginName": {
+    "message": "Simple Extension"
+  },
+  "pluginDesc": {
+    "message": "Let each website save/switch cookies, switch User-Agent and simply listen for network requests."
+  },
+  "menu_root_text": {
+    "message": "%domain"
+  },
+  "menu_cookie_root_text": {
+    "message": "Cookie"
+  },
+  "menu_cookie_empty_text": {
+    "message": "Save(But %domain Cookies Empty)"
+  },
+  "menu_cookie_use_text": {
+    "message": "Switch Cookies"
+  },
+  "menu_useragent_text": {
+    "message": "Switch User-Agent"
+  },
+  "menu_useragent_default_text": {
+    "message": "Default"
+  },
+  "menu_ajax_text": {
+    "message": "Network Request"
+  },
+  "alert_no_cookies": {
+    "message": "%domain No Cookies Data"
+  },
+  "alert_save_cookies_fail_empty_name": {
+    "message": "Save Fail: Empty Name"
+  },
+  "prompt_save_cookies_name": {
+    "message": "Please enter a name for cookies\nThe same name will be overwritten"
+  },
+  "prompt_how_to_get_the_request_url": {
+    "message": "Open the dev tools，Network tab will list all network requests\nJust enter the keyword for the request URL, for example: master.m3u8"
+  },
+  "prompt_host_rewrite_name": {
+    "message": "Please enter a name for rewrite\nThe same name will be overwritten"
+  },
+  "prompt_host_rewrite_rule": {
+    "message": "Please enter a URL keyword to rewrite\nIf you use regular expressions, enter a format like /regexp/"
+  },
+  "prompt_host_rewrite_value": {
+    "message": "Please enter a destination URL\nSupport placeholders, like http://a.com/path/{0}"
+  },
+  "prompt_host_redirect_name": {
+    "message": "Please enter a name for redirect\nThe same name will be overwritten"
+  },
+  "prompt_host_redirect_value": {
+    "message": "Please enter a destination host\nSupport placeholders, like {0}.a.com"
+  },
+  "prompt_regexp_error": {
+    "message": "⚠️Did not pass the regular expression check"
+  },
+  "confirm_delete_cookie": {
+    "message": "Confirm to delete the cookies called %name?"
+  },
+  "confirm_delete_request": {
+    "message": "Confirm to delete this request keyword?"
+  },
+  "confirm_delete_rewrite": {
+    "message": "Confirm to delete the URL rewrite called %name?"
+  },
+  "confirm_delete_redirect": {
+    "message": "Confirm to delete the URL redirect called %name?"
+  },
+  "string_cookies": {
+    "message": "Cookies"
+  },
+  "string_requests": {
+    "message": "Requests"
+  },
+  "string_ua": {
+    "message": "User-Agent"
+  },
+  "string_browser_action_enable": {
+    "message": "%domain settings"
+  },
+  "string_browser_action_disabled": {
+    "message": "Disabled"
+  },
+  "string_default_ua": {
+    "message": "Default"
+  },
+  "string_save": {
+    "message": "Save"
+  },
+  "string_open_source": {
+    "message": "Open Source"
+  },
+  "string_libraries": {
+    "message": "Used Libraries"
+  },
+  "string_author": {
+    "message": "Author"
+  },
+  "string_thanks": {
+    "message": "Thanks"
+  },
+  "string_empty": {
+    "message": "Empty"
+  },
+  "string_url_list": {
+    "message": "Listened URL"
+  },
+  "string_host_rewrite": {
+    "message": "Host Rewrite"
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "pluginName": {
+    "message": "简易扩展"
+  },
+  "pluginDesc": {
+    "message": "让每个网站都可以保存/切换Cookies、切换User-Agent，简单地监听网络请求。"
+  },
+  "menu_root_text": {
+    "message": "%domain"
+  },
+  "menu_cookie_root_text": {
+    "message": "Cookie"
+  },
+  "menu_cookie_empty_text": {
+    "message": "保存(但 %domain 没有Cookies)"
+  },
+  "menu_cookie_use_text": {
+    "message": "切换"
+  },
+  "menu_useragent_text": {
+    "message": "切换User-Agent"
+  },
+  "menu_useragent_default_text": {
+    "message": "默认"
+  },
+  "menu_ajax_text": {
+    "message": "监听网络请求"
+  },
+  "alert_no_cookies": {
+    "message": "%domain 没有Cookie数据"
+  },
+  "alert_save_cookies_fail_empty_name": {
+    "message": "保存失败: 名称为空"
+  },
+  "prompt_save_cookies_name": {
+    "message": "输入保存的名称，同名将会覆盖"
+  },
+  "prompt_how_to_get_the_request_url": {
+    "message": "打开开发者工具，Network功能会列出所有网络请求\n输入网络请求的关键字即可，例如：master.m3u8"
+  },
+  "prompt_host_rewrite_name": {
+    "message": "请输入方便辨别的 URL改写 名称\n同名将会覆盖"
+  },
+  "prompt_host_rewrite_rule": {
+    "message": "请输入要改写的URL关键字\n支持正则表达式，需要用 /xx/ 包裹"
+  },
+  "prompt_host_rewrite_value": {
+    "message": "请输入将改写的网址\n支持{0}格式的占位符，例如 http://a.com/?search={0}"
+  },
+  "prompt_host_redirect_name": {
+    "message": "请输入方便辨别的 重定向 名称\n同名将会覆盖"
+  },
+  "prompt_host_redirect_rule": {
+    "message": "请输入要重定向的URL关键字\n支持正则表达式，需要用 /xx/ 包裹"
+  },
+  "prompt_host_redirect_value": {
+    "message": "请输入将改写的网址\n支持{0}格式的占位符，例如 {0}.a.com"
+  },
+  "prompt_regexp_error": {
+    "message": "⚠️没有通过正则表达式检查"
+  },
+  "confirm_delete_cookie": {
+    "message": "确认删除 cookies %name?"
+  },
+  "confirm_delete_request": {
+    "message": "确认删除这个网络请求监测?"
+  },
+  "confirm_delete_rewrite": {
+    "message": "确认删除 URL改写 %name?"
+  },
+  "confirm_delete_redirect": {
+    "message": "确认删除 Host重定向 %name?"
+  },
+  "string_cookies": {
+    "message": "Cookies"
+  },
+  "string_requests": {
+    "message": "简易网络请求检测"
+  },
+  "string_ua": {
+    "message": "User-Agent"
+  },
+  "string_browser_action_enable": {
+    "message": "%domain 设置"
+  },
+  "string_browser_action_disabled": {
+    "message": "不适合当前页面使用"
+  },
+  "string_default_ua": {
+    "message": "默认"
+  },
+  "string_save": {
+    "message": "保存"
+  },
+  "string_open_source": {
+    "message": "开源项目主页"
+  },
+  "string_libraries": {
+    "message": "使用到的项目"
+  },
+  "string_author": {
+    "message": "开发者"
+  },
+  "string_thanks": {
+    "message": "感谢名单"
+  },
+  "string_empty": {
+    "message": "无"
+  },
+  "string_url_list": {
+    "message": "监听到的网址"
+  },
+  "string_host_rewrite": {
+    "message": "改写网址"
+  },
+  "string_host_redirect": {
+    "message": "重定向"
+  }
+}
