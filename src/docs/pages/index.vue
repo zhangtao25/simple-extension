@@ -41,8 +41,7 @@
         </div>
         <div>
             <button @click="clear">Clear</button>
-            <div>Preset Link</div>
-            <input :value="preset"/>
+            Preset Link <input :value="preset" style="width: 400px" onclick="this.select()"/>
         </div>
         <div>
             <div>Result</div>
@@ -159,6 +158,14 @@
         margin: 0 auto;
         border-radius: 5px;
         background: white;
+    }
+
+    h1 {
+        margin: 0;
+    }
+
+    .card > * + * {
+        margin-top: 15px;
     }
 
     input {
