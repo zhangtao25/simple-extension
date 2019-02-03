@@ -12,8 +12,8 @@
             <div><input v-model="rule"/></div>
             <div class="tips">Accept two formats:</div>
             <ul class="tips">
-                <li>Full URL: <span>https://google.com/:action?q=%q</span></li>
-                <li>Just URL path: <span>/:action?q=%q</span></li>
+                <li>Full URL: <span>https://google.com/:action?q=:searchString</span></li>
+                <li>Just URL path: <span>/:action?q=:searchString</span></li>
             </ul>
         </div>
         <div>
@@ -27,8 +27,8 @@
             <template v-if="type === 'rewrite'">
                 <div class="tips">Accept two formats:</div>
                 <ul class="tips">
-                    <li>Full URL: <span>https://b.com/:action?q=%q</span></li>
-                    <li>Just URL path: <span>/:action?q=%q</span></li>
+                    <li>Full URL: <span>https://b.com/:action?q=:searchString</span></li>
+                    <li>Just URL path: <span>/:action?q=:searchString</span></li>
                 </ul>
             </template>
             <template v-else>
