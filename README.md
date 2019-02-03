@@ -10,7 +10,9 @@ Development steps:
 2. Follow [Load Unpacked](https://developer.chrome.com/extensions/getstarted#manifest) step.
 
 
-[URL Match Test Tool](https://gzlock.github.io/simple-extension)
+
+
+[URL Match Test Tool](https://gzlock.github.io/simple-extension) ![Build Status](https://www.travis-ci.org/gzlock/simple-extension.svg?branch=master)
 
 [Chrome Store Page](https://chrome.google.com/webstore/detail/ofhbnimjijmnaigdfhhmhegnlmcbilba)
 
@@ -30,7 +32,7 @@ Development steps:
 1. 执行命令 `npm run build`
 2. 将build文件夹压缩成.zip提交到Chrome web store
 
-[网址匹配测试工具](https://gzlock.github.io/simple-extension)
+[网址匹配测试工具](https://gzlock.github.io/simple-extension) ![Build Status](https://www.travis-ci.org/gzlock/simple-extension.svg?branch=master)
 
 [Chrome商店页面](https://chrome.google.com/webstore/detail/ofhbnimjijmnaigdfhhmhegnlmcbilba)
 
