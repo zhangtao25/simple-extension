@@ -1,6 +1,10 @@
 import {GetLanguageString, PromptRegexpError} from "./i18_string_name";
+import * as pathToRegexp from "path-to-regexp";
+import {FormatError, NotMatchError} from "./errors";
 
-const url = require('url');
+const url = require('url'),
+  Difference = require('lodash/difference'),
+  keyRegexp = /^:([a-z_][a-z\-_]*)$/i;
 
 /**
  * 从url提取域名
@@ -13,6 +17,133 @@ export function GetDomain(_url) {
   return url.parse(_url).host;
   // const match = /https?:\/\/([^\/]+)/.exec(_url);
   // return match ? match[1] : null;
+}
+
+/**
+ *
+ * @param type {String} rewrite || redirect
+ * @param _url {String}
+ * @param _rule {String}
+ * @param _value {String}
+ * @return {String}
+ * @function
+ */
+export function URLMatcher(type, _url, _rule, _value) {
+  const input = url.parse(_url),
+    inputDomain = input.host,
+    inputQuery = SearchParamsToJSON(input.search);
+  const rule = url.parse(_rule),
+    ruleDomain = rule.host,
+    ruleQuery = SearchParamsToJSON(rule.search);
+  const value = url.parse(_value),
+    valueDomain = value.host,
+    valueQuery = SearchParamsToJSON(value.search);
+  if (!inputDomain) {
+    throw Error('URL must be a full URL address, Start with http:// or https://');
+  }
+  if (!ruleDomain && _rule[0] !== '/')
+    throw new FormatError('Rule must start with <strong>/</strong>');
+  if (type === 'rewrite') {
+    if (!valueDomain && _value[0] !== '/')
+      throw new FormatError('Value format error');
+  } else {
+    if (!/^[a-z0-9\-_.]+$/i.test(_value))
+      throw new FormatError('When in Redirect mode, just accept host value');
+  }
+  let to,
+    toSearchParams = new URLSearchParams();
+
+  //如果Rule有Domain，则要于input的Domain相同才可以继续
+  if (ruleDomain && inputDomain !== ruleDomain) {
+    throw new NotMatchError('Match fail: the URL domain not equal the Rule domain.');
+  }
+
+  const data = {};
+  if (input.pathname && rule.pathname) {
+    const ruleKeys = [], rulePath = pathToRegexp(rule.pathname, ruleKeys);
+    const match = rulePath.exec(input.pathname);
+    if (!match) {
+      throw new NotMatchError('Match fail: the URL path can not match the Rule path.');
+    }
+    // console.log('path string', input.pathname, rule.pathname);
+    ruleKeys.forEach((key, index) => {
+      data[key.name + ''] = match[index + 1];
+    });
+    // console.log('path result', data);
+  }
+
+  if (inputQuery && ruleQuery) {
+    const inputQueryKeys = Object.keys(inputQuery), ruleQueryKeys = Object.keys(ruleQuery);
+    const difference = Difference(ruleQueryKeys, inputQueryKeys);
+    if (difference.length > 0) {
+      throw new NotMatchError(`Match fail: the URL missing query keys: ${difference.join(', ')} .`);
+    }
+    ruleQueryKeys.forEach(key => {
+      if (ruleQuery[key]) {
+        const match = ruleQuery[key].match(keyRegexp);
+        //是参数名称
+        if (match) {
+          const queryKey = match[1];
+          //与path存在相同的Key
+          if (data.hasOwnProperty(queryKey)) {
+            throw new Error(`the query key <strong>${queryKey}</strong> repeat with path keys`);
+          }
+          data[queryKey] = inputQuery[key];
+        }
+        //不是参数名称，则对比值
+        else {
+          if (ruleQuery[key] !== inputQuery[key]) {
+            throw new NotMatchError(`Match fail: the query <strong>${key}</strong> not equal: Rule ${ruleQuery[key]}, URL ${inputQuery[key]}`);
+          }
+        }
+      }
+    });
+  }
+  // console.log('final', data);
+
+  Object.keys(valueQuery).forEach(key => {
+    const match = valueQuery[key].match(keyRegexp);
+    if (match) {
+      const dataKey = match[1];
+      if (data.hasOwnProperty(dataKey)) {
+        toSearchParams.append(dataKey, data[dataKey]);
+      } else {
+        throw new Error(`Missing key <strong>${dataKey}</strong>`);
+      }
+    } else {
+      toSearchParams.append(key, valueQuery[key]);
+    }
+  });
+
+  to = pathToRegexp.compile(value.pathname);
+  toSearchParams = toSearchParams.toString();
+  if (toSearchParams.length > 0)
+    toSearchParams = '?' + toSearchParams;
+  to = to(data) + toSearchParams;
+  if (valueDomain) {
+    to = `${value.protocol}//${valueDomain}${to}`;
+  } else {
+    to = `${input.protocol}//${inputDomain}${to}`;
+  }
+
+  return to;
+}
+
+/**
+ * 网址查询转为json
+ * @param query
+ * @return {JSON}
+ * @function
+ */
+export function SearchParamsToJSON(query) {
+  const data = {};
+  if (query) {
+    const params = new URLSearchParams(query);
+    params.forEach((v, k) => {
+      data[k] = v;
+    });
+  }
+  return data;
 }
 
 
