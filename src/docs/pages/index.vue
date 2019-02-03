@@ -7,7 +7,7 @@
             <div>Url</div>
             <input v-model="input" placeholder="https://www.google.com/search?q=simple-extenion"/>
         </div>
-        <div>
+        <div v-if="type==='rewrite'">
             <div>Rule</div>
             <div><input v-model="rule"/></div>
             <div class="tips">Accept two formats:</div>
@@ -41,25 +41,21 @@
         </div>
         <div>
             <button @click="clear">Clear</button>
+            <div>Preset Link</div>
+            <input :value="preset"/>
         </div>
         <div>
             <div>Result</div>
             <div v-html="result"></div>
         </div>
-        <!--<NLink to="/about">
-            About Page
-        </NLink>-->
     </div>
 </template>
 
 <script>
   import {FormatError, NotMatchError} from "../../js/errors";
-  import {URLMatcher} from "../../js/utils";
+  import {URLRewrite, URLRedirect} from "../../js/utils";
 
-  const pathToRegexp = require('path-to-regexp'), url = require('url');
-  const Difference = require('lodash/difference');
-
-  const keyRegexp = /^:([a-z_][a-z\-_]*)$/i;
+  const url = require('url');
 
   export default {
     head: {
@@ -68,9 +64,9 @@
     data() {
       return {
         type: 'rewrite',
-        input: 'https://www.a.com/b/c/d?e=simple-extenion&f=unused',
+        input: 'https://www.google.com/b/c/d?e=simple-extenion&f=unused',
         rule: '/b/:action/(.*)?e=:searchString',
-        value: 'https://b.com/other/path/:0/:searchString?action=:action&reuse=:action&other=query',
+        value: 'https://a.com/other/path/:0/:searchString?action=:action&reuse=:action&other=query',
       };
     },
     computed: {
@@ -79,7 +75,12 @@
       },
       result() {
         try {
-          const to = URLMatcher(this.type, this.input, this.rule, this.value);
+          let to;
+          if (this.type === 'rewrite') {
+            to = URLRewrite(this.input, this.rule, this.value);
+          } else {
+            to = URLRedirect(this.input, this.value);
+          }
           return `<div>Success!</div><div>${this.typeString} To:</div><div>${to}</div>`;
         } catch (e) {
           console.error(e);
@@ -94,6 +95,16 @@
           return `<div class="error">${errorType}</div><pre class="error">${e.message}</pre>`;
         }
       },
+      preset() {
+        const _url = url.parse(window.location.href);
+        const preset = btoa(JSON.stringify({
+          type: this.type === 'rewrite' ? 0 : 1,
+          url: this.input,
+          rule: this.rule,
+          value: this.value
+        }));
+        return `${_url.protocol}//${_url.host}${_url.pathname}#preset=${preset}`;
+      },
     },
     methods: {
       clear() {
@@ -102,6 +113,23 @@
         this.value = '';
       },
     },
+    mounted() {
+      const hash = new URLSearchParams(window.location.hash.substr(1));
+      if (hash.has('preset')) {
+        try {
+          const preset = JSON.parse(atob(hash.get('preset')));
+          const {type, url, rule, value} = preset;
+          if ([undefined, 0, 1].indexOf(type) !== -1 && url && rule && value) {
+            this.type = type ? 'redirect' : 'rewrite';
+            this.input = url;
+            this.rule = rule;
+            this.value = value;
+          }
+        } catch (e) {
+          console.error('parse preset data error');
+        }
+      }
+    }
   }
 </script>
 

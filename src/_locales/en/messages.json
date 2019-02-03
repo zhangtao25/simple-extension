@@ -42,7 +42,7 @@
     "message": "Please enter a name for rewrite\nThe same name will be overwritten"
   },
   "prompt_host_rewrite_rule": {
-    "message": "Use path-to-regexp expressions\nDocument https://github.com/pillarjs/path-to-regexp\nOnline test https://forbeslindesay.github.io/express-route-tester"
+    "message": "Use path-to-regexp expressions\nDocument https://github.com/pillarjs/path-to-regexp\nOnline test https://gzlock.github.io/simple-extension/"
   },
   "prompt_host_rewrite_value": {
     "message": "Please enter a destination URL\nSupport placeholders, like http://a.com/path/{0}"

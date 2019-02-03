@@ -42,7 +42,7 @@
     "message": "请输入方便辨别的 URL改写 名称\n同名将会覆盖"
   },
   "prompt_host_rewrite_rule": {
-    "message": "使用 path-to-regexp 表达式\n说明 https://github.com/pillarjs/path-to-regexp\n在线测试 https://forbeslindesay.github.io/express-route-tester"
+    "message": "使用 path-to-regexp 表达式\n说明 https://github.com/pillarjs/path-to-regexp\n在线测试 https://gzlock.github.io/simple-extension/"
   },
   "prompt_host_rewrite_value": {
     "message": "请输入将改写的网址\n支持{0}格式的占位符，例如 http://a.com/?search={0}"

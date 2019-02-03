@@ -21,14 +21,13 @@ export function GetDomain(_url) {
 
 /**
  *
- * @param type {String} rewrite || redirect
  * @param _url {String}
  * @param _rule {String}
  * @param _value {String}
  * @return {String}
  * @function
  */
-export function URLMatcher(type, _url, _rule, _value) {
+export function URLRewrite(_url, _rule, _value) {
   const input = url.parse(_url),
     inputDomain = input.host,
     inputQuery = SearchParamsToJSON(input.search);
@@ -38,25 +37,22 @@ export function URLMatcher(type, _url, _rule, _value) {
   const value = url.parse(_value),
     valueDomain = value.host,
     valueQuery = SearchParamsToJSON(value.search);
-  if (!inputDomain) {
+
+  if (!inputDomain)
     throw Error('URL must be a full URL address, Start with http:// or https://');
-  }
-  if (!ruleDomain && _rule[0] !== '/')
-    throw new FormatError('Rule must start with <strong>/</strong>');
-  if (type === 'rewrite') {
-    if (!valueDomain && _value[0] !== '/')
-      throw new FormatError('Value format error');
-  } else {
-    if (!/^[a-z0-9\-_.]+$/i.test(_value))
-      throw new FormatError('When in Redirect mode, just accept host value');
-  }
-  let to,
-    toSearchParams = new URLSearchParams();
+
 
   //如果Rule有Domain，则要于input的Domain相同才可以继续
-  if (ruleDomain && inputDomain !== ruleDomain) {
+  if (ruleDomain && inputDomain !== ruleDomain)
     throw new NotMatchError('Match fail: the URL domain not equal the Rule domain.');
-  }
+
+
+  if (!ruleDomain && _rule[0] !== '/')
+    throw new FormatError('Rule format error');
+  if (!valueDomain && _value[0] !== '/')
+    throw new FormatError('Value format error');
+  let to,
+    toSearchParams = new URLSearchParams();
 
   const data = {};
   if (input.pathname && rule.pathname) {
@@ -75,7 +71,7 @@ export function URLMatcher(type, _url, _rule, _value) {
   if (inputQuery && ruleQuery) {
     const inputQueryKeys = Object.keys(inputQuery), ruleQueryKeys = Object.keys(ruleQuery);
     const difference = Difference(ruleQueryKeys, inputQueryKeys);
-    if (difference.length > 0) {
+      if (difference.length > 0) {
       throw new NotMatchError(`Match fail: the URL missing query keys: ${difference.join(', ')} .`);
     }
     ruleQueryKeys.forEach(key => {
@@ -127,6 +123,18 @@ export function URLMatcher(type, _url, _rule, _value) {
   }
 
   return to;
+}
+
+/**
+ *
+ * @param _url
+ * @param _value
+ * @returns {string}
+ * @function
+ */
+export function URLRedirect(_url, _value) {
+  const input = url.parse(_url);
+  return _url.replace(input.host, _value);
 }
 
 /**
