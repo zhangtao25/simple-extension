@@ -53,7 +53,7 @@
 
 <script>
   import {FormatError, NotMatchError} from "../../js/errors";
-  import {URLRewrite, URLRedirect} from "../../js/utils";
+  import {URLRedirect, URLRewrite} from "../../js/utils";
 
   const url = require('url');
 
@@ -74,6 +74,8 @@
         return this.type[0].toUpperCase() + this.type.substr(1);
       },
       result() {
+        if (!process.client)
+          return '';
         try {
           let to;
           if (this.type === 'rewrite') {
@@ -96,6 +98,8 @@
         }
       },
       preset() {
+        if (!process.client)
+          return '';
         const _url = url.parse(window.location.href);
         const preset = btoa(JSON.stringify({
           type: this.type === 'rewrite' ? 0 : 1,
@@ -114,19 +118,21 @@
       },
     },
     mounted() {
-      const hash = new URLSearchParams(window.location.hash.substr(1));
-      if (hash.has('preset')) {
-        try {
-          const preset = JSON.parse(atob(hash.get('preset')));
-          const {type, url, rule, value} = preset;
-          if ([undefined, 0, 1].indexOf(type) !== -1 && url && rule && value) {
-            this.type = type ? 'redirect' : 'rewrite';
-            this.input = url;
-            this.rule = rule;
-            this.value = value;
+      if (process.client) {
+        const hash = new URLSearchParams(window.location.hash.substr(1));
+        if (hash.has('preset')) {
+          try {
+            const preset = JSON.parse(atob(hash.get('preset')));
+            const {type, url, rule, value} = preset;
+            if ([undefined, 0, 1].indexOf(type) !== -1 && url && rule && value) {
+              this.type = type ? 'redirect' : 'rewrite';
+              this.input = url;
+              this.rule = rule;
+              this.value = value;
+            }
+          } catch (e) {
+            console.error('parse preset data error');
           }
-        } catch (e) {
-          console.error('parse preset data error');
         }
       }
     }
