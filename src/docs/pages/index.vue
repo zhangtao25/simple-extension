@@ -18,10 +18,11 @@
         </div>
         <div>
             <div>
-                <select v-model="type">
+                <!--<select v-model="type">
                     <option value="rewrite">Rewrite</option>
                     <option value="redirect">Redirect</option>
-                </select> To Value
+                </select>-->
+                Rewrite To Value
             </div>
             <span><input v-model="value"/></span>
             <template v-if="type === 'rewrite'">
@@ -82,17 +83,15 @@
           } else {
             to = URLRedirect(this.input, this.value);
           }
-          return `<div>Success!</div><div>${this.typeString} To:</div><div>${to}</div>`;
+          to = decodeURI(to);
+          return `<div>Success!</div><div>${this.typeString} To:</div><div><a href="${to}" target="_blank">${to}</a></div>`;
         } catch (e) {
           console.error(e);
           let errorType = 'Error';
-          switch (e.constructor) {
-            case NotMatchError:
-              errorType = 'Not Match';
-              break;
-            case FormatError:
-              errorType = 'Format Error';
-          }
+          if (e instanceof NotMatchError)
+            errorType = 'Not Match';
+          else if (e instanceof FormatError)
+            errorType = 'Format Error';
           return `<div class="error">${errorType}</div><pre class="error">${e.message}</pre>`;
         }
       },
@@ -100,12 +99,12 @@
         if (!process.client)
           return '';
         const _url = url.parse(window.location.href);
-        const preset = btoa(JSON.stringify({
+        const preset = new Buffer(JSON.stringify({
           type: this.type === 'rewrite' ? 0 : 1,
           url: this.input,
           rule: this.rule,
           value: this.value
-        }));
+        }), 'utf8').toString('base64');
         return `${_url.protocol}//${_url.host}${_url.pathname}#preset=${preset}`;
       },
     },
@@ -121,7 +120,7 @@
         const hash = new URLSearchParams(window.location.hash.substr(1));
         if (hash.has('preset')) {
           try {
-            const preset = JSON.parse(atob(hash.get('preset')));
+            const preset = JSON.parse(new Buffer(hash.get('preset'), 'base64').toString('utf8'));
             const {type, url, rule, value} = preset;
             if ([undefined, 0, 1].indexOf(type) !== -1 && url && rule && value) {
               this.type = type ? 'redirect' : 'rewrite';

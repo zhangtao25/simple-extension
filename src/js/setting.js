@@ -213,6 +213,27 @@ export class Setting {
     return this.save();
   }
 
+
+  /**
+   *
+   * @param domain
+   * @returns {Array}
+   */
+  getRewrites(domain) {
+    if (this.hasDomain(domain))
+      return this.data[domain].rewrites;
+  }
+
+  /**
+   *
+   * @param domain
+   * @returns {Array}
+   */
+  getRedirects(domain) {
+    if (this.hasDomain(domain))
+      return this.data[domain].redirects;
+  }
+
   /**
    * 添加重定向
    * @param domain

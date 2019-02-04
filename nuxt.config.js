@@ -1,3 +1,6 @@
+/**
+ * This file for the nuxt to generate the Github pages
+ */
 const config = {
   srcDir: 'src/docs',
   generate: {

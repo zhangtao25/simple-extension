@@ -54,37 +54,10 @@
                          :list="data.rewrites"
                          @changed="changed"/>
             <!--Host 重定向-->
-            <host-editor type="redirect"
+            <!--<host-editor type="redirect"
                          :domain="domain"
                          :list="data.redirects"
-                         @changed="changed"/>
-            <!--<div class="block">
-                <div class="title flex-between-spaced">
-                    {{ui.redirect}}
-                    <div class="btn add" @click="addRedirect"></div>
-                </div>
-                <div class="flex-between-around">
-                    <span>名称</span>
-                    <span>将</span>
-                    <span>重定向到</span>
-                </div>
-                <transition-group name="list" tag="div" class="content">
-                    <div v-for="(value, index) in data.redirects"
-                         :key="'redirect'+index"
-                         class="flex-between-spaced">
-                        <div class="flex-between-spaced">
-                            <div class="name"
-                                 v-text="value.name"
-                                 @click="modifyRewriteOrRedirect(index, 'redirects', 'name')"></div>
-                            <div v-text="value.rule"
-                                 @click="modifyRewriteOrRedirect(index, 'redirects', 'rule')"></div>
-                            <div v-text="value.value"
-                                 @click="modifyRewriteOrRedirect(index, 'redirects', 'value')"></div>
-                        </div>
-                        <div class="btn delete" @click="deleteRedirect(index)"></div>
-                    </div>
-                </transition-group>
-            </div>-->
+                         @changed="changed"/>-->
         </div>
     </div>
 </template>
@@ -219,5 +192,3 @@
     }
   }
 </script>
-
-<style src="../../css/popup.css" lang="css"></style>

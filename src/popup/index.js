@@ -1,6 +1,8 @@
 import Vue from 'vue'
+import url from 'url'
 import PopUp from './components/popup'
 import {GetDomain} from "../js/utils";
+import '../css/popup.css';
 
 chrome.tabs.query({currentWindow: true, active: true}, _tabs => {
   const tab = _tabs[0], domain = GetDomain(tab.url);
@@ -17,13 +19,13 @@ chrome.tabs.query({currentWindow: true, active: true}, _tabs => {
 
   const app = new Vue({
     el: '#app',
+    components: {PopUp},
     data: {
       domain,
       tab: {id: tab.id, url: tab.url},
       data: setting.data[domain],
       urls: tabs.data[tab.id].urls,
     },
-    components: {PopUp}
   });
 
   chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {

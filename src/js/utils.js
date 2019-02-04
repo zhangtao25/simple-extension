@@ -1,9 +1,9 @@
 import {GetLanguageString, PromptRegexpError} from "./i18_string_name";
 import * as pathToRegexp from "path-to-regexp";
 import {FormatError, NotMatchError} from "./errors";
+import url from 'url';
 
-const url = require('url'),
-  Difference = require('lodash/difference'),
+const Difference = require('lodash/difference'),
   keyRegexp = /^:([a-z_][a-z\-_]*)$/i;
 
 /**
@@ -14,9 +14,11 @@ const url = require('url'),
  */
 export function GetDomain(_url) {
   if (!_url) return null;
-  return url.parse(_url).host;
-  // const match = /https?:\/\/([^\/]+)/.exec(_url);
-  // return match ? match[1] : null;
+  const parse = url.parse(_url);
+  console.log('domain', parse);
+  if (['http:', 'https:'].indexOf(parse.protocol) === -1)
+    return null;
+  return parse.host;
 }
 
 /**
@@ -44,7 +46,7 @@ export function URLRewrite(_url, _rule, _value) {
 
   //如果Rule有Domain，则要于input的Domain相同才可以继续
   if (ruleDomain && inputDomain !== ruleDomain)
-    throw new NotMatchError('Match fail: the URL domain not equal the Rule domain.');
+    throw new NotMatchError('The URL domain not equal the Rule domain.');
 
 
   if (!ruleDomain && _rule[0] !== '/')
@@ -59,7 +61,7 @@ export function URLRewrite(_url, _rule, _value) {
     const ruleKeys = [], rulePath = pathToRegexp(rule.pathname, ruleKeys);
     const match = rulePath.exec(input.pathname);
     if (!match) {
-      throw new NotMatchError('Match fail: the URL path can not match the Rule path.');
+      throw new NotMatchError('The URL path can not match the Rule path.');
     }
     // console.log('path string', input.pathname, rule.pathname);
     ruleKeys.forEach((key, index) => {
@@ -71,8 +73,8 @@ export function URLRewrite(_url, _rule, _value) {
   if (inputQuery && ruleQuery) {
     const inputQueryKeys = Object.keys(inputQuery), ruleQueryKeys = Object.keys(ruleQuery);
     const difference = Difference(ruleQueryKeys, inputQueryKeys);
-      if (difference.length > 0) {
-      throw new NotMatchError(`Match fail: the URL missing query keys: ${difference.join(', ')} .`);
+    if (difference.length > 0) {
+      throw new NotMatchError(`The URL missing query keys: ${difference.join(', ')} .`);
     }
     ruleQueryKeys.forEach(key => {
       if (ruleQuery[key]) {
@@ -89,7 +91,7 @@ export function URLRewrite(_url, _rule, _value) {
         //不是参数名称，则对比值
         else {
           if (ruleQuery[key] !== inputQuery[key]) {
-            throw new NotMatchError(`Match fail: the query <strong>${key}</strong> not equal: Rule ${ruleQuery[key]}, URL ${inputQuery[key]}`);
+            throw new NotMatchError(`The query <strong>${key}</strong> not equal: Rule ${ruleQuery[key]}, URL ${inputQuery[key]}`);
           }
         }
       }
@@ -102,7 +104,7 @@ export function URLRewrite(_url, _rule, _value) {
     if (match) {
       const dataKey = match[1];
       if (data.hasOwnProperty(dataKey)) {
-        toSearchParams.append(dataKey, data[dataKey]);
+        toSearchParams.append(key, data[dataKey]);
       } else {
         throw new Error(`Missing key <strong>${dataKey}</strong>`);
       }
@@ -146,7 +148,7 @@ export function URLRedirect(_url, _value) {
 export function SearchParamsToJSON(query) {
   const data = {};
   if (query) {
-    const params = new URLSearchParams(query);
+    const params = new URLSearchParams(encodeURI(query));
     params.forEach((v, k) => {
       data[k] = v;
     });

@@ -1,4 +1,8 @@
 export const
+  PluginName = 'pluginName',
+  PluginDesc = 'pluginDesc',
+
+
   MenuRootText = 'menu_root_text',
 
   MenuCookieRootText = 'menu_cookie_root_text',
@@ -37,7 +41,13 @@ export const
   StringRewriteTo = 'string_host_rewrite_to',
   StringRedirectTo = 'string_host_redirect_to',
   StringBrowserActionEnable = 'string_browser_action_enable',
-  StringBrowserActionDisabled = 'string_browser_action_disabled';
+  StringBrowserActionDisabled = 'string_browser_action_disabled',
+  StringChromeStorePage = 'string_chrome_store_page',
+  StringLink = 'string_link',
+  StringAuthor = 'string_author',
+  StringLibraries = 'string_libraries',
+  StringOpenSource = 'string_open_source',
+  StringUrlTestTool = 'string_url_test_tool';
 
 
 /**

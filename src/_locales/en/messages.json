@@ -115,5 +115,14 @@
   },
   "string_host_redirect_to": {
     "message": "Redirect to"
+  },
+  "string_chrome_store_page": {
+    "message": "Chrome Store Extension Home Page"
+  },
+  "string_link": {
+    "message": "Link"
+  },
+  "string_url_test_tool": {
+    "message": "URL Match Expression Test Tool"
   }
 }

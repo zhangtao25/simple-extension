@@ -1,4 +1,4 @@
-import {GetDomain} from "./utils";
+import {GetDomain, URLRewrite} from "./utils";
 import {GetLanguageString, StringBrowserActionDisabled, StringBrowserActionEnable} from "./i18_string_name";
 
 export class Tabs {
@@ -72,16 +72,17 @@ export class Tabs {
     chrome.webRequest.onBeforeSendHeaders.addListener(details => {
         const {tabId, url} = details;
         if (this.has(tabId)) {
-          const ua = setting.getUA(this.data[tabId].domain);
-          for (let i = 0; i < details.requestHeaders.length; i++) {
-            const header = details.requestHeaders[i];
-            const name = header.name.toLowerCase()
-            if (name === 'user-agent' && ua && ua.value) {
-              // console.log('替换UA', header.value, ua.value);
-              header.value = ua.value;
-              break;
-            } else if (name === 'accept-language') {
-              // header.value = 'fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5';
+          const domain = this.data[tabId].domain;
+          if (setting.hasDomain(domain)) {
+            const ua = setting.getUA(domain);
+            for (let i = 0; i < details.requestHeaders.length; i++) {
+              const header = details.requestHeaders[i];
+              const name = header.name.toLowerCase();
+              if (name === 'user-agent' && ua && ua.value) {
+                // console.log('替换UA', header.value, ua.value);
+                header.value = ua.value;
+                break;
+              }
             }
           }
         }
@@ -89,6 +90,39 @@ export class Tabs {
       },
       {urls: ['http://*/*', 'https://*/*']},
       ['blocking', 'requestHeaders']
+    );
+
+    /**
+     * 改写URL
+     */
+    chrome.webRequest.onBeforeRequest.addListener(details => {
+        const {tabId, url} = details;
+        let to;
+        if (this.has(tabId)) {
+          const domain = this.data[tabId].domain;
+          if (setting.hasDomain(domain)) {
+            const rewrites = setting.getRewrites(domain);
+            for (let i = 0; i < rewrites.length; i++) {
+              const rewrite = rewrites[i];
+              if (!rewrite.enable)//没有启用
+                continue;
+              try {
+                to = URLRewrite(url, rewrite.rule, rewrite.value);
+                // console.log('URL改写', url, to);
+                break;
+              } catch (e) {
+
+              }
+            }
+          }
+        }
+        const data = {};
+        if (to)
+          data['redirectUrl'] = to;
+        return data;
+      },
+      {urls: ['http://*/*', 'https://*/*']},
+      ['blocking']
     );
   }
 

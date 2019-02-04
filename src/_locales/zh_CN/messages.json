@@ -121,5 +121,14 @@
   },
   "string_host_redirect_to": {
     "message": "重定向到"
+  },
+  "string_chrome_store_page": {
+    "message": "Chrome Store 的扩展主页"
+  },
+  "string_link": {
+    "message": "链接"
+  },
+  "string_url_test_tool": {
+      "message": "网址匹配表达式测试工具"
   }
 }
