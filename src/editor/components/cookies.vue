@@ -67,10 +67,9 @@
         if (!this.cookies.cookies.hasOwnProperty(name))
           return;
         this.cookies.selected = this.cookies.selected === name ? null : name;
-        if (this.cookies.selected === name)
-          await SetCookies(this.cookies.cookies[name]);
-        else
-          await ClearCookies('https://' + this.domain);
+        await ClearCookies('https://' + this.domain);
+        if (this.cookies.selected !== null)
+          SetCookies(this.cookies.cookies[name]);
         this.$emit('changed');
       },
       async deleteCookie(name) {
@@ -86,13 +85,11 @@
           this.$forceUpdate();
         }
       },
-      changed() {
+      async changed() {
         console.log('changed', this.cookies.selected);
-        if (this.cookies.selected === null) {
-          ClearCookies('http://' + this.domain);
-        } else {
+        await ClearCookies('http://' + this.domain);
+        if (this.cookies.selected !== null)
           SetCookies(this.cookies.cookies[this.cookies.selected]);
-        }
         this.$emit('changed');
       }
     },
