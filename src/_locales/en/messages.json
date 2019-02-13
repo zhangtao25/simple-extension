@@ -56,17 +56,8 @@
   "prompt_regexp_error": {
     "message": "⚠️Did not pass the regular expression check"
   },
-  "confirm_delete_cookie": {
-    "message": "Confirm to delete the cookies called %name?"
-  },
-  "confirm_delete_request": {
-    "message": "Confirm to delete this request URL keyword?\n%value"
-  },
-  "confirm_delete_rewrite": {
-    "message": "Confirm to delete the URL rewrite called %name?"
-  },
-  "confirm_delete_redirect": {
-    "message": "Confirm to delete the URL redirect called %name?"
+  "confirm_delete": {
+    "message": "Confirm to delete %name?"
   },
   "string_cookies": {
     "message": "Cookies"
@@ -124,5 +115,14 @@
   },
   "string_url_test_tool": {
     "message": "URL Match Expression Test Tool"
+  },
+  "string_global_editor": {
+    "message": "Global Editor"
+  },
+  "string_cookies_empty": {
+    "message": "%domain No Cookies"
+  },
+  "string_default": {
+    "message": "Default"
   }
 }

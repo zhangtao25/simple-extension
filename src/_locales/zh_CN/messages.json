@@ -59,17 +59,8 @@
   "prompt_regexp_error": {
     "message": "⚠️没有通过正则表达式检查"
   },
-  "confirm_delete_cookie": {
-    "message": "确认删除 cookies %name?"
-  },
-  "confirm_delete_request": {
-    "message": "确认删除这个网络请求监测?\n%value"
-  },
-  "confirm_delete_rewrite": {
-    "message": "确认删除 URL改写 %name?"
-  },
-  "confirm_delete_redirect": {
-    "message": "确认删除 Host重定向 %name?"
+  "confirm_delete": {
+    "message": "确认删除 %name ?"
   },
   "string_cookies": {
     "message": "Cookies"
@@ -111,13 +102,13 @@
     "message": "监听到的网址"
   },
   "string_host_rewrite": {
-    "message": "改写网址"
+    "message": "网址改写"
   },
   "string_host_redirect": {
     "message": "重定向"
   },
   "string_host_rewrite_to": {
-    "message": "改写到"
+    "message": "改写为"
   },
   "string_host_redirect_to": {
     "message": "重定向到"
@@ -129,6 +120,15 @@
     "message": "链接"
   },
   "string_url_test_tool": {
-      "message": "网址匹配表达式测试工具"
+    "message": "网址匹配表达式测试工具"
+  },
+  "string_global_editor": {
+    "message": "全局编辑器"
+  },
+  "string_cookies_empty": {
+    "message": "%domain 没有 Cookies"
+  },
+  "string_default": {
+    "message": "默认"
   }
 }

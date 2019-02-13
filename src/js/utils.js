@@ -15,7 +15,7 @@ const Difference = require('lodash/difference'),
 export function GetDomain(_url) {
   if (!_url) return null;
   const parse = url.parse(_url);
-  console.log('domain', parse);
+  // console.log('domain', parse);
   if (['http:', 'https:'].indexOf(parse.protocol) === -1)
     return null;
   return parse.host;

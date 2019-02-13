@@ -26,19 +26,6 @@ body {
     margin: 0 0 0 10px;
     font-size: 14px;
 }
-
-.flex-between-spaced {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.flex-between-around {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-
 .cookies > div {
     padding: 5px;
 }
@@ -79,26 +66,8 @@ body {
 }
 
 .btn {
-    display: inline-block;
     width: 14px;
     height: 14px;
-    background-size: cover;
-}
-
-.delete {
-    background-image: url("/img/delete.png");
-}
-
-.delete:hover {
-    background-image: url("/img/deletefill.png") !important;
-}
-
-.add {
-    background-image: url("/img/roundadd.png");
-}
-
-.add:hover {
-    background-image: url("/img/roundaddfill.png");
 }
 
 .url-list {
@@ -133,70 +102,4 @@ body {
 {
     opacity: 0;
     transform: translateX(30px);
-}
-
-.table {
-}
-
-/*row*/
-.table .row {
-    display: flex;
-    width: 100%;
-    border: 1px solid gray;
-}
-
-.table .row + .row {
-    border-top: none !important;
-}
-
-/*cell*/
-.table .row > .cell {
-    padding: 4px;
-    min-width: 0;
-    flex-grow: 1;
-}
-
-.table .cell.name {
-    width: 20%;
-    min-width: 20%;
-    max-width: 20%;
-    flex-grow: 0;
-    background: #eee;
-    border-right: 1px solid gray;
-    display: flex;
-    align-items: center;
-}
-
-.table .cell.operator {
-    border-left: 1px solid grey;
-    width: 29px;
-    padding: 0;
-    text-align: center;
-    flex-grow: 0 !important;
-}
-
-.cell .text-ellipsis {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 200px;
-}
-
-.text-wrap {
-    white-space: pre-wrap;
-    word-break: break-all;
-}
-
-.toggle {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    transform: rotate(180deg);
-    background: url("/img/toggle-off.png") center center;
-    background-size: 100% 100%;
-}
-
-.toggle.enable {
-    transform: rotate(0deg);
-    background-image: url("/img/toggle-on.png");
 }

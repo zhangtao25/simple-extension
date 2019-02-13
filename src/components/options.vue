@@ -46,7 +46,7 @@
     StringLink,
     StringOpenSource,
     StringUrlTestTool
-  } from "../../js/i18_string_name";
+  } from "../js/i18_string_name";
 
   export default {
     name: 'options',

@@ -16,10 +16,7 @@ export const
   AlertNoCookies = 'alert_no_cookies',
   AlertSaveCookiesFailEmptyName = 'alert_save_cookies_fail_empty_name',
 
-  ConfirmDeleteCookie = 'confirm_delete_cookie',
-  ConfirmDeleteRequest = 'confirm_delete_request',
-  ConfirmDeleteRewrite = 'confirm_delete_rewrite',
-  ConfirmDeleteRedirect = 'confirm_delete_redirect',
+  ConfirmDelete = 'confirm_delete',
 
   PromptSaveCookiesName = 'prompt_save_cookies_name',
   PromptHowToGetTheRequestUrl = 'prompt_how_to_get_the_request_url',
@@ -47,6 +44,9 @@ export const
   StringAuthor = 'string_author',
   StringLibraries = 'string_libraries',
   StringOpenSource = 'string_open_source',
+  StringGlobalEditor = 'string_global_editor',
+  StringCookiesEmpty = 'string_cookies_empty',
+  StringDefault = 'string_default',
   StringUrlTestTool = 'string_url_test_tool';
 
 

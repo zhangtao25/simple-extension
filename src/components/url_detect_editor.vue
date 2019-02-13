@@ -17,12 +17,12 @@
 
 <script>
   import {
-    ConfirmDeleteRequest,
+    ConfirmDelete,
     GetLanguageString,
     PromptHowToGetTheRequestUrl,
     StringRequests
-  } from "../../js/i18_string_name";
-  import {Prompt} from "../../js/utils";
+  } from "../js/i18_string_name";
+  import {Prompt} from "../js/utils";
 
   export default {
     props: {list: {required: true, type: Array}},
@@ -51,7 +51,7 @@
       },
       deleteItem(index) {
         if (this.list.length > index
-          && confirm(GetLanguageString(ConfirmDeleteRequest, [['%value', this.list[index]]]))) {
+          && confirm(GetLanguageString(ConfirmDelete, [['%value', this.list[index]]]))) {
           this.list.splice(index, 1);
           this.$emit('changed');
         }

@@ -27,8 +27,8 @@
 </template>
 
 <script>
-  import {GetDomain, GetRegExp, Prompt} from "../../js/utils";
-  import {ConfirmDeleteRewrite, GetLanguageString} from "../../js/i18_string_name";
+  import {GetDomain, GetRegExp, Prompt} from "../js/utils";
+  import {GetLanguageString} from "../js/i18_string_name";
 
   export default {
     props: {
@@ -110,4 +110,34 @@
 
 <style scoped>
 
+    .table .cell.name {
+        width: 20%;
+        min-width: 20%;
+        max-width: 20%;
+        flex-grow: 0;
+        background: #eee;
+        border-right: 1px solid gray;
+        display: flex;
+        align-items: center;
+    }
+
+    .table .cell.operator {
+        border-left: 1px solid grey;
+        width: 29px;
+        padding: 0;
+        text-align: center;
+        flex-grow: 0 !important;
+    }
+
+    .cell .text-ellipsis {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
+    }
+
+    .text-wrap {
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
 </style>

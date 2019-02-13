@@ -1,8 +1,13 @@
 import Vue from 'vue'
 import url from 'url'
-import PopUp from './components/popup'
+import PopUp from '../components/popup'
 import {GetDomain} from "../js/utils";
-import '../css/popup.css';
+// import '../css/global.css';
+// import '../css/popup.css';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+Vue.use(ElementUI);
 
 chrome.tabs.query({currentWindow: true, active: true}, _tabs => {
   const tab = _tabs[0], domain = GetDomain(tab.url);

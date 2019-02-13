@@ -1,0 +1,174 @@
+<template>
+    <el-container>
+        <el-aside class="left">
+            <template v-for="d in domains">
+                <div :class="{selected:d===selectedDomain}"
+                     @click="selectDomain(d)" :data-content="d">{{d}}
+                </div>
+            </template>
+        </el-aside>
+        <el-main class="right">
+            <el-form>
+                <el-form-item :label="ui.ua">
+                    <ua :ua="data.ua"/>
+                </el-form-item>
+                <el-form-item>
+                    <div>Cookies
+                        <el-button size="mini" @click="addCookie">+</el-button>
+                    </div>
+                    <cookies :domain="selectedDomain" :cookies="data.cookies" :editable="true" ref="cookies"/>
+                </el-form-item>
+                <el-form-item>
+                    <div>{{ui.requests}}
+                        <el-button size="mini" @click="addRequest">+</el-button>
+                    </div>
+                    <requests :list="data.requests" :editable="true" @changed="changed" ref="requests"/>
+                </el-form-item>
+                <el-form-item>
+                    <div>{{ui.rewrite}}
+                        <el-button size="mini" @click="addRewrite">+</el-button>
+                        <a class="el-button el-button--text"
+                           href="https://gzlock.github.io/simple-extension" target="_blank">{{ui.tool}}</a>
+                    </div>
+                    <rewrites :domain="selectedDomain" :list="data.rewrites" :editable="true" @changed="changed"
+                              ref="rewrites"/>
+                </el-form-item>
+            </el-form>
+        </el-main>
+    </el-container>
+</template>
+
+<script>
+  import {
+    ConfirmDelete,
+    GetLanguageString,
+    StringGlobalEditor,
+    StringHostRewrite,
+    StringRequests,
+    StringRewriteTo,
+    StringUA, StringUrlTestTool
+  } from "../../js/i18_string_name";
+  import HostEditor from "../../components/host_editor";
+  import Cookies from "./cookies";
+  import ElSelectDropdown from "element-ui/packages/select/src/select-dropdown";
+  import {UA} from "../../js/ua_list";
+  import Requests from "./requests";
+  import Rewrites from "./rewrites";
+  import Ua from "./ua";
+
+  const {setting} = chrome.extension.getBackgroundPage();
+
+  export default {
+    components: {Ua, Rewrites, Requests, ElSelectDropdown, Cookies, HostEditor},
+    data() {
+      return {
+        ui: {
+          ua: GetLanguageString(StringUA),
+          title: GetLanguageString(StringGlobalEditor),
+          requests: GetLanguageString(StringRequests),
+          rewrite: GetLanguageString(StringHostRewrite),
+          rewriteTo: GetLanguageString(StringRewriteTo),
+          deleteWrite: GetLanguageString(ConfirmDelete),
+          tool: GetLanguageString(StringUrlTestTool),
+        },
+        ua_list: UA,
+        domains: [],
+        selectedDomain: '',
+        data: null,
+      };
+    },
+    methods: {
+      selectDomain(domain) {
+        this.selectedDomain = domain;
+        window.history.replaceState(null, null, '#' + this.selectedDomain);
+        if (!setting.hasDomain(domain))
+          setting.initDomain(domain);
+        this.data = setting.data[domain];
+        console.log(domain, this.data);
+      },
+      changed() {
+        setting.save();
+      },
+      addCookie() {
+        this.$refs.cookies.addCookie();
+      },
+      addRewrite() {
+        this.$refs.rewrites.addRewrite();
+      },
+      addRequest() {
+        this.$refs.requests.addRequest();
+      },
+    },
+    created() {
+      document.title = this.ui.title;
+      this.domains = Object.keys(setting.data);
+      if (window.location.hash) {
+        const selected = window.location.hash.substr(1);
+        this.selectDomain(selected);
+      }
+    },
+  }
+</script>
+
+<style lang="scss" scoped>
+    .el-container {
+        height: 100vh;
+
+        .left {
+            background-color: #D3DCE6;
+            color: #333;
+            width: 150px !important;
+            font-size: 16px;
+            overflow: unset !important;
+
+            > div {
+                $padding: 5px;
+                padding: $padding;
+                cursor: pointer;
+                position: relative;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-align: left;
+                white-space: nowrap;
+
+                &:hover {
+                    background: lightblue;
+                    overflow: unset;
+                    text-overflow: unset;
+                    color: transparent;
+
+                    &:after {
+                        content: attr(data-content);
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        padding: $padding;
+                        color: black;
+                        background: lightblue;
+                        z-index: 999;
+                        border-radius: 0 5px 5px 0;
+                    }
+                }
+
+                &.selected {
+                    background: aliceblue;
+
+                    &:hover {
+                        &:after {
+                            background: aliceblue;
+                        }
+                    }
+                }
+
+                + div {
+                    margin-top: 5px;
+                }
+            }
+        }
+
+        .right {
+            background-color: aliceblue;
+            color: #333;
+        }
+    }
+</style>

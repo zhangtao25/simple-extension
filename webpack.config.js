@@ -6,7 +6,8 @@ const webpack = require('webpack'),
   CopyWebpackPlugin = require('copy-webpack-plugin'),
   HtmlWebpackPlugin = require('html-webpack-plugin'),
   VueLoaderPlugin = require('vue-loader/lib/plugin'),
-  WriteFilePlugin = require('write-file-webpack-plugin');
+  WriteFilePlugin = require('write-file-webpack-plugin'),
+  MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 // load the secrets
 const alias = {
@@ -36,13 +37,16 @@ const copyPluginPatterns = [{from: 'src/manifest.json'}];
   });
 }
 
+const entry = {
+  popup: path.join(__dirname, 'src', 'popup', 'index.js'),
+  options: path.join(__dirname, 'src', 'options', 'index.js'),
+  background: path.join(__dirname, 'src', 'background', 'index.js'),
+  editor: path.join(__dirname, 'src', 'editor', 'index.js'),
+};
+
 const options = {
   mode: process.env.NODE_ENV || 'development',
-  entry: {
-    popup: path.join(__dirname, 'src', 'popup', 'index.js'),
-    options: path.join(__dirname, 'src', 'options', 'index.js'),
-    background: path.join(__dirname, 'src', 'background', 'index.js')
-  },
+  entry,
   output: {
     path: path.join(__dirname, 'build'),
     filename: '[name].bundle.js',
@@ -52,8 +56,15 @@ const options = {
     rules: [
       {
         test: /\.css$/,
-        loader: 'style-loader!css-loader',
-        exclude: /node_modules/
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          process.env.NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+        ],
       },
       {
         test: /\.(jpg|jpeg|png|gif|svg)$/,
@@ -64,12 +75,11 @@ const options = {
         exclude: /node_modules/
       },
       {
-        test: /\.(eot|otf|ttf|woff|woff2)$/,
+        test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
         loader: 'file-loader',
         options: {
           name: '[path][name].[ext]'
-        },
-        exclude: /node_modules/
+        }
       },
       {
         test: /\.html$/,
@@ -78,7 +88,7 @@ const options = {
       },
       {
         test: /\.vue$/,
-        loader: 'vue-loader'
+        use: ['vue-loader']
       }
     ]
   },
@@ -96,24 +106,24 @@ const options = {
     new CopyWebpackPlugin(copyPluginPatterns),
     new CopyWebpackPlugin([{from: 'src/img', to: 'img'}]),
     new VueLoaderPlugin(),
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'popup', 'index.html'),
-      filename: 'popup.html',
-      chunks: ['popup']
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "[name].css",
+      chunkFilename: "[id].css"
     }),
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'options', 'index.html'),
-      filename: 'options.html',
-      chunks: ['options']
-    }),
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'background', 'index.html'),
-      filename: 'background.html',
-      chunks: ['background']
-    }),
-    new WriteFilePlugin()
   ]
 };
+
+//自动生成
+Object.keys(entry).forEach(key => {
+  options.plugins.push(new HtmlWebpackPlugin({
+    template: path.join(__dirname, 'src', key, 'index.html'),
+    filename: key + '.html',
+    chunks: [key]
+  }))
+});
+options.plugins.push(new WriteFilePlugin());
 
 if (env.NODE_ENV === 'development') {
   options.devtool = 'cheap-module-eval-source-map';

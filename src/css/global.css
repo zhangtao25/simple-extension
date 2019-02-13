@@ -1,0 +1,78 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+.flex-between-spaced {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex-between-around {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+.btn {
+    display: inline-block;
+    background-size: cover;
+}
+
+.btn.delete {
+    background-image: url("/img/delete.png");
+}
+
+.btn.delete:hover {
+    background-image: url("/img/deletefill.png") !important;
+}
+
+.btn.add {
+    background-image: url("/img/roundadd.png");
+}
+
+.btn.add:hover {
+    background-image: url("/img/roundaddfill.png");
+}
+
+.toggle {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    transform: rotate(180deg);
+    background: url("/img/toggle-off.png") center center;
+    background-size: 100% 100%;
+}
+
+.toggle.enable {
+    transform: rotate(0deg);
+    background-image: url("/img/toggle-on.png");
+}
+
+
+.table {
+}
+
+/*row*/
+.table .row {
+    display: flex;
+    width: 100%;
+    border: 1px solid gray;
+}
+
+.table .row + .row {
+    border-top: none !important;
+}
+
+/*cell*/
+.table .row > .cell {
+    padding: 4px;
+    min-width: 0;
+    flex-grow: 1;
+}

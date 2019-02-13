@@ -4,6 +4,7 @@
  * @type {string}
  */
 import {GetStorage} from "./utils";
+import Vue from 'vue';
 
 export const DefaultDomainData = JSON.stringify({
   requests: [],
@@ -31,11 +32,12 @@ export class Setting {
       this.data[key] = Object.assign(JSON.parse(DefaultDomainData), this.data[key]);
     });
     chrome.storage.onChanged.addListener((changes, areaName) => {
-      console.log('%c storage Change', 'color: green', changes, areaName);
+      // console.log('%c storage Change', 'color: green', changes, areaName);
       if (Object.keys(changes).length > 0) {
         for (let key in changes) {
           const change = changes[key];
           if (change['newValue']) {
+            // Vue.set(this.data, key, change['newValue']);
             Object.assign(this.data[key], change['newValue']);
             // this.data[key] = change['newValue'];
           }
@@ -174,20 +176,32 @@ export class Setting {
   setRewrite(domain, name, rule, value) {
     this.initDomain(domain);
     const data = {enable: 1, name, rule, value};
-    let index = -1;
-    for (let i = 0; i < this.data[domain].rewrites; i++) {
-      const re = this.data[domain].rewrites[i];
-      if (re.name === name) {
-        index = i;
-        break;
-      }
-    }
-    if (index !== -1)
-      this.data[domain].rewrites[index] = data;
-    else
+    const index = this.findRewrite(domain, name);
+    if (index === -1)
       this.data[domain].rewrites.push(data);
+    else
+      this.data[domain].rewrites[index] = data;
     return this.save();
   }
+
+  /**
+   *
+   * @param domain {string}
+   * @param name {string}
+   * @returns {number}
+   */
+  findRewrite(domain, name) {
+    if (this.hasDomain(domain)) {
+      for (let i = 0; i < this.data[domain].rewrites.length; i++) {
+        const re = this.data[domain].rewrites[i];
+        if (re.name === name) {
+          return i;
+        }
+      }
+    }
+    return -1;
+  }
+
 
   /**
    * 删除URL改写
