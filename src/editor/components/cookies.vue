@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!--editor-->
         <template v-if="editable">
             <template v-for="(cookie,name) in cookies.cookies">
                 <el-tag closable
@@ -10,11 +11,12 @@
                 </el-tag>
             </template>
         </template>
+        <!--popup-->
         <template v-else>
-            <el-select v-model="cookies.selected" :size="size">
+            <el-select v-model="cookies.selected" :size="size" ref="select" @change="changed">
                 <el-option :value="null" :label="ui.default"></el-option>
                 <template v-for="(cookie,name) in cookies.cookies">
-                    <el-option :value="cookie.name" :label="name"></el-option>
+                    <el-option :value="name" :label="name"></el-option>
                 </template>
             </el-select>
         </template>
@@ -61,6 +63,7 @@
         this.$emit('changed');
       },
       async selectCookie(name) {
+        console.log('selectCookie', name);
         if (!this.cookies.cookies.hasOwnProperty(name))
           return;
         this.cookies.selected = this.cookies.selected === name ? null : name;
@@ -83,6 +86,15 @@
           this.$forceUpdate();
         }
       },
+      changed() {
+        console.log('changed', this.cookies.selected);
+        if (this.cookies.selected === null) {
+          ClearCookies('http://' + this.domain);
+        } else {
+          SetCookies(this.cookies.cookies[this.cookies.selected]);
+        }
+        this.$emit('changed');
+      }
     },
   }
 </script>

@@ -10,13 +10,14 @@
         <el-main class="right">
             <el-form>
                 <el-form-item :label="ui.ua">
-                    <ua :ua="data.ua"/>
+                    <ua :ua="data.ua" @changed="changed"/>
                 </el-form-item>
                 <el-form-item>
                     <div>Cookies
                         <el-button size="mini" @click="addCookie">+</el-button>
                     </div>
-                    <cookies :domain="selectedDomain" :cookies="data.cookies" :editable="true" ref="cookies"/>
+                    <cookies :domain="selectedDomain" :cookies="data.cookies" :editable="true" ref="cookies"
+                             @changed="changed"/>
                 </el-form-item>
                 <el-form-item>
                     <div>{{ui.requests}}
@@ -48,9 +49,7 @@
     StringRewriteTo,
     StringUA, StringUrlTestTool
   } from "../../js/i18_string_name";
-  import HostEditor from "../../components/host_editor";
   import Cookies from "./cookies";
-  import ElSelectDropdown from "element-ui/packages/select/src/select-dropdown";
   import {UA} from "../../js/ua_list";
   import Requests from "./requests";
   import Rewrites from "./rewrites";
@@ -59,7 +58,7 @@
   const {setting} = chrome.extension.getBackgroundPage();
 
   export default {
-    components: {Ua, Rewrites, Requests, ElSelectDropdown, Cookies, HostEditor},
+    components: {Ua, Rewrites, Requests, Cookies},
     data() {
       return {
         ui: {

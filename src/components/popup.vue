@@ -23,13 +23,13 @@
         <div class="el-form-item">
             <div class="el-form-item__label">User-Agent</div>
             <div>
-                <ua :ua="data.ua" size="mini"/>
+                <ua :ua="data.ua" size="mini" @changed="changed"/>
             </div>
         </div>
         <div class="el-form-item">
             <div class="el-form-item__label">Cookies</div>
             <div>
-                <cookies :cookies="data.cookies" :domain="domain" size="mini"/>
+                <cookies :cookies="data.cookies" :domain="domain" size="mini" @changed="changed"/>
             </div>
         </div>
         <div class="el-form-item">
@@ -102,7 +102,10 @@
       },
       clickSelect(e) {
         e.currentTarget.select();
-      }
+      },
+      changed() {
+        setting.save();
+      },
     },
   };
 </script>

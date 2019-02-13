@@ -32,7 +32,7 @@ export class Setting {
       this.data[key] = Object.assign(JSON.parse(DefaultDomainData), this.data[key]);
     });
     chrome.storage.onChanged.addListener((changes, areaName) => {
-      // console.log('%c storage Change', 'color: green', changes, areaName);
+      console.log('%c storage Change', 'color: green', changes, areaName);
       if (Object.keys(changes).length > 0) {
         for (let key in changes) {
           const change = changes[key];
