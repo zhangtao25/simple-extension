@@ -14,20 +14,20 @@
                 </el-form-item>
                 <el-form-item>
                     <div>Cookies
-                        <el-button size="mini" @click="addCookie">+</el-button>
+                        <el-button type="text" icon="el-icon-plus" @click="addCookie"></el-button>
                     </div>
                     <cookies :domain="selectedDomain" :cookies="data.cookies" :editable="true" ref="cookies"
                              @changed="changed"/>
                 </el-form-item>
                 <el-form-item>
                     <div>{{ui.requests}}
-                        <el-button size="mini" @click="addRequest">+</el-button>
+                        <el-button type="text" icon="el-icon-plus" @click="addRequest"></el-button>
                     </div>
                     <requests :list="data.requests" :editable="true" @changed="changed" ref="requests"/>
                 </el-form-item>
                 <el-form-item>
                     <div>{{ui.rewrite}}
-                        <el-button size="mini" @click="addRewrite">+</el-button>
+                        <el-button type="text" icon="el-icon-plus" @click="addRewrite"></el-button>
                         <a class="el-button el-button--text"
                            href="https://gzlock.github.io/simple-extension" target="_blank">{{ui.tool}}</a>
                     </div>

@@ -63,7 +63,6 @@
         this.$emit('changed');
       },
       async selectCookie(name) {
-        console.log('selectCookie', name);
         if (!this.cookies.cookies.hasOwnProperty(name))
           return;
         this.cookies.selected = this.cookies.selected === name ? null : name;
@@ -86,7 +85,6 @@
         }
       },
       async changed() {
-        console.log('changed', this.cookies.selected);
         await ClearCookies('http://' + this.domain);
         if (this.cookies.selected !== null)
           SetCookies(this.cookies.cookies[this.cookies.selected]);

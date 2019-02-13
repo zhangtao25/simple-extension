@@ -27,7 +27,9 @@
             </div>
         </div>
         <div class="el-form-item">
-            <div class="el-form-item__label">Cookies</div>
+            <div class="el-form-item__label">Cookies
+                <el-button type="text" icon="el-icon-plus" @click="addCookie"></el-button>
+            </div>
             <div>
                 <cookies :cookies="data.cookies" :domain="domain" size="mini" @changed="changed"/>
             </div>
@@ -50,9 +52,16 @@
 <script>
   import Ua from "../editor/components/ua";
   import Cookies from "../editor/components/cookies";
-  import {GetLanguageString, StringHostRewrite, StringRequests, StringUrlList} from "../js/i18_string_name";
+  import {
+    GetLanguageString,
+    PromptSaveCookiesName, StringCookiesEmpty,
+    StringHostRewrite,
+    StringRequests,
+    StringUrlList
+  } from "../js/i18_string_name";
   import Rewrites from "../editor/components/rewrites";
   import Requests from "../editor/components/requests";
+  import {GetCookies, Prompt} from "../js/utils";
 
   const {tabs, setting} = window.bg = chrome.extension.getBackgroundPage();
 
@@ -105,6 +114,18 @@
       },
       changed() {
         setting.save();
+      },
+      async addCookie() {
+        const name = Prompt(GetLanguageString(PromptSaveCookiesName));
+        if (name.length > 0) {
+          const cookies = await GetCookies('http://' + this.domain);
+          if (cookies.length === 0)
+            return alert(GetLanguageString(StringCookiesEmpty));
+          const data = setting.data[this.domain].cookies;
+          data.cookies[name] = cookies;
+          data.selected = name;
+          setting.save();
+        }
       },
     },
   };
