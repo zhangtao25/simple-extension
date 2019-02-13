@@ -160,7 +160,7 @@ export function SearchParamsToJSON(query) {
 /**
  * 读取Chrome的Cookies
  * @param url {String}
- * @returns {Promise<[]>}
+ * @returns {Promise}
  * @function
  */
 export function GetCookies(url) {
