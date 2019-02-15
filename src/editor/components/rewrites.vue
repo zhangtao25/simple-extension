@@ -16,14 +16,14 @@
             <template slot-scope="scope">
                 <el-popover
                         placement="top-start"
-                        width="auto"
+                        width="220"
                         trigger="hover">
-                    <div>
+                    <div class="text-wrap">
                         <div>{{scope.row.rule}}</div>
                         <div>{{ui.rewriteTo}}</div>
                         <div>{{scope.row.value}}</div>
                     </div>
-                    <el-button slot="reference" type="text" size="mini">{{scope.row.name}}</el-button>
+                    <div slot="reference">{{scope.row.name}}</div>
                 </el-popover>
             </template>
         </el-table-column>
@@ -140,5 +140,8 @@
 </script>
 
 <style scoped>
-
+    .text-wrap {
+        word-wrap: break-word;
+        word-break: break-all;
+    }
 </style>

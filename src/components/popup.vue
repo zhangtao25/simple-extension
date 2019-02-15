@@ -35,13 +35,17 @@
             </div>
         </div>
         <div class="el-form-item">
-            <div class="el-form-item__label">{{ui.requests}}</div>
+            <div class="el-form-item__label">{{ui.requests}}
+                <el-button type="text" icon="el-icon-plus" @click="goPanel"></el-button>
+            </div>
             <div>
                 <requests :list="data.requests" :domain="domain" size="mini"/>
             </div>
         </div>
         <div class="el-form-item">
-            <div class="el-form-item__label">{{ui.rewrites}}</div>
+            <div class="el-form-item__label">{{ui.rewrites}}
+                <el-button type="text" icon="el-icon-plus" @click="goPanel"></el-button>
+            </div>
             <div>
                 <rewrites :list="data.rewrites" :domain="domain" size="mini"/>
             </div>
