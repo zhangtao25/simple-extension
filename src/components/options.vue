@@ -12,8 +12,8 @@
             <li>
                 <div class="title">{{ui.libraries}}</div>
                 <div>
-                    <a href="https://vuejs.org" target="_blank">Vue</a>,
-                    <!--<a href="https://webpack.js.org" target="_blank">Webpack</a>,-->
+                    <a href="https://vuejs.org" target="_blank">Vue</a>
+                    <a href="https://element-cn.eleme.io" target="_blank">Element-UI</a>
                     <a href="https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate" target="_blank">Webpack
                         Boilerplate</a>
                 </div>
