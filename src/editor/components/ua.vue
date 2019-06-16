@@ -37,7 +37,7 @@
         },
         set: function (selected) {
           let value = null;
-          if (selected === 'default')
+          if ([null, 'default'].indexOf(selected) !== -1)
             selected = null;
           else {
             const [os, browser] = selected.split('_');

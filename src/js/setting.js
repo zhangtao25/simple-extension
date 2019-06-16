@@ -37,6 +37,8 @@ export class Setting {
         for (let key in changes) {
           const change = changes[key];
           if (change['newValue']) {
+            if (!this.data[key])
+              this.data[key] = {};
             // Vue.set(this.data, key, change['newValue']);
             Object.assign(this.data[key], change['newValue']);
             // this.data[key] = change['newValue'];

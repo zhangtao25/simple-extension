@@ -4,3 +4,4 @@ secrets.*.js
 .idea
 .nuxt
 docs
+simple-extension.iml

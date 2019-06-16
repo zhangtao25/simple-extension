@@ -124,7 +124,7 @@
         if (name.length > 0) {
           const cookies = await GetCookies('http://' + this.domain);
           if (cookies.length === 0)
-            return alert(GetLanguageString(StringCookiesEmpty));
+            return alert(GetLanguageString(StringCookiesEmpty, [['%domain', this.domain]]));
           const data = setting.data[this.domain].cookies;
           data.cookies[name] = cookies;
           data.selected = name;
