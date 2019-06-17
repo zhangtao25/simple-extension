@@ -60,13 +60,9 @@
         });
         let find = this.list.indexOf(value);
         if (find !== -1) {
-          this.$el.querySelectorAll('input')[find].focus();
           return;
         }
         this.list.splice(0, 0, value);
-        this.$nextTick(() => {
-          this.$el.querySelector('input').focus();
-        });
         this.$emit('changed');
       },
       async deleteRequest(index, value) {
