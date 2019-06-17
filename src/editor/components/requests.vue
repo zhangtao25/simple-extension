@@ -5,7 +5,7 @@
                              type="index"
                              width="50">
             </el-table-column>
-            <el-table-column v-if="editable">
+            <!--<el-table-column v-if="editable">
                 <template slot-scope="scope">
                     <el-input v-model="list[scope.$index]" @change="$emit('changed')"
                               @keypress.enter.native="checkEmpty"
@@ -13,6 +13,11 @@
                 </template>
             </el-table-column>
             <el-table-column v-else>
+                <template slot-scope="scope">
+                    {{scope.row}}
+                </template>
+            </el-table-column>-->
+            <el-table-column>
                 <template slot-scope="scope">
                     {{scope.row}}
                 </template>

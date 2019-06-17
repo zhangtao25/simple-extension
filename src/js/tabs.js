@@ -46,8 +46,9 @@ export class Tabs {
         if (domainSetting && domainSetting.requests.length > 0) {
           let hasUrl = false;
           domainSetting.requests.forEach(keyword => {
-            if (url.indexOf(keyword) !== -1) {
+            if (url.indexOf(keyword) !== -1 && data.urlCaches.indexOf(url) === -1) {
               data.urls.push({url, keyword});
+              data.urlCaches.push(url);
               data.badge++;
               hasUrl = true;
             }
@@ -150,10 +151,11 @@ export class Tabs {
   reset(tabId, domain) {
     if (this.has(tabId)) {
       this.data[tabId].urls.length = 0;
+      this.data[tabId].urlCaches.length = 0;
       this.data[tabId].badge = 0;
       this.data[tabId].domain = domain;
     } else {
-      this.data[tabId] = {domain, badge: 0, urls: []};
+      this.data[tabId] = {domain, badge: 0, urls: [], urlCaches: []};
     }
     this.update(tabId);
   }
