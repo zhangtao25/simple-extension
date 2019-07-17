@@ -3,16 +3,20 @@
  * 默认域名数据格式
  * @type {string}
  */
-import {GetStorage} from "./utils";
-import Vue from 'vue';
+import { GetStorage } from './utils'
 
 export const DefaultDomainData = JSON.stringify({
   requests: [],
-  cookies: {selected: null, cookies: {}},
-  ua: {selected: null, value: null},
+  cookies: { selected: null, cookies: {} },
+  ua: { selected: null, value: null },
   rewrites: [],
   redirects: [],
-});
+})
+
+function isNewVersion(data) {
+  const keys = Object.keys(data)
+  return keys.length > 0 && keys.indexOf('domains') !== -1
+}
 
 export class Setting {
   /**
@@ -21,31 +25,54 @@ export class Setting {
    */
   constructor(cb = null) {
     this.init().then(() => {
-      cb && cb();
-    });
+      cb && cb()
+    })
   }
 
   async init() {
-    this.data = await GetStorage(null, {});
-    //验证现存数据的格式
-    Object.keys(this.data).forEach(key => {
-      this.data[key] = Object.assign(JSON.parse(DefaultDomainData), this.data[key]);
-    });
+    this.data = await GetStorage(null, {})
+
+    if(isNewVersion(this.data)) {
+      //新版数据
+      //验证现存数据的格式
+      this.domains = this.data['domains']
+      const keys = Object.keys(this.domains)
+      keys.forEach(key => {
+        this.domains[key] = Object.assign(JSON.parse(DefaultDomainData),
+          this.domains[key])
+      })
+    } else {
+      //旧版数据
+      //验证现存数据的格式
+      const keys = Object.keys(this.data)
+      this.domains = this.data['domains'] = {}
+      keys.forEach(key => {
+        this.data['domains'][key] = Object.assign(JSON.parse(DefaultDomainData),
+          this.data[key])
+        delete this.data[key]
+      })
+    }
+    if(this.data.hasOwnProperty('customUA') === false)
+      this.data['customUA'] = {}
+    this.customUA = this.data['customUA']
+
     chrome.storage.onChanged.addListener((changes, areaName) => {
-      console.log('%c storage Change', 'color: green', changes, areaName);
-      if (Object.keys(changes).length > 0) {
-        for (let key in changes) {
-          const change = changes[key];
-          if (change['newValue']) {
-            if (!this.data[key])
-              this.data[key] = {};
+      console.log('%c storage Change', 'color: green', changes, areaName)
+      if(Object.keys(changes).length > 0) {
+        for(let key in changes) {
+          const change = changes[key]
+          if(change['newValue']) {
+            if(!this.data[key])
+              this.data[key] = {}
             // Vue.set(this.data, key, change['newValue']);
-            Object.assign(this.data[key], change['newValue']);
+            Object.assign(this.data[key], change['newValue'])
             // this.data[key] = change['newValue'];
           }
         }
       }
-    });
+    })
+
+    this.save()
   }
 
   /**
@@ -54,8 +81,8 @@ export class Setting {
    * @returns {*}
    */
   getCookies(domain) {
-    if (this.hasDomain(domain))
-      return this.data[domain].cookies;
+    if(this.hasDomain(domain))
+      return this.domains[domain].cookies
   }
 
   /**
@@ -65,8 +92,8 @@ export class Setting {
    * @returns {*}
    */
   getCookie(domain, name) {
-    if (this.hasDomain(domain) && this.data[domain].cookies[name])
-      return this.data[domain].cookies[name];
+    if(this.hasDomain(domain) && this.domains[domain].cookies[name])
+      return this.domains[domain].cookies[name]
   }
 
   /**
@@ -77,10 +104,10 @@ export class Setting {
    * @returns {Promise}
    */
   setCookie(domain, name, cookies) {
-    this.initDomain(domain);
-    this.data[domain].cookies.selected = name;
-    this.data[domain].cookies.cookies[name] = cookies;
-    return this.save();
+    this.initDomain(domain)
+    this.domains[domain].cookies.selected = name
+    this.domains[domain].cookies.cookies[name] = cookies
+    return this.save()
   }
 
   /**
@@ -90,10 +117,10 @@ export class Setting {
    * @returns {Promise}
    */
   selectCookie(domain, name) {
-    if (this.hasDomain(domain) && this.data[domain].cookies.cookies[name]) {
-      this.data[domain].cookies.selected = name;
+    if(this.hasDomain(domain) && this.domains[domain].cookies.cookies[name]) {
+      this.domains[domain].cookies.selected = name
     }
-    return this.save();
+    return this.save()
   }
 
   /**
@@ -102,8 +129,8 @@ export class Setting {
    * @returns {*}
    */
   getUA(domain) {
-    if (this.hasDomain(domain))
-      return this.data[domain].ua;
+    if(this.hasDomain(domain))
+      return this.domains[domain].ua
   }
 
   /**
@@ -112,9 +139,9 @@ export class Setting {
    * @returns {Promise}
    */
   setDefaultUA(domain) {
-    this.initDomain(domain);
-    this.data[domain].ua = {selected: null, value: null};
-    return this.save();
+    this.initDomain(domain)
+    this.domains[domain].ua = { selected: null, value: null }
+    return this.save()
   }
 
   /**
@@ -125,10 +152,26 @@ export class Setting {
    * @return {Promise}
    */
   setUA(domain, selected, value) {
-    this.initDomain(domain);
-    this.data[domain].ua.selected = selected;
-    this.data[domain].ua.value = value;
-    return this.save();
+    this.initDomain(domain)
+    this.domains[domain].ua.selected = selected
+    this.domains[domain].ua.value = value
+    return this.save()
+  }
+
+  /**
+   * 获取所有用户的自定义UA
+   */
+  getCustomUA() {
+    return this.customUA
+  }
+
+  /**
+   * 保存用户输入的自定义UA
+   * @param name
+   * @param value
+   */
+  setCustomUA(name, value) {
+    this.customUA[name] = value
   }
 
   /**
@@ -137,8 +180,8 @@ export class Setting {
    * @returns {*}
    */
   getRequests(domain) {
-    if (this.hasDomain(domain))
-      return this.data[domain].requests;
+    if(this.hasDomain(domain))
+      return this.domains[domain].requests
   }
 
   /**
@@ -148,9 +191,9 @@ export class Setting {
    * @return Promise
    */
   setRequest(domain, keyword) {
-    this.initDomain(domain);
-    this.data[domain].requests.push(keyword);
-    return this.save();
+    this.initDomain(domain)
+    this.domains[domain].requests.push(keyword)
+    return this.save()
   }
 
   /**
@@ -160,11 +203,11 @@ export class Setting {
    * @returns Promise
    */
   deleteRequest(domain, keyword) {
-    if (this.hasDomain(domain)) {
-      const index = this.data[domain].requests.indexOf(keyword);
-      this.data[domain].requests.splice(index, 1);
+    if(this.hasDomain(domain)) {
+      const index = this.domains[domain].requests.indexOf(keyword)
+      this.domains[domain].requests.splice(index, 1)
     }
-    return this.save();
+    return this.save()
   }
 
   /**
@@ -176,14 +219,14 @@ export class Setting {
    * @returns {Promise}
    */
   setRewrite(domain, name, rule, value) {
-    this.initDomain(domain);
-    const data = {enable: 1, name, rule, value};
-    const index = this.findRewrite(domain, name);
-    if (index === -1)
-      this.data[domain].rewrites.push(data);
+    this.initDomain(domain)
+    const data = { enable: 1, name, rule, value }
+    const index = this.findRewrite(domain, name)
+    if(index === -1)
+      this.domains[domain].rewrites.push(data)
     else
-      this.data[domain].rewrites[index] = data;
-    return this.save();
+      this.domains[domain].rewrites[index] = data
+    return this.save()
   }
 
   /**
@@ -193,17 +236,16 @@ export class Setting {
    * @returns {number}
    */
   findRewrite(domain, name) {
-    if (this.hasDomain(domain)) {
-      for (let i = 0; i < this.data[domain].rewrites.length; i++) {
-        const re = this.data[domain].rewrites[i];
-        if (re.name === name) {
-          return i;
+    if(this.hasDomain(domain)) {
+      for(let i = 0; i < this.domains[domain].rewrites.length; i++) {
+        const re = this.domains[domain].rewrites[i]
+        if(re.name === name) {
+          return i
         }
       }
     }
-    return -1;
+    return -1
   }
-
 
   /**
    * 删除URL改写
@@ -212,9 +254,9 @@ export class Setting {
    * @returns {Promise}
    */
   deleteRewrite(domain, index) {
-    if (this.hasDomain(domain) && this.data[domain].rewrites.length > index)
-      this.data[domain].rewrites.splice(index, 1);
-    return this.save();
+    if(this.hasDomain(domain) && this.domains[domain].rewrites.length > index)
+      this.domains[domain].rewrites.splice(index, 1)
+    return this.save()
   }
 
   /**
@@ -224,11 +266,12 @@ export class Setting {
    * @returns {Promise}
    */
   toggleRewrite(domain, index) {
-    if (this.hasDomain(domain) && this.data[domain].rewrites.length > index)
-      this.data[domain].rewrites[index].enable = this.data[domain].rewrites[index].enable === 0 ? 1 : 0;
-    return this.save();
+    if(this.hasDomain(domain) && this.domains[domain].rewrites.length >
+      index)
+      this.domains[domain].rewrites[index].enable = this.domains[domain].rewrites[index].enable ===
+      0 ? 1 : 0
+    return this.save()
   }
-
 
   /**
    *
@@ -236,8 +279,8 @@ export class Setting {
    * @returns {Array}
    */
   getRewrites(domain) {
-    if (this.hasDomain(domain))
-      return this.data[domain].rewrites;
+    if(this.hasDomain(domain))
+      return this.domains[domain].rewrites
   }
 
   /**
@@ -246,8 +289,8 @@ export class Setting {
    * @returns {Array}
    */
   getRedirects(domain) {
-    if (this.hasDomain(domain))
-      return this.data[domain].redirects;
+    if(this.hasDomain(domain))
+      return this.domains[domain].redirects
   }
 
   /**
@@ -259,21 +302,21 @@ export class Setting {
    * @returns {Promise}
    */
   setRedirect(domain, name, rule, value) {
-    this.initDomain(domain);
-    const data = {enable: 1, name, rule, value};
-    let index = -1;
-    for (let i = 0; i < this.data[domain].redirects; i++) {
-      const re = this.data[domain].redirects[i];
-      if (re.name === name) {
-        index = i;
-        break;
+    this.initDomain(domain)
+    const data = { enable: 1, name, rule, value }
+    let index = -1
+    for(let i = 0; i < this.domains[domain].redirects; i++) {
+      const re = this.domains[domain].redirects[i]
+      if(re.name === name) {
+        index = i
+        break
       }
     }
-    if (index !== -1)
-      this.data[domain].redirects[index] = data;
+    if(index !== -1)
+      this.domains[domain].redirects[index] = data
     else
-      this.data[domain].redirects.push(data);
-    return this.save();
+      this.domains[domain].redirects.push(data)
+    return this.save()
   }
 
   /**
@@ -283,9 +326,10 @@ export class Setting {
    * @returns {Promise}
    */
   deleteRedirect(domain, index) {
-    if (this.hasDomain(domain) && this.data[domain].redirects.length > index)
-      this.data[domain].redirects.splice(index, 1);
-    return this.save();
+    if(this.hasDomain(domain) && this.domains[domain].redirects.length >
+      index)
+      this.domains[domain].redirects.splice(index, 1)
+    return this.save()
   }
 
   /**
@@ -295,9 +339,11 @@ export class Setting {
    * @returns {Promise}
    */
   toggleRedirect(domain, index) {
-    if (this.hasDomain(domain) && this.data[domain].redirects.length > index)
-      this.data[domain].redirects[index].enable = this.data[domain].redirects[index].enable === 0 ? 1 : 0;
-    return this.save();
+    if(this.hasDomain(domain) && this.domains[domain].redirects.length >
+      index)
+      this.domains[domain].redirects[index].enable = this.domains[domain].redirects[index].enable ===
+      0 ? 1 : 0
+    return this.save()
   }
 
   /**
@@ -306,7 +352,7 @@ export class Setting {
    * @returns {boolean}
    */
   hasDomain(domain) {
-    return this.data.hasOwnProperty(domain);
+    return this.domains.hasOwnProperty(domain)
   }
 
   /**
@@ -314,9 +360,9 @@ export class Setting {
    * @param domain
    */
   initDomain(domain) {
-    if (this.hasDomain(domain))
-      return;
-    this.data[domain] = JSON.parse(DefaultDomainData);
+    if(this.hasDomain(domain))
+      return
+    this.domains[domain] = JSON.parse(DefaultDomainData)
   }
 
   /**
@@ -326,9 +372,9 @@ export class Setting {
   save() {
     return new Promise(resolve => {
       chrome.storage.local.set(this.data, () => {
-        resolve();
-      });
-    });
+        resolve()
+      })
+    })
   }
 
   /**

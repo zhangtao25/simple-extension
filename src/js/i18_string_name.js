@@ -2,7 +2,6 @@ export const
   PluginName = 'pluginName',
   PluginDesc = 'pluginDesc',
 
-
   MenuRootText = 'menu_root_text',
 
   MenuCookieRootText = 'menu_cookie_root_text',
@@ -12,11 +11,13 @@ export const
   MenuUseragentRootText = 'menu_useragent_text',
   MenuUseragentDefaultText = 'menu_useragent_default_text',
   MenuAjaxText = 'menu_ajax_text',
+  MenuCustomUA = 'menu_custom_useragent_text',
 
   AlertNoCookies = 'alert_no_cookies',
   AlertSaveCookiesFailEmptyName = 'alert_save_cookies_fail_empty_name',
 
   ConfirmDelete = 'confirm_delete',
+  ConfirmDeleteUAUsed = 'confirm_delete_ua_used',
 
   PromptSaveCookiesName = 'prompt_save_cookies_name',
   PromptHowToGetTheRequestUrl = 'prompt_how_to_get_the_request_url',
@@ -47,8 +48,9 @@ export const
   StringGlobalEditor = 'string_global_editor',
   StringCookiesEmpty = 'string_cookies_empty',
   StringDefault = 'string_default',
-  StringUrlTestTool = 'string_url_test_tool';
-
+  StringUrlTestTool = 'string_url_test_tool',
+  StringGlobalSetting = 'string_global_setting',
+  StringWebsiteSetting = 'string_website_setting'
 
 /**
  * @param name {String}
@@ -57,11 +59,11 @@ export const
  * @function
  */
 export function GetLanguageString(name, replaces = []) {
-  let str = chrome.i18n.getMessage(name);
+  let str = chrome.i18n.getMessage(name)
 
   replaces.forEach(rep => {
-    str = str.replace(rep[0], rep[1]);
-  });
+    str = str.replace(rep[0], rep[1])
+  })
 
-  return str;
+  return str
 }

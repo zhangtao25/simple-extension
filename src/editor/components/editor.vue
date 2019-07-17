@@ -1,173 +1,114 @@
 <template>
-    <el-container>
-        <el-aside class="left">
-            <template v-for="d in domains">
-                <div :class="{selected:d===selectedDomain}"
-                     @click="selectDomain(d)" :data-content="d">{{d}}
-                </div>
-            </template>
-        </el-aside>
-        <el-main class="right">
-            <el-form>
-                <el-form-item :label="ui.ua">
-                    <ua :ua="data.ua" @changed="changed"/>
-                </el-form-item>
-                <el-form-item>
-                    <div>Cookies
-                        <el-button type="text" icon="el-icon-plus" @click="addCookie"></el-button>
-                    </div>
-                    <cookies :domain="selectedDomain" :cookies="data.cookies" :editable="true" ref="cookies"
-                             @changed="changed"/>
-                </el-form-item>
-                <el-form-item>
-                    <div>{{ui.requests}}
-                        <el-button type="text" icon="el-icon-plus" @click="addRequest"></el-button>
-                    </div>
-                    <requests :list="data.requests" :editable="true" @changed="changed" ref="requests"/>
-                </el-form-item>
-                <el-form-item>
-                    <div>{{ui.rewrite}}
-                        <el-button type="text" icon="el-icon-plus" @click="addRewrite"></el-button>
-                        <a class="el-button el-button--text"
-                           href="https://gzlock.github.io/simple-extension" target="_blank">{{ui.tool}}</a>
-                    </div>
-                    <rewrites :domain="selectedDomain" :list="data.rewrites" :editable="true" @changed="changed"
-                              ref="rewrites"/>
-                </el-form-item>
-            </el-form>
-        </el-main>
-    </el-container>
+    <el-tabs type="border-card" v-model="activeName">
+        <el-tab-pane :label="ui.tab_global_setting" name="global">
+            <editor-global/>
+        </el-tab-pane>
+        <el-tab-pane :label="ui.tab_website_setting" name="website">
+            <editor-website/>
+        </el-tab-pane>
+    </el-tabs>
 </template>
 
 <script>
-  import {
-    ConfirmDelete,
-    GetLanguageString,
-    StringGlobalEditor,
-    StringHostRewrite,
-    StringRequests,
-    StringRewriteTo,
-    StringUA, StringUrlTestTool
-  } from "../../js/i18_string_name";
-  import Cookies from "./cookies";
-  import {UA} from "../../js/ua_list";
-  import Requests from "./requests";
-  import Rewrites from "./rewrites";
-  import Ua from "./ua";
+  import { GetLanguageString, StringGlobalSetting, StringWebsiteSetting } from '../../js/i18_string_name'
+  import Cookies from './cookies'
+  import Requests from './requests'
+  import Rewrites from './rewrites'
+  import Ua from './ua'
+  import EditorWebsite from './editor-website'
+  import EditorGlobal from './editor-global'
 
-  const {setting} = chrome.extension.getBackgroundPage();
+  const { setting } = chrome.extension.getBackgroundPage()
 
   export default {
-    components: {Ua, Rewrites, Requests, Cookies},
+    components: { EditorGlobal, EditorWebsite, Ua, Rewrites, Requests, Cookies },
     data() {
       return {
         ui: {
-          ua: GetLanguageString(StringUA),
-          title: GetLanguageString(StringGlobalEditor),
-          requests: GetLanguageString(StringRequests),
-          rewrite: GetLanguageString(StringHostRewrite),
-          rewriteTo: GetLanguageString(StringRewriteTo),
-          deleteWrite: GetLanguageString(ConfirmDelete),
-          tool: GetLanguageString(StringUrlTestTool),
+          tab_global_setting: GetLanguageString(StringGlobalSetting),
+          tab_website_setting: GetLanguageString(StringWebsiteSetting),
         },
-        ua_list: UA,
-        domains: [],
-        selectedDomain: '',
-        data: null,
-      };
+        activeName: '',
+      }
     },
-    methods: {
-      selectDomain(domain) {
-        this.selectedDomain = domain;
-        window.history.replaceState(null, null, '#' + this.selectedDomain);
-        if (!setting.hasDomain(domain))
-          setting.initDomain(domain);
-        this.data = setting.data[domain];
-        console.log(domain, this.data);
-      },
-      changed() {
-        setting.save();
-      },
-      addCookie() {
-        this.$refs.cookies.addCookie();
-      },
-      addRewrite() {
-        this.$refs.rewrites.addRewrite();
-      },
-      addRequest() {
-        this.$refs.requests.addRequest();
-      },
-    },
-    created() {
-      document.title = this.ui.title;
-      this.domains = Object.keys(setting.data);
-      if (window.location.hash) {
-        const selected = window.location.hash.substr(1);
-        this.selectDomain(selected);
+    methods: {},
+    beforeMount() {
+      if(window.location.hash) {
+        this.activeName = 'website'
       }
     },
   }
 </script>
-
+<style>
+    body {
+        padding: 10px;
+        background: #D3DCE6;
+    }
+</style>
 <style lang="scss" scoped>
-    .el-container {
-        height: 100vh;
+    .el-tabs {
+        max-width: 1000px;
+        margin: 0 auto;
 
-        .left {
-            background-color: #D3DCE6;
-            color: #333;
-            width: 150px !important;
-            font-size: 16px;
-            overflow: unset !important;
+        .el-container {
 
-            > div {
-                $padding: 5px;
-                padding: $padding;
-                cursor: pointer;
-                position: relative;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                text-align: left;
-                white-space: nowrap;
+            .left {
+                background-color: #D3DCE6;
+                color: #333;
+                width: 150px !important;
+                font-size: 16px;
+                overflow: unset !important;
 
-                &:hover {
-                    background: lightblue;
-                    overflow: unset;
-                    text-overflow: unset;
-                    color: transparent;
-
-                    &:after {
-                        content: attr(data-content);
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        padding: $padding;
-                        color: black;
-                        background: lightblue;
-                        z-index: 999;
-                        border-radius: 0 5px 5px 0;
-                    }
-                }
-
-                &.selected {
-                    background: aliceblue;
+                > div {
+                    $padding: 5px;
+                    padding: $padding;
+                    cursor: pointer;
+                    position: relative;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    text-align: left;
+                    white-space: nowrap;
 
                     &:hover {
+                        background: lightblue;
+                        overflow: unset;
+                        text-overflow: unset;
+                        color: transparent;
+
                         &:after {
-                            background: aliceblue;
+                            content: attr(data-content);
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            padding: $padding;
+                            color: black;
+                            background: lightblue;
+                            z-index: 999;
+                            border-radius: 0 5px 5px 0;
                         }
                     }
-                }
 
-                + div {
-                    margin-top: 5px;
+                    &.selected {
+                        background: aliceblue;
+
+                        &:hover {
+                            &:after {
+                                background: aliceblue;
+                            }
+                        }
+                    }
+
+                    + div {
+                        margin-top: 5px;
+                    }
                 }
             }
-        }
 
-        .right {
-            background-color: aliceblue;
-            color: #333;
+            .right {
+                background-color: aliceblue;
+                color: #333;
+            }
         }
     }
+
 </style>

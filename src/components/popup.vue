@@ -125,7 +125,7 @@
           const cookies = await GetCookies('http://' + this.domain);
           if (cookies.length === 0)
             return alert(GetLanguageString(StringCookiesEmpty, [['%domain', this.domain]]));
-          const data = setting.data[this.domain].cookies;
+          const data = setting.domains[this.domain].cookies;
           data.cookies[name] = cookies;
           data.selected = name;
           setting.save();

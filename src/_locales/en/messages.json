@@ -20,6 +20,9 @@
   "menu_useragent_text": {
     "message": "Switch User-Agent"
   },
+  "menu_custom_useragent_text": {
+    "message": "Custom"
+  },
   "menu_useragent_default_text": {
     "message": "Default"
   },
@@ -58,6 +61,9 @@
   },
   "confirm_delete": {
     "message": "Confirm to delete %name?"
+  },
+  "confirm_delete_ua_used": {
+    "message": "%number domains are using this UA"
   },
   "string_cookies": {
     "message": "Cookies"
@@ -118,6 +124,12 @@
   },
   "string_global_editor": {
     "message": "Global Editor"
+  },
+  "string_global_setting": {
+    "message": "Global Settings"
+  },
+  "string_website_setting": {
+    "message": "Website Settings"
   },
   "string_cookies_empty": {
     "message": "%domain No Cookies"

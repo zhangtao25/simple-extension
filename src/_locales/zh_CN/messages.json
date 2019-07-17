@@ -20,6 +20,9 @@
   "menu_useragent_text": {
     "message": "切换User-Agent"
   },
+  "menu_custom_useragent_text": {
+    "message": "自定义"
+  },
   "menu_useragent_default_text": {
     "message": "默认"
   },
@@ -61,6 +64,9 @@
   },
   "confirm_delete": {
     "message": "确认删除 %name ?"
+  },
+  "confirm_delete_ua_used": {
+    "message": "有 %number 个域名正在使用"
   },
   "string_cookies": {
     "message": "Cookies"
@@ -124,6 +130,12 @@
   },
   "string_global_editor": {
     "message": "全局编辑器"
+  },
+  "string_global_setting": {
+    "message": "全局自定义设置"
+  },
+  "string_website_setting": {
+    "message": "网站自定义设置"
   },
   "string_cookies_empty": {
     "message": "%domain 没有 Cookies"

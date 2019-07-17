@@ -3,6 +3,7 @@ import {
   MenuCookieEmptyText,
   MenuCookieRootText,
   MenuCookieUseText,
+  MenuCustomUA,
   MenuRootText,
   MenuUseragentDefaultText,
   MenuUseragentRootText,
@@ -217,11 +218,15 @@ export class Menu {
     chrome.contextMenus.update(this.menus[MenuUseragentDefaultText],
       { checked: !currentSelected })
 
-    for(let os in UA) {
+    const ua_list = Object.assign({}, UA,
+      { custom: setting.customUA })
+
+    for(let os in ua_list) {
+      const title = os !== 'custom' ? os : GetLanguageString(MenuCustomUA)
       const osId = chrome.contextMenus.create(
-        { title: os, parentId: this.menus[MenuUseragentRootText] })
+        { title, parentId: this.menus[MenuUseragentRootText] })
       this.uaMenus.push(osId)
-      for(let browser in UA[os]) {
+      for(let browser in ua_list[os]) {
         const current = os + '_' + browser
         chrome.contextMenus.create({
           parentId: osId,
@@ -231,7 +236,7 @@ export class Menu {
             : false,
           title: browser,
           onclick: (info, tab) => {
-            setting.setUA(domain, current, UA[os][browser])
+            setting.setUA(domain, current, ua_list[os][browser])
             chrome.tabs.reload(tab.id)
           },
         })

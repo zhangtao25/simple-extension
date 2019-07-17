@@ -28,7 +28,7 @@ chrome.tabs.query({currentWindow: true, active: true}, _tabs => {
     data: {
       domain,
       tab: {id: tab.id, url: tab.url},
-      data: setting.data[domain],
+      data: setting.domains[domain],
       urls: tabs.data[tab.id].urls,
     },
   });
@@ -44,7 +44,7 @@ chrome.tabs.query({currentWindow: true, active: true}, _tabs => {
         if (!setting.hasDomain(domain))
           setting.initDomain(domain);
         app.domain = domain;
-        app.data = setting.data[domain];
+        app.data = setting.domains[domain];
         Vue.set(app.tab, 'id', tab.id);
         Vue.set(app.tab, 'url', changeInfo.url);
       }
