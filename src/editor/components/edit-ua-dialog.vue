@@ -1,17 +1,17 @@
 <template>
     <el-dialog :visible.sync="showDialog" :title="title">
         <el-form>
-            <el-form-item>
+            <el-form-item :label="ui.name">
                 <el-input v-model="form.name" :placeholder="ui.name"/>
             </el-form-item>
-            <el-form-item>
+            <el-form-item :label="ui.value">
                 <el-input v-model="form.value" :placeholder="ui.value"/>
             </el-form-item>
         </el-form>
 
         <div slot="footer">
             <el-button @click="showDialog = false">{{ui.cancel}}</el-button>
-            <el-button type="primary" @click="submit">{{ui.add}}}</el-button>
+            <el-button type="primary" @click="submit">{{ui.add}}</el-button>
         </div>
     </el-dialog>
 </template>
