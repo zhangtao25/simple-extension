@@ -84,7 +84,7 @@
         window.history.replaceState(null, null, '#' + this.selectedDomain)
         if(!setting.hasDomain(domain))
           setting.initDomain(domain)
-        this.data = setting.data['domains'][domain]
+        this.data = setting.domains[domain]
         console.log(domain, this.data)
       },
       changed() {
