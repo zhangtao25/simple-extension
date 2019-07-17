@@ -25,19 +25,22 @@ export const
   PromptRewriteRule = 'prompt_host_rewrite_rule',
   PromptRewriteValue = 'prompt_host_rewrite_value',
   PromptRedirectName = 'prompt_host_redirect_name',
-  PromptRedirectRule = 'prompt_host_redirect_rule',
   PromptRedirectValue = 'prompt_host_redirect_value',
   PromptRegexpError = 'prompt_regexp_error',
 
   StringCookies = 'string_cookies',
+  StringAdd = 'string_add',
+  StringEdit = 'string_edit',
+  StringDelete = 'string_delete',
+  StringValue = 'string_value',
+  StringName = 'string_name',
+  StringCancel = 'string_cancel',
   StringRequests = 'string_requests',
   StringUrlList = 'string_url_list',
   StringHostRewrite = 'string_host_rewrite',
-  StringHostRedirect = 'string_host_redirect',
   StringUA = 'string_ua',
   StringSave = 'string_save',
   StringRewriteTo = 'string_host_rewrite_to',
-  StringRedirectTo = 'string_host_redirect_to',
   StringBrowserActionEnable = 'string_browser_action_enable',
   StringBrowserActionDisabled = 'string_browser_action_disabled',
   StringChromeStorePage = 'string_chrome_store_page',
@@ -50,7 +53,9 @@ export const
   StringDefault = 'string_default',
   StringUrlTestTool = 'string_url_test_tool',
   StringGlobalSetting = 'string_global_setting',
-  StringWebsiteSetting = 'string_website_setting'
+  StringWebsiteSetting = 'string_website_setting',
+  StringAddUA = 'string_add_useragent',
+  StringEditUA = 'string_edit_useragent'
 
 /**
  * @param name {String}

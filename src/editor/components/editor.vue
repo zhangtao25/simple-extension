@@ -4,7 +4,7 @@
             <editor-global/>
         </el-tab-pane>
         <el-tab-pane :label="ui.tab_website_setting" name="website">
-            <editor-website/>
+            <editor-website v-if="activeName === 'website'"/>
         </el-tab-pane>
     </el-tabs>
 </template>
@@ -28,7 +28,7 @@
           tab_global_setting: GetLanguageString(StringGlobalSetting),
           tab_website_setting: GetLanguageString(StringWebsiteSetting),
         },
-        activeName: '',
+        activeName: 'global',
       }
     },
     methods: {},

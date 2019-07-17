@@ -65,8 +65,26 @@
   "confirm_delete_ua_used": {
     "message": "%number domains are using this UA"
   },
+  "confirm_has_same_name_ua": {
+    "message": "Are you sure to overwrite the same name with this UserAgent?"
+  },
   "string_cookies": {
     "message": "Cookies"
+  },
+  "string_custom_ua_list": {
+    "message": "Custom UserAgent List"
+  },
+  "string_add": {
+    "message": "Add"
+  },
+  "string_edit": {
+    "message": "Edit"
+  },
+  "string_delete": {
+    "message": "Delete"
+  },
+  "string_cancel": {
+    "message": "Cancel"
   },
   "string_requests": {
     "message": "Requests"
@@ -110,9 +128,6 @@
   "string_host_rewrite_to": {
     "message": "Rewrite to"
   },
-  "string_host_redirect_to": {
-    "message": "Redirect to"
-  },
   "string_chrome_store_page": {
     "message": "Chrome Store Extension Home Page"
   },
@@ -136,5 +151,17 @@
   },
   "string_default": {
     "message": "Default"
+  },
+  "string_add_useragent": {
+    "message": "Add UserAgent"
+  },
+  "string_edit_useragent": {
+    "message": "Edit UserAgent"
+  },
+  "string_name": {
+    "message": "Name"
+  },
+  "string_value": {
+    "message": "Value"
   }
 }

@@ -53,9 +53,6 @@
   "prompt_host_redirect_name": {
     "message": "请输入方便辨别的 重定向 名称\n同名将会覆盖"
   },
-  "prompt_host_redirect_rule": {
-    "message": "请输入要重定向的URL关键字\n支持正则表达式，需要用 /xx/ 包裹"
-  },
   "prompt_host_redirect_value": {
     "message": "请输入将改写的网址\n支持{0}格式的占位符，例如 {0}.a.com"
   },
@@ -68,8 +65,26 @@
   "confirm_delete_ua_used": {
     "message": "有 %number 个域名正在使用"
   },
+  "confirm_has_same_name_ua": {
+    "message": "确认覆盖相同名称的UserAgent吗？"
+  },
   "string_cookies": {
     "message": "Cookies"
+  },
+  "string_custom_ua_list": {
+    "message": "自定义 UserAgent 列表"
+  },
+  "string_add": {
+    "message": "添加"
+  },
+  "string_edit": {
+    "message": "编辑"
+  },
+  "string_delete": {
+    "message": "删除"
+  },
+  "string_cancel": {
+    "message": "取消"
   },
   "string_requests": {
     "message": "简易网络请求检测"
@@ -110,14 +125,8 @@
   "string_host_rewrite": {
     "message": "网址改写"
   },
-  "string_host_redirect": {
-    "message": "重定向"
-  },
   "string_host_rewrite_to": {
     "message": "改写为"
-  },
-  "string_host_redirect_to": {
-    "message": "重定向到"
   },
   "string_chrome_store_page": {
     "message": "Chrome Store 的扩展主页"
@@ -142,5 +151,17 @@
   },
   "string_default": {
     "message": "默认"
+  },
+  "string_add_useragent": {
+    "message": "添加自定义UserAgent"
+  },
+  "string_edit_useragent": {
+    "message": "编辑自定义UserAgent"
+  },
+  "string_name": {
+    "message": "名称"
+  },
+  "string_value": {
+    "message": "值"
   }
 }

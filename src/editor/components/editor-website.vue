@@ -8,7 +8,7 @@
             </template>
         </el-aside>
         <el-main class="right">
-            <el-form>
+            <el-form v-if="selectedDomain">
                 <el-form-item :label="ui.ua">
                     <ua :ua="data.ua" @changed="changed"/>
                 </el-form-item>
