@@ -144,6 +144,7 @@
             data[ua.name] = ua.value
           })
           // console.log('保存UA', data)
+          // 偷懒
           setting.customUA = setting.data['customUA'] = data
           setting.save()
         },

@@ -42,7 +42,7 @@ export class Tabs {
     events.addListener('tab_load', ({tabId, url}) => {
       if (this.has(tabId)) {
         const data = this.data[tabId];
-        const domainSetting = setting.data[data.domain];
+        const domainSetting = setting.domains[data.domain];
         if (domainSetting && domainSetting.requests.length > 0) {
           let hasUrl = false;
           domainSetting.requests.forEach(keyword => {
