@@ -10,17 +10,12 @@
                 <div><a href="https://github.com/gzlock" target="_blank">gzlock</a></div>
             </li>
             <li>
-                <div class="title">{{ui.libraries}}</div>
-                <div>
-                    <a href="https://vuejs.org" target="_blank">Vue</a>
-                    <a href="https://element-cn.eleme.io" target="_blank">Element-UI</a>
-                    <a href="https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate" target="_blank">Webpack
-                        Boilerplate</a>
-                </div>
-            </li>
-            <li>
                 <div class="title">{{ui.open_source}}</div>
                 <div><a href="https://github.com/gzlock/simple-extension" target="_blank">Github</a></div>
+            </li>
+            <li>
+                <div class="title">{{ui.privacy_policy}}</div>
+                <div><a href="https://github.com/gzlock/simple-extension/blob/master/PrivacyPolicy.md" target="_blank">Github</a></div>
             </li>
             <li>
                 <div class="title">{{ui.store}}</div>
@@ -44,9 +39,9 @@
     StringChromeStorePage,
     StringLibraries,
     StringLink,
-    StringOpenSource,
-    StringUrlTestTool
-  } from "../js/i18_string_name";
+    StringOpenSource, StringPrivacyPolicy,
+    StringUrlTestTool,
+  } from '../js/i18_string_name'
 
   export default {
     name: 'options',
@@ -61,6 +56,7 @@
           store: GetLanguageString(StringChromeStorePage),
           tool: GetLanguageString(StringUrlTestTool),
           link: GetLanguageString(StringLink),
+          privacy_policy:GetLanguageString(StringPrivacyPolicy),
         },
       };
     },

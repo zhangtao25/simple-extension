@@ -163,5 +163,8 @@
   },
   "string_value": {
     "message": "Value"
+  },
+  "string_privacy_policy": {
+    "message": "Privacy Policy"
   }
 }

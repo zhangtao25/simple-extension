@@ -163,5 +163,8 @@
   },
   "string_value": {
     "message": "值"
+  },
+  "string_privacy_policy": {
+    "message": "隐私政策说明"
   }
 }

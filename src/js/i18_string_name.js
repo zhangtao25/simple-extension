@@ -55,7 +55,8 @@ export const
   StringGlobalSetting = 'string_global_setting',
   StringWebsiteSetting = 'string_website_setting',
   StringAddUA = 'string_add_useragent',
-  StringEditUA = 'string_edit_useragent'
+  StringEditUA = 'string_edit_useragent',
+  StringPrivacyPolicy='string_privacy_policy'
 
 /**
  * @param name {String}
