@@ -10,6 +10,7 @@ Development steps:
 2. Follow [Load Unpacked](https://developer.chrome.com/extensions/getstarted#manifest) step.
 
 
+[The Privacy Policy](./PrivacyPolicy.md)
 
 
 [URL Match Test Tool](https://gzlock.github.io/simple-extension) [![Build Status](https://travis-ci.org/gzlock/simple-extension.svg?branch=master)](https://travis-ci.org/gzlock/simple-extension)
@@ -23,6 +24,8 @@ Development steps:
 让每个网站都可以保存/切换Cookies、切换User-Agent，简单地监听网络请求。
 
 基于[chrome-extension-webpack-boilerplate](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate)项目
+
+[隐私政策](./PrivacyPolicy.md)
 
 开发步骤:
 1. 执行命令 `npm run start`
