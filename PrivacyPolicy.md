@@ -8,6 +8,7 @@
     1. The 'Network request listener' function need to match your setting value , if matched then will show in the popup page for this extension.
     2. The 'Switch User-Agent' function need to modify the user-agent header of the network request to your setting value.
     3. The 'Network requests redirect' function need to match your setting value, if matched then redirect to your setting url.
+    
 
 ### 简易扩展的隐私政策说明
 
