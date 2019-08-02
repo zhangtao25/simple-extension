@@ -15,13 +15,16 @@
             </li>
             <li>
                 <div class="title">{{ui.privacy_policy}}</div>
-                <div><a href="https://github.com/gzlock/simple-extension/blob/master/PrivacyPolicy.md" target="_blank">Github</a>
+                <div>
+                    <a href="/privacy_policy.html" target="_blank">{{ui.privacy_policy}}</a>
                 </div>
             </li>
             <li>
                 <div class="title">{{ui.store}}</div>
-                <div><a href="https://chrome.google.com/webstore/detail/ofhbnimjijmnaigdfhhmhegnlmcbilba"
-                        target="_blank">{{ui.link}}</a></div>
+                <div>
+                    <a href="https://chrome.google.com/webstore/detail/ofhbnimjijmnaigdfhhmhegnlmcbilba"
+                       target="_blank">{{ui.link}}</a>
+                </div>
             </li>
             <li>
                 <div class="title">{{ui.tool}}</div>

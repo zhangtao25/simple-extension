@@ -7,10 +7,14 @@ const webpack = require('webpack'),
   HtmlWebpackPlugin = require('html-webpack-plugin'),
   VueLoaderPlugin = require('vue-loader/lib/plugin'),
   WriteFilePlugin = require('write-file-webpack-plugin'),
-  MiniCssExtractPlugin = require('mini-css-extract-plugin')
+  MiniCssExtractPlugin = require('mini-css-extract-plugin'),
+  showdown = require('showdown'),
+  converter = new showdown.Converter({ openLinksInNewWindow: true }),
+  fs = require('fs')
 
 // load the secrets
 const alias = {
+  '@': '/',
   'vue$': 'vue/dist/vue.esm.js',
 }
 
@@ -42,6 +46,17 @@ const entry = {
   options: path.join(__dirname, 'src', 'options', 'index.js'),
   background: path.join(__dirname, 'src', 'background', 'index.js'),
   editor: path.join(__dirname, 'src', 'editor', 'index.js'),
+  privacy_policy: path.join(__dirname, 'src', 'privacy_policy', 'index.js'),
+}
+
+{
+  //自动生成隐私政策html
+  const basePath = path.join(__dirname, 'src', 'privacy_policy')
+  const content = converter.makeHtml(
+    fs.readFileSync('./PrivacyPolicy.md', 'utf-8'))
+  let template = fs.readFileSync(path.join(basePath, 'App.vue'), 'utf-8')
+  template = template.replace('{markdown}', content)
+  fs.writeFileSync(path.join(basePath, 'NewApp.vue'), template)
 }
 
 const options = {

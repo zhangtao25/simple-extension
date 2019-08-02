@@ -19,15 +19,7 @@ function isNewVersion(data) {
 }
 
 export class Setting {
-  /**
-   *
-   * @param cb
-   */
-  constructor(cb = null) {
-    this.init().then(() => {
-      cb && cb()
-    })
-  }
+  constructor() {}
 
   async init() {
     this.data = await GetStorage(null, {})
@@ -44,8 +36,8 @@ export class Setting {
     } else {
       //旧版数据
       //验证现存数据的格式
-      const keys = Object.keys(this.data)
       this.domains = this.data['domains'] = {}
+      const keys = Object.keys(this.data)
       keys.forEach(key => {
         this.data['domains'][key] = Object.assign(JSON.parse(DefaultDomainData),
           this.data[key])
@@ -55,6 +47,10 @@ export class Setting {
     if(this.data.hasOwnProperty('customUA') === false)
       this.data['customUA'] = {}
     this.customUA = this.data['customUA']
+
+    if(this.data.hasOwnProperty('config') === false)
+      this.data['config'] = {}
+    this.config = this.data['config']
 
     chrome.storage.onChanged.addListener((changes, areaName) => {
       console.log('%c storage Change', 'color: green', changes, areaName)
@@ -72,7 +68,7 @@ export class Setting {
       }
     })
 
-    this.save()
+    await this.save()
   }
 
   /**

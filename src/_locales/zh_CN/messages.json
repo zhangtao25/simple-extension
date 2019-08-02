@@ -166,5 +166,11 @@
   },
   "string_privacy_policy": {
     "message": "隐私政策说明"
+  },
+  "string_read_privacy_policy": {
+    "message": "需要阅读隐私数据说明后才能使用"
+  },
+  "string_open_privacy_policy": {
+    "message": "查看隐私数据说明"
   }
 }

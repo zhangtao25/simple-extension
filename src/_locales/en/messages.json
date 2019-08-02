@@ -166,5 +166,11 @@
   },
   "string_privacy_policy": {
     "message": "Privacy Policy"
+  },
+  "string_read_privacy_policy": {
+    "message": "Need to read the privacy policy"
+  },
+  "string_open_privacy_policy": {
+    "message": "Open"
   }
 }
