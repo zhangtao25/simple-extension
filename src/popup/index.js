@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import url from 'url'
-import PopUp from '../components/popup'
+import PopUp from './popup'
 import {GetDomain} from "../js/utils";
 // import '../css/global.css';
 // import '../css/popup.css';

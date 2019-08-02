@@ -2,39 +2,39 @@ const webpack = require('webpack'),
   path = require('path'),
   fileSystem = require('fs'),
   env = require('./utils/env'),
-  {CleanWebpackPlugin} = require('clean-webpack-plugin'),
+  { CleanWebpackPlugin } = require('clean-webpack-plugin'),
   CopyWebpackPlugin = require('copy-webpack-plugin'),
   HtmlWebpackPlugin = require('html-webpack-plugin'),
   VueLoaderPlugin = require('vue-loader/lib/plugin'),
   WriteFilePlugin = require('write-file-webpack-plugin'),
-  MiniCssExtractPlugin = require("mini-css-extract-plugin");
+  MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 // load the secrets
 const alias = {
-  'vue$': 'vue/dist/vue.esm.js'
-};
-
-const secretsPath = path.join(__dirname, ('secrets.' + env.NODE_ENV + '.js'));
-
-if (fileSystem.existsSync(secretsPath)) {
-  alias['secrets'] = secretsPath;
+  'vue$': 'vue/dist/vue.esm.js',
 }
 
-const copyPluginPatterns = [{from: 'src/manifest.json'}];
+const secretsPath = path.join(__dirname, ('secrets.' + env.NODE_ENV + '.js'))
+
+if(fileSystem.existsSync(secretsPath)) {
+  alias['secrets'] = secretsPath
+}
+
+const copyPluginPatterns = [{ from: 'src/manifest.json' }]
 
 {
   //监测多语言文件夹
-  const i18n_folder_path = path.join(__dirname, 'src', '_locales');
-  if (fileSystem.existsSync(i18n_folder_path)) {
-    copyPluginPatterns.push({from: 'src/_locales', to: '_locales'});
+  const i18n_folder_path = path.join(__dirname, 'src', '_locales')
+  if(fileSystem.existsSync(i18n_folder_path)) {
+    copyPluginPatterns.push({ from: 'src/_locales', to: '_locales' })
   }
 
   // 压缩json
   copyPluginPatterns.forEach(pattern => {
-    pattern.transform = function (content, path) {
-      return Buffer.from(JSON.stringify(JSON.parse(content)));
+    pattern.transform = function(content, path) {
+      return Buffer.from(JSON.stringify(JSON.parse(content)))
     }
-  });
+  })
 }
 
 const entry = {
@@ -42,7 +42,7 @@ const entry = {
   options: path.join(__dirname, 'src', 'options', 'index.js'),
   background: path.join(__dirname, 'src', 'background', 'index.js'),
   editor: path.join(__dirname, 'src', 'editor', 'index.js'),
-};
+}
 
 const options = {
   mode: process.env.NODE_ENV || 'development',
@@ -50,7 +50,7 @@ const options = {
   output: {
     path: path.join(__dirname, 'build'),
     filename: '[name].bundle.js',
-    publicPath: '/'
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -61,7 +61,9 @@ const options = {
       {
         test: /\.scss$/,
         use: [
-          process.env.NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
+          process.env.NODE_ENV !== 'production'
+            ? 'style-loader'
+            : MiniCssExtractPlugin.loader,
           'css-loader',
           'sass-loader',
         ],
@@ -70,27 +72,27 @@ const options = {
         test: /\.(jpg|jpeg|png|gif|svg)$/,
         loader: 'file-loader',
         options: {
-          name: '[path][name].[ext]'
+          name: '[path][name].[ext]',
         },
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
         loader: 'file-loader',
         options: {
-          name: '[path][name].[ext]'
-        }
+          name: '[path][name].[ext]',
+        },
       },
       {
         test: /\.html$/,
         loader: 'html-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.vue$/,
-        use: ['vue-loader']
-      }
-    ]
+        use: ['vue-loader'],
+      },
+    ],
   },
   resolve: {
     alias: alias,
@@ -100,36 +102,36 @@ const options = {
     // clean the build folder
     new CleanWebpackPlugin({
       cleanStaleWebpackAssets: false,
-      protectWebpackAssets: false
+      protectWebpackAssets: false,
     }),
     // expose and write the allowed env vars on the compiled bundle
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(env.NODE_ENV)
+      'process.env.NODE_ENV': JSON.stringify(env.NODE_ENV),
     }),
     new CopyWebpackPlugin(copyPluginPatterns),
-    new CopyWebpackPlugin([{from: 'src/img', to: 'img'}]),
+    new CopyWebpackPlugin([{ from: 'src/img', to: 'img' }]),
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: "[name].css",
-      chunkFilename: "[id].css"
+      filename: '[name].css',
+      chunkFilename: '[id].css',
     }),
-  ]
-};
+  ],
+}
 
 //自动生成
 Object.keys(entry).forEach(key => {
   options.plugins.push(new HtmlWebpackPlugin({
     template: path.join(__dirname, 'src', key, 'index.html'),
     filename: key + '.html',
-    chunks: [key]
+    chunks: [key],
   }))
-});
-options.plugins.push(new WriteFilePlugin());
+})
+options.plugins.push(new WriteFilePlugin())
 
-if (env.NODE_ENV === 'development') {
-  options.devtool = 'cheap-module-eval-source-map';
+if(env.NODE_ENV === 'development') {
+  options.devtool = 'cheap-module-eval-source-map'
 }
 
-module.exports = options;
+module.exports = options

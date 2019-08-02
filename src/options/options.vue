@@ -15,7 +15,8 @@
             </li>
             <li>
                 <div class="title">{{ui.privacy_policy}}</div>
-                <div><a href="https://github.com/gzlock/simple-extension/blob/master/PrivacyPolicy.md" target="_blank">Github</a></div>
+                <div><a href="https://github.com/gzlock/simple-extension/blob/master/PrivacyPolicy.md" target="_blank">Github</a>
+                </div>
             </li>
             <li>
                 <div class="title">{{ui.store}}</div>
@@ -39,7 +40,8 @@
     StringChromeStorePage,
     StringLibraries,
     StringLink,
-    StringOpenSource, StringPrivacyPolicy,
+    StringOpenSource,
+    StringPrivacyPolicy,
     StringUrlTestTool,
   } from '../js/i18_string_name'
 
@@ -56,13 +58,13 @@
           store: GetLanguageString(StringChromeStorePage),
           tool: GetLanguageString(StringUrlTestTool),
           link: GetLanguageString(StringLink),
-          privacy_policy:GetLanguageString(StringPrivacyPolicy),
+          privacy_policy: GetLanguageString(StringPrivacyPolicy),
         },
-      };
+      }
     },
     mounted() {
-      document.title = this.ui.title;
-    }
+      document.title = this.ui.title
+    },
   }
 </script>
 
