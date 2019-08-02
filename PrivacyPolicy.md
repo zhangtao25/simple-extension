@@ -1,4 +1,4 @@
-### Privacy Policy For Simple Extension
+### The Privacy Policy For Simple Extension
 
 1. Simple Extension is non-profit project.
 2. Simple Extension is open source project, github page: [https://github.com/gzlock/simple-extension](https://github.com/gzlock/simple-extension).
