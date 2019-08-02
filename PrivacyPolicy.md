@@ -9,6 +9,7 @@
     2. '切换浏览器识别码'功能需要检测网络请求是否匹配您的设置值，如果匹配会将网络请求header的'user-agent'的值改为您设置的值。
     3. '网络重定向'需要检测网络请求网址是否匹配您的设置，如果匹配会将网络请求重定向到您设置的值。
 
+
 ### The Privacy Policy For Simple Extension
 
 1. Simple Extension is non-profit project.
