@@ -46,6 +46,7 @@ export class Setting {
           this.data[key])
       })
     }
+    
     //更新版本记录
     this.config['version'] = chrome.runtime.getManifest().version
 
