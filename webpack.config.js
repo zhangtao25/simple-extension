@@ -49,6 +49,7 @@ const entry = {
   privacy_policy: path.join(__dirname, 'src', 'privacy_policy', 'index.js'),
 }
 
+
 {
   //将PrivacyPolicy.md转为两种语言的html写入到对应的.vue文件
   const basePath = path.join(__dirname, 'src', 'privacy_policy')
