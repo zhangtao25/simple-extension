@@ -46,7 +46,6 @@ const entry = {
   popup: path.join(__dirname, 'src', 'popup', 'index.js'),
   options: path.join(__dirname, 'src', 'options', 'index.js'),
   background: path.join(__dirname, 'src', 'background', 'index.js'),
-  editor: path.join(__dirname, 'src', 'editor', 'index.js'),
   privacy_policy: path.join(__dirname, 'src', 'privacy_policy', 'index.js'),
 }
 

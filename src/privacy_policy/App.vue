@@ -29,7 +29,7 @@
         setting.config['read_privacy_policy'] = agree
         await setting.save()
         // window.close()
-        window.location.href = '/editor.html#' + domain
+        window.location.href = '/options.html#' + domain
       },
     },
     mounted () {

@@ -6,6 +6,9 @@
         <el-tab-pane :label="ui.tab_website_setting" name="website">
             <editor-domain v-if="activeName === 'website'"/>
         </el-tab-pane>
+        <el-tab-pane :label="ui.about" name="about">
+            <editor-about v-if="activeName === 'about'"/>
+        </el-tab-pane>
     </el-tabs>
 </template>
 
@@ -15,6 +18,7 @@
     StringGlobalEditor,
     StringGlobalSetting,
     StringWebsiteSetting,
+    PluginName,
   } from '../../js/i18_string_name'
   import Cookies from './cookies'
   import Requests from './requests'
@@ -22,17 +26,28 @@
   import Ua from './ua'
   import EditorGlobal from './editor-global'
   import EditorDomain from './editor-domain'
+  import EditorAbout from './editor-about'
 
   const { setting } = chrome.extension.getBackgroundPage()
 
   export default {
-    components: { EditorDomain, EditorGlobal, EditorWebsite: EditorDomain, Ua, Rewrites, Requests, Cookies },
+    components: {
+      EditorAbout,
+      EditorDomain,
+      EditorGlobal,
+      EditorWebsite: EditorDomain,
+      Ua,
+      Rewrites,
+      Requests,
+      Cookies,
+    },
     data () {
       return {
         ui: {
           title: GetLanguageString(StringGlobalEditor),
           tab_global_setting: GetLanguageString(StringGlobalSetting),
           tab_website_setting: GetLanguageString(StringWebsiteSetting),
+          about: GetLanguageString('string_about'),
         },
         activeName: 'global',
       }

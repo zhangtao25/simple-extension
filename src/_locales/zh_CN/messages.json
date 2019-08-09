@@ -184,5 +184,8 @@
   },
   "string_open_privacy_policy": {
     "message": "查看隐私数据说明"
+  },
+  "string_about": {
+    "message": "关于"
   }
 }

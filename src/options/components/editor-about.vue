@@ -9,27 +9,19 @@
                 <div class="title">{{ui.author}}</div>
                 <div><a href="https://github.com/gzlock" target="_blank">gzlock</a></div>
             </li>
-            <li>
-                <div class="title">{{ui.open_source}}</div>
-                <div><a href="https://github.com/gzlock/simple-extension" target="_blank">Github</a></div>
+            <li class="title">
+                <a href="https://github.com/gzlock/simple-extension" target="_blank">{{ui.open_source}}</a>
             </li>
-            <li>
-                <div class="title">{{ui.privacy_policy}}</div>
-                <div>
-                    <a href="/privacy_policy.html" target="_blank">{{ui.privacy_policy}}</a>
-                </div>
+            <li class="title">
+                <a href="/privacy_policy.html" target="_blank">{{ui.privacy_policy}}</a>
             </li>
-            <li>
-                <div class="title">{{ui.store}}</div>
-                <div>
-                    <a href="https://chrome.google.com/webstore/detail/ofhbnimjijmnaigdfhhmhegnlmcbilba"
-                       target="_blank">{{ui.link}}</a>
-                </div>
+            <li class="title">
+                <a href="https://chrome.google.com/webstore/detail/ofhbnimjijmnaigdfhhmhegnlmcbilba"
+                   target="_blank">{{ui.store}}</a>
             </li>
-            <li>
-                <div class="title">{{ui.tool}}</div>
-                <div><a href="https://gzlock.github.io/simple-extension"
-                        target="_blank">{{ui.link}}</a></div>
+            <li class="title">
+                <a href="https://gzlock.github.io/simple-extension"
+                   target="_blank">{{ui.tool}}</a>
             </li>
         </ul>
     </div>
@@ -46,11 +38,11 @@
     StringOpenSource,
     StringPrivacyPolicy,
     StringUrlTestTool,
-  } from '../js/i18_string_name'
+  } from '../../js/i18_string_name'
 
   export default {
-    name: 'options',
-    data() {
+    name: 'editor-about',
+    data () {
       return {
         ui: {
           title: GetLanguageString(PluginName),
@@ -64,9 +56,6 @@
           privacy_policy: GetLanguageString(StringPrivacyPolicy),
         },
       }
-    },
-    mounted() {
-      document.title = this.ui.title
     },
   }
 </script>

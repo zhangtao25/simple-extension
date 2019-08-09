@@ -184,5 +184,8 @@
   },
   "string_open_privacy_policy": {
     "message": "Open"
+  },
+  "string_about": {
+    "message": "About"
   }
 }

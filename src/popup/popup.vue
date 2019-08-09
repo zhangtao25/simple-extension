@@ -60,8 +60,8 @@
 </template>
 
 <script>
-  import Ua from '../editor/components/ua'
-  import Cookies from '../editor/components/cookies'
+  import Ua from '../options/components/ua'
+  import Cookies from '../options/components/cookies'
   import {
     GetLanguageString,
     PromptSaveCookiesName,
@@ -70,8 +70,8 @@
     StringRequests,
     StringUrlList,
   } from '../js/i18_string_name'
-  import Rewrites from '../editor/components/rewrites'
-  import Requests from '../editor/components/requests'
+  import Rewrites from '../options/components/rewrites'
+  import Requests from '../options/components/requests'
   import { GetCookies, Prompt } from '../js/utils'
 
   const { tabs, setting } = window.bg = chrome.extension.getBackgroundPage()
@@ -101,7 +101,7 @@
         window.location.reload()
       },
       goPanel () {
-        const url = chrome.extension.getURL('/editor.html'), hash = '#' + this.domain
+        const url = chrome.extension.getURL('/options.html'), hash = '#' + this.domain
         chrome.tabs.query({ url, currentWindow: true }, tabs => {
           if (tabs.length > 0) {
             for (let i = 0; i < tabs.length; i++) {
