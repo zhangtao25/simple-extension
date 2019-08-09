@@ -1,10 +1,10 @@
-import {GetLanguageString, PromptRegexpError} from "./i18_string_name";
-import * as pathToRegexp from "path-to-regexp";
-import {FormatError, NotMatchError} from "./errors";
-import url from 'url';
+import { GetLanguageString, PromptRegexpError } from './i18_string_name'
+import * as pathToRegexp from 'path-to-regexp'
+import { FormatError, NotMatchError } from './errors'
+import url from 'url'
 
 const Difference = require('lodash/difference'),
-  keyRegexp = /^:([a-z_][a-z\-_]*)$/i;
+  keyRegexp = /^:([a-z_][a-z\-_]*)$/i
 
 /**
  * 从url提取域名
@@ -12,13 +12,13 @@ const Difference = require('lodash/difference'),
  * @returns {String || null}
  * @function
  */
-export function GetDomain(_url) {
-  if (!_url) return null;
-  const parse = url.parse(_url);
+export function GetDomain (_url) {
+  if (!_url) return null
+  const parse = url.parse(_url)
   // console.log('domain', parse);
   if (['http:', 'https:'].indexOf(parse.protocol) === -1)
-    return null;
-  return parse.host;
+    return null
+  return parse.host
 }
 
 /**
@@ -29,102 +29,105 @@ export function GetDomain(_url) {
  * @return {String}
  * @function
  */
-export function URLRewrite(_url, _rule, _value) {
+export function URLRewrite (_url, _rule, _value) {
   const input = url.parse(_url),
     inputDomain = input.host,
-    inputQuery = SearchParamsToJSON(input.search);
+    inputQuery = SearchParamsToJSON(input.search)
   const rule = url.parse(_rule),
     ruleDomain = rule.host,
-    ruleQuery = SearchParamsToJSON(rule.search);
+    ruleQuery = SearchParamsToJSON(rule.search)
   const value = url.parse(_value),
     valueDomain = value.host,
-    valueQuery = SearchParamsToJSON(value.search);
+    valueQuery = SearchParamsToJSON(value.search)
 
   if (!inputDomain)
-    throw Error('URL must be a full URL address, Start with http:// or https://');
-
+    throw Error(
+      'URL must be a full URL address, Start with http:// or https://')
 
   //如果Rule有Domain，则要于input的Domain相同才可以继续
   if (ruleDomain && inputDomain !== ruleDomain)
-    throw new NotMatchError('The URL domain not equal the Rule domain.');
-
+    throw new NotMatchError('The URL domain not equal the Rule domain.')
 
   if (!ruleDomain && _rule[0] !== '/')
-    throw new FormatError('Rule format error');
+    throw new FormatError('Rule format error')
   if (!valueDomain && _value[0] !== '/')
-    throw new FormatError('Value format error');
+    throw new FormatError('Value format error')
   let to,
-    toSearchParams = new URLSearchParams();
+    toSearchParams = new URLSearchParams()
 
-  const data = {};
+  const data = {}
   if (input.pathname && rule.pathname) {
-    const ruleKeys = [], rulePath = pathToRegexp(rule.pathname, ruleKeys);
-    const match = rulePath.exec(input.pathname);
+    const ruleKeys = [], rulePath = pathToRegexp(rule.pathname, ruleKeys)
+    const match = rulePath.exec(input.pathname)
     if (!match) {
-      throw new NotMatchError('The URL path can not match the Rule path.');
+      throw new NotMatchError('The URL path can not match the Rule path.')
     }
     // console.log('path string', input.pathname, rule.pathname);
     ruleKeys.forEach((key, index) => {
-      data[key.name + ''] = match[index + 1];
-    });
+      data[key.name + ''] = match[index + 1]
+    })
     // console.log('path result', data);
   }
 
   if (inputQuery && ruleQuery) {
-    const inputQueryKeys = Object.keys(inputQuery), ruleQueryKeys = Object.keys(ruleQuery);
-    const difference = Difference(ruleQueryKeys, inputQueryKeys);
+    const inputQueryKeys = Object.keys(inputQuery),
+      ruleQueryKeys = Object.keys(ruleQuery)
+    const difference = Difference(ruleQueryKeys, inputQueryKeys)
     if (difference.length > 0) {
-      throw new NotMatchError(`The URL missing query keys: ${difference.join(', ')} .`);
+      throw new NotMatchError(
+        `The URL missing query keys: ${difference.join(', ')} .`)
     }
     ruleQueryKeys.forEach(key => {
       if (ruleQuery[key]) {
-        const match = ruleQuery[key].match(keyRegexp);
+        const match = ruleQuery[key].match(keyRegexp)
         //是参数名称
         if (match) {
-          const queryKey = match[1];
+          const queryKey = match[1]
           //与path存在相同的Key
           if (data.hasOwnProperty(queryKey)) {
-            throw new Error(`the query key <strong>${queryKey}</strong> repeat with path keys`);
+            throw new Error(
+              `the query key <strong>${queryKey}</strong> repeat with path keys`)
           }
-          data[queryKey] = inputQuery[key];
+          data[queryKey] = inputQuery[key]
         }
         //不是参数名称，则对比值
         else {
           if (ruleQuery[key] !== inputQuery[key]) {
-            throw new NotMatchError(`The query <strong>${key}</strong> not equal: Rule ${ruleQuery[key]}, URL ${inputQuery[key]}`);
+            throw new NotMatchError(
+              `The query <strong>${key}</strong> not equal: Rule ${ruleQuery[key]}, URL ${inputQuery[key]}`)
           }
         }
       }
-    });
+    })
   }
   // console.log('final', data);
 
   Object.keys(valueQuery).forEach(key => {
-    const match = valueQuery[key].match(keyRegexp);
+    const match = valueQuery[key].match(keyRegexp)
     if (match) {
-      const dataKey = match[1];
+      const dataKey = match[1]
       if (data.hasOwnProperty(dataKey)) {
-        toSearchParams.append(key, data[dataKey]);
+        toSearchParams.append(key, data[dataKey])
       } else {
-        throw new Error(`Missing key <strong>${dataKey}</strong>`);
+        throw new Error(`Missing key <strong>${dataKey}</strong>`)
       }
     } else {
-      toSearchParams.append(key, valueQuery[key]);
+      toSearchParams.append(key, valueQuery[key])
     }
-  });
+  })
 
-  to = pathToRegexp.compile(value.pathname);
-  toSearchParams = toSearchParams.toString();
+  to = pathToRegexp.compile(value.pathname)
+  toSearchParams = toSearchParams.toString()
   if (toSearchParams.length > 0)
-    toSearchParams = '?' + toSearchParams;
-  to = to(data) + toSearchParams;
+    toSearchParams = '?' + toSearchParams
+  to = to(data) + toSearchParams
   if (valueDomain) {
-    to = `${value.protocol}//${valueDomain}${to}`;
+    to = `${value.protocol}//${valueDomain}${to}`
   } else {
-    to = `${input.protocol}//${inputDomain}${to}`;
+    to = `${input.protocol}//${inputDomain}${to}`
   }
 
-  return to;
+  return to
 }
 
 /**
@@ -134,9 +137,9 @@ export function URLRewrite(_url, _rule, _value) {
  * @returns {string}
  * @function
  */
-export function URLRedirect(_url, _value) {
-  const input = url.parse(_url);
-  return _url.replace(input.host, _value);
+export function URLRedirect (_url, _value) {
+  const input = url.parse(_url)
+  return _url.replace(input.host, _value)
 }
 
 /**
@@ -145,17 +148,16 @@ export function URLRedirect(_url, _value) {
  * @return {JSON}
  * @function
  */
-export function SearchParamsToJSON(query) {
-  const data = {};
+export function SearchParamsToJSON (query) {
+  const data = {}
   if (query) {
-    const params = new URLSearchParams(encodeURI(query));
+    const params = new URLSearchParams(encodeURI(query))
     params.forEach((v, k) => {
-      data[k] = v;
-    });
+      data[k] = v
+    })
   }
-  return data;
+  return data
 }
-
 
 /**
  * 读取Chrome的Cookies
@@ -163,14 +165,14 @@ export function SearchParamsToJSON(query) {
  * @returns {Promise}
  * @function
  */
-export function GetCookies(url) {
+export function GetCookies (url) {
   return new Promise(resolve => {
-    chrome.cookies.getAll({url}, cookies => {
+    chrome.cookies.getAll({ url }, cookies => {
       // console.log('获取Cookies 1', details, cookies);
       cookies = cookies.map(cookie => {
-        let domain = cookie.domain;
+        let domain = cookie.domain
         if (domain.indexOf('.') === 0)
-          domain = domain.substr(1);
+          domain = domain.substr(1)
         return {
           domain,
           name: cookie.name,
@@ -179,12 +181,12 @@ export function GetCookies(url) {
           httpOnly: cookie.httpOnly,
           url: 'http://' + domain,
           path: cookie.path,
-        };
-      });
+        }
+      })
       // console.log('获取Cookies 2', cookies);
-      resolve(cookies);
-    });
-  });
+      resolve(cookies)
+    })
+  })
 }
 
 /**
@@ -194,12 +196,12 @@ export function GetCookies(url) {
  * @returns {Promise}
  * @function
  */
-export function RemoveCookie(url, name) {
+export function RemoveCookie (url, name) {
   return new Promise(resolve => {
     // console.log('删除Cookie', JSON.stringify({url, name}));
     // resolve();
-    chrome.cookies.remove({url, name}, resolve);
-  });
+    chrome.cookies.remove({ url, name }, resolve)
+  })
 }
 
 /**
@@ -208,17 +210,19 @@ export function RemoveCookie(url, name) {
  * @return {Promise}
  * @function
  */
-export function SetCookies(data) {
+export function SetCookies (data) {
   // console.log('设置Chrome Cookies', data);
   if (data.constructor === Array) {
     const queue = data.map(cookie => {
       return new Promise(resolve => {
-        chrome.cookies.set(cookie, resolve);
-      });
-    });
-    return Promise.all(queue);
+        // console.log('SetCookies 1', cookie)
+        chrome.cookies.set(cookie, resolve)
+      })
+    })
+    return Promise.all(queue)
   } else if (data.constructor === Object) {
     return new Promise(resolve => {
+      // console.log('SetCookies 2', data)
       chrome.cookies.set(data, () => resolve())
     })
   }
@@ -230,12 +234,12 @@ export function SetCookies(data) {
  * @return {Promise}
  * @function
  */
-export async function ClearCookies(url) {
-  const cookies = await GetCookies(url);
+export async function ClearCookies (url) {
+  const cookies = await GetCookies(url)
   // console.log('删除Cookies前', cookies);
   await Promise.all(cookies.map(cookie => {
-    return RemoveCookie(url, cookie.name);
-  }));
+    return RemoveCookie(url, cookie.name)
+  }))
   // console.log('删除Cookies后', await GetCookies(url));
 }
 
@@ -246,14 +250,14 @@ export async function ClearCookies(url) {
  * @returns {Promise<{}>}
  * @function
  */
-export function GetStorage(get, defaultValue = {}) {
+export function GetStorage (get, defaultValue = {}) {
   return new Promise(resolve => {
     chrome.storage.local.get(get, items => {
       if (Object.keys(items).length === 0 && items.constructor === Object)
-        return resolve(defaultValue);
+        return resolve(defaultValue)
       resolve(items)
-    });
-  });
+    })
+  })
 }
 
 /**
@@ -263,15 +267,14 @@ export function GetStorage(get, defaultValue = {}) {
  * @returns {String}
  * @function
  */
-export function Prompt(message = null, _default = null) {
-  let value = prompt(message ? message : '', _default ? _default : '');
+export function Prompt (message = null, _default = null) {
+  let value = prompt(message ? message : '', _default ? _default : '')
   if (!value)
-    return '';
-  return value.trim();
+    return ''
+  return value.trim()
 }
 
-
-const RegularExpression = /^\/.+\/[gi]$/;
+const RegularExpression = /^\/.+\/[gi]$/
 
 /**
  *
@@ -280,22 +283,23 @@ const RegularExpression = /^\/.+\/[gi]$/;
  * @returns {String || null}
  * @function
  */
-export function GetRegExp(message, _default = null) {
-  let input = '', hasError = false;
+export function GetRegExp (message, _default = null) {
+  let input = '', hasError = false
   while (true) {
-    const _msg = hasError ? message + '\n' + GetLanguageString(PromptRegexpError) : message,
-      _val = hasError ? input : _default;
-    input = Prompt(_msg, _val);
+    const _msg = hasError ? message + '\n' +
+      GetLanguageString(PromptRegexpError) : message,
+      _val = hasError ? input : _default
+    input = Prompt(_msg, _val)
     if (RegularExpression.test(input)) {
       try {
-        new RegExp(input);
-        break;
+        new RegExp(input)
+        break
       } catch (e) {
-        hasError = true;
+        hasError = true
       }
     } else {
-      break;
+      break
     }
   }
-  return input;
+  return input
 }

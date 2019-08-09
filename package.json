@@ -31,11 +31,12 @@
     "vue": "^2.6.10",
     "vue-loader": "^15.7.0",
     "vue-template-compiler": "^2.6.10",
-    "webpack": "^4.34.0",
+    "webpack": "^4.39.0",
     "webpack-bundle-analyzer": ">=3.3.2",
     "webpack-cli": "^3.3.4",
     "webpack-dev-server": "^3.7.1",
-    "write-file-webpack-plugin": "^4.5.0"
+    "write-file-webpack-plugin": "^4.5.0",
+    "uglifyjs-webpack-plugin": "^2.2.0"
   },
   "dependencies": {
     "showdown": "^1.9.0"

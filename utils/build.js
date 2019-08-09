@@ -1,13 +1,15 @@
-process.env['NODE_ENV'] = 'production';
-const webpack = require("webpack"),
-  config = require("../webpack.config");
+process.env['NODE_ENV'] = 'production'
+const webpack = require('webpack'),
+  config = require('../webpack.config')
 
-delete config.chromeExtensionBoilerplate;
+delete config.chromeExtensionBoilerplate
 
+config['optimization'] = Object.assign(config['optimization'] || {},
+  { minimize: true })
 
 webpack(
   config,
   function (err) {
-    if (err) throw err;
-  }
-);
+    if (err) throw err
+  },
+)

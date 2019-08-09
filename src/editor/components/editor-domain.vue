@@ -34,6 +34,9 @@
                     <rewrites :domain="selectedDomain" :list="data.rewrites" :editable="true" @changed="changed"
                               ref="rewrites"/>
                 </el-form-item>
+                <el-form-item>
+                    <el-button type="danger" size="small" @click="deleteDomain">{{deleteDomainButton}}</el-button>
+                </el-form-item>
             </el-form>
         </el-main>
     </el-container>
@@ -59,13 +62,13 @@
   const { setting } = chrome.extension.getBackgroundPage()
 
   export default {
+    name: 'editor-domain',
     components: { Ua, Rewrites, Requests, Cookies },
     props: ['customUA'],
-    data() {
+    data () {
       return {
         ui: {
           ua: GetLanguageString(StringUA),
-          title: GetLanguageString(StringGlobalEditor),
           requests: GetLanguageString(StringRequests),
           rewrite: GetLanguageString(StringHostRewrite),
           rewriteTo: GetLanguageString(StringRewriteTo),
@@ -78,34 +81,49 @@
         data: null,
       }
     },
-    methods: {
-      selectDomain(domain) {
-        this.selectedDomain = domain
-        window.history.replaceState(null, null, '#' + this.selectedDomain)
-        if(!setting.hasDomain(domain))
-          setting.initDomain(domain)
-        this.data = setting.domains[domain]
-        console.log(domain, this.data)
-      },
-      changed() {
-        setting.save()
-      },
-      addCookie() {
-        this.$refs.cookies.addCookie()
-      },
-      addRewrite() {
-        this.$refs.rewrites.addRewrite()
-      },
-      addRequest() {
-        this.$refs.requests.addRequest()
+    computed: {
+      deleteDomainButton () {
+        return GetLanguageString('string_delete_domains', [['%domain', this.selectedDomain]])
       },
     },
-    created() {
-      document.title = this.ui.title
+    methods: {
+      selectDomain (domain) {
+        this.selectedDomain = domain
+        window.history.replaceState(null, null, '#' + this.selectedDomain)
+        if (!setting.hasDomain(domain))
+          setting.initDomain(domain)
+        this.data = setting.domains[domain]
+        // console.log('selectDomain', domain, this.data)
+      },
+      changed () {
+        setting.save()
+      },
+      addCookie () {
+        this.$refs.cookies.addCookie()
+      },
+      addRewrite () {
+        this.$refs.rewrites.addRewrite()
+      },
+      addRequest () {
+        this.$refs.requests.addRequest()
+      },
+      deleteDomain () {
+        console.log('delete', this.selectedDomain)
+        this.$confirm(GetLanguageString('confirm_delete_domain', [['%domain', this.selectedDomain]])).then(() => {
+          delete setting.domains[this.selectedDomain]
+          setting.save()
+          this.domains.splice(this.domains.indexOf(this.selectedDomain), 1)
+          this.selectedDomain = ''
+        }).catch(() => {})
+      },
+    },
+    mounted () {
       this.domains = Object.keys(setting.domains)
-      if(window.location.hash) {
+      if (window.location.hash) {
         const selected = window.location.hash.substr(1)
         this.selectDomain(selected)
+        if (this.domains.includes(selected) === false)
+          this.domains.push(selected)
       }
     },
   }

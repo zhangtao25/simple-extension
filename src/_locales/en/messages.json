@@ -59,6 +59,9 @@
   "prompt_regexp_error": {
     "message": "⚠️Did not pass the regular expression check"
   },
+  "confirm_delete_domain": {
+    "message": "Clear all settings for %domain ？"
+  },
   "confirm_delete": {
     "message": "Confirm to delete %name?"
   },
@@ -67,6 +70,15 @@
   },
   "confirm_has_same_name_ua": {
     "message": "Are you sure to overwrite the same name with this UserAgent?"
+  },
+  "confirm_clear_extension_data": {
+    "message": "Are you sure to clear all data of this extension？"
+  },
+  "string_delete_domains": {
+    "message": "Clear %domain settings"
+  },
+  "string_clear_extension_data": {
+    "message": "Clear extension data"
   },
   "string_cookies": {
     "message": "Cookies"

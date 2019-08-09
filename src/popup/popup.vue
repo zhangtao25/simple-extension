@@ -79,7 +79,7 @@
   export default {
     components: { Requests, Rewrites, Cookies, Ua },
     props: ['domain', 'tab', 'data', 'urls'],
-    data() {
+    data () {
       return {
         ui: {
           requests: GetLanguageString(StringRequests),
@@ -92,24 +92,21 @@
       }
     },
     computed: {
-      isDev() {
+      isDev () {
         return process.env.NODE_ENV !== 'production'
-      },
-      descUrls() {
-        return this.urls.reverse()
       },
     },
     methods: {
-      reload() {
+      reload () {
         window.location.reload()
       },
-      goPanel() {
+      goPanel () {
         const url = chrome.extension.getURL('/editor.html'), hash = '#' + this.domain
         chrome.tabs.query({ url, currentWindow: true }, tabs => {
-          if(tabs.length > 0) {
-            for(let i = 0; i < tabs.length; i++) {
+          if (tabs.length > 0) {
+            for (let i = 0; i < tabs.length; i++) {
               const tab = tabs[i]
-              if(tab.url.indexOf(hash) > 0) {
+              if (tab.url.indexOf(hash) > 0) {
                 chrome.tabs.update(tab.id, { active: true })
                 return false
               }
@@ -118,22 +115,22 @@
           chrome.tabs.create({ url: url + hash })
         })
       },
-      clearUrls() {
+      clearUrls () {
         this.urls.splice(0, this.urls.length)
         tabs.reset(this.tab.id)
         this.$forceUpdate()
       },
-      clickSelect(e) {
+      clickSelect (e) {
         e.currentTarget.select()
       },
-      changed() {
+      changed () {
         setting.save()
       },
-      async addCookie() {
+      async addCookie () {
         const name = Prompt(GetLanguageString(PromptSaveCookiesName))
-        if(name.length > 0) {
+        if (name.length > 0) {
           const cookies = await GetCookies('http://' + this.domain)
-          if(cookies.length === 0)
+          if (cookies.length === 0)
             return alert(GetLanguageString(StringCookiesEmpty, [['%domain', this.domain]]))
           const data = setting.domains[this.domain].cookies
           data.cookies[name] = cookies
@@ -141,8 +138,8 @@
           setting.save()
         }
       },
-      openPrivacyPolicy() {
-        window.open('/privacy_policy.html')
+      openPrivacyPolicy () {
+        window.open('/privacy_policy.html?domain=' + this.domain)
       },
     },
   }

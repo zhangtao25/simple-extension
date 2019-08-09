@@ -8,6 +8,7 @@ const webpack = require('webpack'),
   VueLoaderPlugin = require('vue-loader/lib/plugin'),
   WriteFilePlugin = require('write-file-webpack-plugin'),
   MiniCssExtractPlugin = require('mini-css-extract-plugin'),
+  UglyJS = require('uglifyjs-webpack-plugin'),
   showdown = require('showdown'),
   converter = new showdown.Converter({ openLinksInNewWindow: true }),
   fs = require('fs')
@@ -20,7 +21,7 @@ const alias = {
 
 const secretsPath = path.join(__dirname, ('secrets.' + env.NODE_ENV + '.js'))
 
-if(fileSystem.existsSync(secretsPath)) {
+if (fileSystem.existsSync(secretsPath)) {
   alias['secrets'] = secretsPath
 }
 
@@ -29,13 +30,13 @@ const copyPluginPatterns = [{ from: 'src/manifest.json' }]
 {
   //监测多语言文件夹
   const i18n_folder_path = path.join(__dirname, 'src', '_locales')
-  if(fileSystem.existsSync(i18n_folder_path)) {
+  if (fileSystem.existsSync(i18n_folder_path)) {
     copyPluginPatterns.push({ from: 'src/_locales', to: '_locales' })
   }
 
   // 压缩json
   copyPluginPatterns.forEach(pattern => {
-    pattern.transform = function(content, path) {
+    pattern.transform = function (content, path) {
       return Buffer.from(JSON.stringify(JSON.parse(content)))
     }
   })
@@ -50,12 +51,14 @@ const entry = {
 }
 
 {
-  //自动生成隐私政策html
+  //将PrivacyPolicy.md转为两种语言的html写入到对应的.vue文件
   const basePath = path.join(__dirname, 'src', 'privacy_policy')
-  const content = converter.makeHtml(
-    fs.readFileSync('./PrivacyPolicy.md', 'utf-8'))
+  let content = fs.readFileSync('./PrivacyPolicy.md', 'utf-8')
+  content = content.split('\n###')
+  const zh = converter.makeHtml(content[0]),
+    en = converter.makeHtml('###' + content[1])
   let template = fs.readFileSync(path.join(basePath, 'App.vue'), 'utf-8')
-  template = template.replace('{markdown}', content)
+  template = template.replace('{zh_markdown}', zh).replace('{en_markdown}', en)
   fs.writeFileSync(path.join(basePath, 'NewApp.vue'), template)
 }
 
@@ -132,20 +135,20 @@ const options = {
       filename: '[name].css',
       chunkFilename: '[id].css',
     }),
+    new WriteFilePlugin(),
   ],
 }
 
 //自动生成
 Object.keys(entry).forEach(key => {
-  options.plugins.push(new HtmlWebpackPlugin({
+  options.plugins.splice(-1, 0, new HtmlWebpackPlugin({
     template: path.join(__dirname, 'src', key, 'index.html'),
     filename: key + '.html',
     chunks: [key],
   }))
 })
-options.plugins.push(new WriteFilePlugin())
 
-if(env.NODE_ENV === 'development') {
+if (env.NODE_ENV === 'development') {
   options.devtool = 'cheap-module-eval-source-map'
 }
 

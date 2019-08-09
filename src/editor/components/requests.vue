@@ -33,61 +33,56 @@
 </template>
 
 <script>
-  import {ConfirmDelete, GetLanguageString, PromptHowToGetTheRequestUrl} from "../../js/i18_string_name";
+  import { ConfirmDelete, GetLanguageString, PromptHowToGetTheRequestUrl } from '../../js/i18_string_name'
 
-  let lastAddRequestInput;
   export default {
     props: {
-      list: {required: true, type: Array},
-      editable: {required: false, type: Boolean, default: false},
-      size: {required: false, type: String, default: 'medium'},
+      list: { required: true, type: Array },
+      editable: { required: false, type: Boolean, default: false },
+      size: { required: false, type: String, default: 'medium' },
     },
-    data() {
+    data () {
       return {
         ui: {
           delete: GetLanguageString(ConfirmDelete),
           add: GetLanguageString(PromptHowToGetTheRequestUrl),
         },
-        addNew: {add: true, value: '', index: '+'},
-      };
+        addNew: { add: true, value: '', index: '+' },
+      }
     },
     methods: {
       addRequest: async function () {
-        let {value} = await this.$prompt(this.ui.add, {
+        let { value } = await this.$prompt(this.ui.add, {
           inputValidator: val => {
-            return !!val && val.trim().length > 0;
+            return !!val && val.trim().length > 0
           },
-        });
-        let find = this.list.indexOf(value);
+        })
+        let find = this.list.indexOf(value)
         if (find !== -1) {
-          return;
+          return
         }
-        this.list.splice(0, 0, value);
-        this.$emit('changed');
+        this.list.splice(0, 0, value)
+        this.$emit('changed')
       },
-      async deleteRequest(index, value) {
+      async deleteRequest (index, value) {
         if (this.list.length > index) {
-          await this.$confirm(this.ui.delete.replace('%name', value));
-          this.list.splice(index, 1);
-          this.$emit('changed');
+          await this.$confirm(this.ui.delete.replace('%name', value))
+          this.list.splice(index, 1)
+          this.$emit('changed')
         }
       },
-      checkEmpty() {
-        let a = 0;
+      checkEmpty () {
+        let a = 0
         for (let i = 0; i < this.list.length; i++) {
-          const value = this.list[i], indexOf = this.list.lastIndexOf(value);
+          const value = this.list[i], indexOf = this.list.lastIndexOf(value)
           if (value.length === 0 || (indexOf !== -1 && indexOf !== i)) {
-            a++;
-            this.list.splice(i, 1);
+            a++
+            this.list.splice(i, 1)
           }
         }
         if (a > 0)
-          this.$emit('changed');
+          this.$emit('changed')
       },
-    },
-    mounted() {
-      lastAddRequestInput = this.$el.querySelector('input');
-      console.log({lastAddRequestInput});
     },
   }
 </script>

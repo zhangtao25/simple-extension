@@ -1,28 +1,36 @@
 <template>
     <div>
-        <div class="el-form-item__label" style="display: block;">
-            {{ui.string_custom_ua_list}}
-            <el-button size="mini" type="success" @click="addUA">{{ui.add}}</el-button>
-        </div>
-        <el-table :data="customUA" border size="mini" @row-click="rowClick">
-            <el-table-column
-                    prop="name"
-                    label="名称"
-                    width="300">
-            </el-table-column>
-            <el-table-column
-                    prop="value"
-                    label="值">
-            </el-table-column>
-            <el-table-column
-                    prop="value"
-                    width="150">
-                <template slot-scope="scope">
-                    <el-button size="mini" @click="editUA(scope.$index)" type="primary">{{ui.edit}}</el-button>
-                    <el-button size="mini" type="danger" @click="deleteUA(scope.$index)">{{ui.delete}}</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
+        <el-form>
+            <el-form-item>
+                <div slot="label">
+                    {{ui.string_custom_ua_list}}
+                    <el-button size="mini" type="success" @click="addUA">{{ui.add}}</el-button>
+                </div>
+                <el-table :data="customUA" border size="mini" @row-click="rowClick">
+                    <el-table-column
+                            prop="name"
+                            label="名称"
+                            width="300">
+                    </el-table-column>
+                    <el-table-column
+                            prop="value"
+                            label="值">
+                    </el-table-column>
+                    <el-table-column
+                            prop="value"
+                            width="150">
+                        <template slot-scope="scope">
+                            <el-button size="mini" @click="editUA(scope.$index)" type="primary">{{ui.edit}}</el-button>
+                            <el-button size="mini" type="danger" @click="deleteUA(scope.$index)">{{ui.delete}}
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="danger" size="small" @click="clearExtensionData">{{ui.clearData}}</el-button>
+            </el-form-item>
+        </el-form>
         <edit-ua-dialog ref="dialog" @submit="submitUA"/>
     </div>
 </template>
@@ -48,33 +56,34 @@
 
   export default {
     components: { EditUaDialog, Ua, Rewrites, Requests, Cookies },
-    data() {
+    data () {
       return {
         ui: {
           string_custom_ua_list: GetLanguageString('string_custom_ua_list'),
           add: GetLanguageString(StringAdd),
           edit: GetLanguageString(StringEdit),
           delete: GetLanguageString(StringDelete),
+          clearData: GetLanguageString('string_clear_extension_data'),
         },
         customUA: [],
       }
     },
     methods: {
-      addUA() {
+      addUA () {
         this.$refs.dialog.show(-1, '', '')
       },
-      findSameName(index, name) {
-        for(let i = 0; i < this.customUA.length; i++) {
+      findSameName (index, name) {
+        for (let i = 0; i < this.customUA.length; i++) {
           const ua = this.customUA[i]
-          if(index !== i && ua.name === name)
+          if (index !== i && ua.name === name)
             return i
         }
         return -1
       },
-      async submitUA({ index, name, value }) {
+      async submitUA ({ index, name, value }) {
         index = this.findSameName(index, name)
         let overwrite = true
-        if(index > -1) {
+        if (index > -1) {
           overwrite = await new Promise(resolve => {
             this.$confirm(GetLanguageString('confirm_has_same_name_ua')).
               then(() => resolve(true)).
@@ -82,9 +91,9 @@
           })
         }
         // console.log({ overwrite })
-        if(overwrite === false)
+        if (overwrite === false)
           return
-        if(index === -1) {
+        if (index === -1) {
           this.customUA.push({ name, value })
           index = this.customUA.length - 1
         } else {
@@ -98,9 +107,9 @@
         }
         this.$refs['dialog'].hide()
       },
-      deleteUA(index) {
+      deleteUA (index) {
         let content = '', domains = this.findDomains(this.customUA[index].name)
-        if(domains.length > 0)
+        if (domains.length > 0)
           content = deleteContent.replace('%number', domains.length) + '<br>' +
             domains.map(domain => encodeURI(domain)).join('<br/>')
 
@@ -111,34 +120,39 @@
           domains.forEach(domain => setting.setDefaultUA(domain))
         }).catch(() => {})
       },
-      rowClick(row, column) {
-        if(column.id === 'el-table_1_column_3')
+      rowClick (row, column) {
+        if (column.id === 'el-table_1_column_3')
           return
         const index = this.customUA.indexOf(row)
-        if(index > -1)
+        if (index > -1)
           this.editUA(index)
       },
-      editUA(index) {
+      editUA (index) {
         const select = this.customUA[index]
         this.$refs.dialog.show(index, select.name, select.value)
       },
-      findDomains(ua) {
+      findDomains (ua) {
         ua = 'custom_' + ua
         const domains = []
         Object.keys(setting.domains).forEach(key => {
           const domain = setting.domains[key]
           console.log(domain.ua.selected, key)
-          if(domain.ua.selected === ua) {
+          if (domain.ua.selected === ua) {
             domains.push(key)
           }
         })
         return domains
       },
+      clearExtensionData () {
+        this.$confirm(GetLanguageString('confirm_clear_extension_data')).then(() => {
+          setting.clear()
+        }).catch(() => {})
+      },
     },
     watch: {
       customUA: {
         deep: true,
-        handler: function() {
+        handler: function () {
           const data = {}
           this.customUA.forEach(ua => {
             data[ua.name] = ua.value
@@ -150,7 +164,7 @@
         },
       },
     },
-    created() {
+    created () {
       const keys = Object.keys(setting.customUA)
       keys.forEach(name => {this.customUA.push({ name, value: setting.customUA[name] })})
     },
