@@ -1,6 +1,9 @@
 <template>
     <el-container>
         <el-aside class="left">
+            <div @click="addDomain" :data-content="ui.addDomain">
+                {{ui.addDomain}}
+            </div>
             <template v-for="d in domains">
                 <div :class="{selected:d===selectedDomain}"
                      @click="selectDomain(d)" :data-content="d">{{d}}
@@ -58,6 +61,7 @@
   import Requests from './requests'
   import Rewrites from './rewrites'
   import Ua from './ua'
+  import { DefaultDomainData } from '@/Users/lock/Desktop/simple-extension/src/js/setting'
 
   const { setting } = chrome.extension.getBackgroundPage()
 
@@ -74,6 +78,7 @@
           rewriteTo: GetLanguageString(StringRewriteTo),
           deleteWrite: GetLanguageString(ConfirmDelete),
           tool: GetLanguageString(StringUrlTestTool),
+          addDomain: GetLanguageString('string_add'),
         },
         ua_list: UA,
         domains: [],
@@ -107,6 +112,17 @@
       addRequest () {
         this.$refs.requests.addRequest()
       },
+      async addDomain () {
+        this.$prompt(GetLanguageString('string_add_domain')).then(({ value }) => {
+          console.log('add domain', value)
+          if (!value)
+            return
+          this.selectDomain(value)
+          if (this.domains.includes(value) === false) {
+            this.domains.push(value)
+          }
+        })
+      },
       deleteDomain () {
         console.log('delete', this.selectedDomain)
         this.$confirm(GetLanguageString('confirm_delete_domain', [['%domain', this.selectedDomain]])).then(() => {
@@ -117,7 +133,7 @@
         }).catch(() => {})
       },
     },
-    mounted () {
+    beforeMount () {
       this.domains = Object.keys(setting.domains)
       if (window.location.hash) {
         const selected = window.location.hash.substr(1)

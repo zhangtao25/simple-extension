@@ -89,6 +89,9 @@
   "string_add": {
     "message": "添加"
   },
+  "string_add_domain": {
+    "message": "添加一个域名"
+  },
   "string_edit": {
     "message": "编辑"
   },

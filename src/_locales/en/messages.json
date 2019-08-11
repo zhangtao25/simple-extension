@@ -89,6 +89,9 @@
   "string_add": {
     "message": "Add"
   },
+  "string_add_domain": {
+    "message": "Add a domain"
+  },
   "string_edit": {
     "message": "Edit"
   },

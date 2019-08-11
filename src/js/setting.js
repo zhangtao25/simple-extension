@@ -14,6 +14,20 @@ export const DefaultDomainData = JSON.stringify({
   redirects: [],
 })
 
+/**
+ *
+ * @param data
+ * @returns {boolean}
+ * @function
+ */
+export function IsDomainSettingEmpty (data) {
+  return data && data.requests.length === 0 &&
+    data.rewrites.length === 0 &&
+    data.redirects.length === 0 &&
+    Object.keys(data.cookies.cookies).length === 0 &&
+    data.ua.value === null
+}
+
 const mainKey = ['domains', 'config', 'customUA']
 
 export class Setting {
