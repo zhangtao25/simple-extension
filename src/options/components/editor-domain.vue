@@ -121,7 +121,7 @@
           if (this.domains.includes(value) === false) {
             this.domains.push(value)
           }
-        })
+        }).catch(() => {})
       },
       deleteDomain () {
         console.log('delete', this.selectedDomain)
