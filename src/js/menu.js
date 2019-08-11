@@ -33,11 +33,7 @@ const __menu__ = {
             const name = prompt(GetLanguageString(PromptSaveCookiesName))
 
             // 重新激活用户使用的Chrome窗口
-            chrome.windows.getLastFocused({}, win => {
-              if(win) {
-                chrome.windows.update(win.id, { focused: true })
-              }
-            })
+            chrome.windows.update(tab.windowId, { focused: true })
 
             //取消保存
             if(name === null || name.trim().length === 0) {
