@@ -169,20 +169,24 @@ export function GetCookies (url) {
   return new Promise(resolve => {
     chrome.cookies.getAll({ url }, cookies => {
       // console.log('获取Cookies 1', details, cookies);
-      cookies = cookies.map(cookie => {
-        let domain = cookie.domain
-        if (domain.indexOf('.') === 0)
-          domain = domain.substr(1)
-        return {
-          domain,
-          name: cookie.name,
-          value: cookie.value,
-          expirationDate: cookie.expirationDate,
-          httpOnly: cookie.httpOnly,
-          url: 'http://' + domain,
-          path: cookie.path,
-        }
-      })
+      if (cookies) {
+        cookies = cookies.map(cookie => {
+          let domain = cookie.domain
+          if (domain.indexOf('.') === 0)
+            domain = domain.substr(1)
+          return {
+            domain,
+            name: cookie.name,
+            value: cookie.value,
+            expirationDate: cookie.expirationDate,
+            httpOnly: cookie.httpOnly,
+            url: 'http://' + domain,
+            path: cookie.path,
+          }
+        })
+      } else {
+        cookies = []
+      }
       // console.log('获取Cookies 2', cookies);
       resolve(cookies)
     })
