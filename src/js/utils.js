@@ -2,6 +2,7 @@ import { GetLanguageString, PromptRegexpError } from './i18_string_name'
 import * as pathToRegexp from 'path-to-regexp'
 import { FormatError, NotMatchError } from './errors'
 import url from 'url'
+import { queue } from 'async'
 
 const Difference = require('lodash/difference'),
   keyRegexp = /^:([a-z_][a-z\-_]*)$/i
@@ -208,28 +209,18 @@ export function RemoveCookie (url, name) {
   })
 }
 
+const cookiesQueue = queue((cookie, callback) => {
+  // console.log('cookie队列', cookie.domain)
+  chrome.cookies.set(cookie, () => callback())
+}, 5)
+
 /**
  * 设置Chrome的Cookies
  * @param data {Object || Array}
- * @return {Promise}
  * @function
  */
 export function SetCookies (data) {
-  // console.log('设置Chrome Cookies', data);
-  if (data.constructor === Array) {
-    const queue = data.map(cookie => {
-      return new Promise(resolve => {
-        // console.log('SetCookies 1', cookie)
-        chrome.cookies.set(cookie, resolve)
-      })
-    })
-    return Promise.all(queue)
-  } else if (data.constructor === Object) {
-    return new Promise(resolve => {
-      // console.log('SetCookies 2', data)
-      chrome.cookies.set(data, () => resolve())
-    })
-  }
+  cookiesQueue.push(data)
 }
 
 /**
