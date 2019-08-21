@@ -14,7 +14,7 @@
         </el-option-group>
         <el-option-group :label="ui.custom_useragent">
             <el-option v-for="(value,name) in customUAList"
-                       :key="'custom_'+name"
+                       :key="name"
                        :label="name"
                        :value="'custom_'+name"></el-option>
         </el-option-group>
@@ -31,7 +31,7 @@
       ua: { required: true },
       size: { required: false, type: String, default: 'medium' },
     },
-    data() {
+    data () {
       return {
         ui: {
           default: GetLanguageString(StringDefault),
@@ -42,20 +42,21 @@
     },
     computed: {
       value: {
-        get: function() {
+        get: function () {
           return this.ua.selected ? this.ua.selected : null
         },
-        set: function(selected) {
+        set: function (selected) {
+          console.log('设置UA', selected)
           let value = null
-          if([null, 'default'].indexOf(selected) > -1)
+          if ([null, 'default'].includes(selected))
             selected = null
           else {
             const [os, browser] = selected.split('_')
-            if(os === 'custom') {
-              if(setting.customUA.hasOwnProperty(browser))
+            if (os === 'custom') {
+              if (setting.customUA.hasOwnProperty(browser))
                 value = setting.customUA[browser]
             } else {
-              if(UA[os] && UA[os][browser])
+              if (UA[os] && UA[os][browser])
                 value = UA[os][browser]
             }
           }
@@ -64,7 +65,7 @@
           this.$emit('changed')
         },
       },
-      customUAList() {
+      customUAList () {
         return setting.customUA
       },
     },

@@ -190,5 +190,8 @@
   },
   "string_about": {
     "message": "About"
+  },
+  "string_can_not_empty": {
+    "message": "value is required"
   }
 }

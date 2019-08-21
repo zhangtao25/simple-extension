@@ -2,7 +2,7 @@
     <div>
         <el-form>
             <el-form-item>
-                <div slot="label">
+                <div>
                     {{ui.string_custom_ua_list}}
                     <el-button size="mini" type="success" @click="addUA">{{ui.add}}</el-button>
                 </div>
@@ -49,6 +49,7 @@
     StringEdit,
   } from '../../js/i18_string_name'
   import EditUaDialog from './edit-ua-dialog'
+  import { findIndex, get } from 'lodash'
 
   const { setting } = chrome.extension.getBackgroundPage()
 
@@ -72,35 +73,48 @@
       addUA () {
         this.$refs.dialog.show(-1, '', '')
       },
-      findSameName (index, name) {
-        for (let i = 0; i < this.customUA.length; i++) {
-          const ua = this.customUA[i]
-          if (index !== i && ua.name === name)
-            return i
-        }
-        return -1
-      },
       async submitUA ({ index, name, value }) {
-        index = this.findSameName(index, name)
-        let overwrite = true
-        if (index > -1) {
-          overwrite = await new Promise(resolve => {
-            this.$confirm(GetLanguageString('confirm_has_same_name_ua')).
-              then(() => resolve(true)).
-              catch(() => {resolve(false)})
-          })
+        let oldName, lastIndex = -1
+
+        for (let i = 0; i < this.customUA.length; i++) {
+          if (i !== index && this.customUA[i].name === name) {
+            lastIndex = i
+            break
+          }
         }
-        // console.log({ overwrite })
-        if (overwrite === false)
-          return
-        if (index === -1) {
+        console.log({ index, lastIndex })
+        //添加
+        if (index === -1 && lastIndex === -1) {
+          console.log('添加 ua')
           this.customUA.push({ name, value })
-          index = this.customUA.length - 1
-        } else {
-          const domains = this.findDomains(this.customUA[index].name),
-            ua = 'custom_' + name
+        }
+        //编辑
+        else {
+          console.log('编辑 ua')
+          if (lastIndex > -1) {
+            const overwrite = await new Promise(resolve => {
+              this.$confirm(GetLanguageString('confirm_has_same_name_ua')).
+                then(() => resolve(true)).
+                catch(() => {resolve(false)})
+            })
+            if (overwrite === false)
+              return
+            if (index === -1) {
+              oldName = this.customUA[lastIndex].name
+              index = lastIndex
+            } else
+              oldName = this.customUA[index].name
+          }
           this.customUA[index].name = name
           this.customUA[index].value = value
+          if (lastIndex > -1 && index !== lastIndex)
+            this.customUA.splice(lastIndex, 1)
+        }
+        if (oldName) {
+          const domains = this.findDomains(name), ua = 'custom_' + name
+          if (name !== oldName)
+            domains.push(...this.findDomains(oldName))
+          console.log('需要改变', domains)
           domains.forEach(domain => {
             setting.setUA(domain, ua, value)
           })
@@ -133,15 +147,10 @@
       },
       findDomains (ua) {
         ua = 'custom_' + ua
-        const domains = []
-        Object.keys(setting.domains).forEach(key => {
+        return Object.keys(setting.domains).filter(key => {
           const domain = setting.domains[key]
-          console.log(domain.ua.selected, key)
-          if (domain.ua.selected === ua) {
-            domains.push(key)
-          }
+          return domain.ua.selected === ua
         })
-        return domains
       },
       clearExtensionData () {
         this.$confirm(GetLanguageString('confirm_clear_extension_data')).then(() => {
@@ -157,7 +166,7 @@
           this.customUA.forEach(ua => {
             data[ua.name] = ua.value
           })
-          // console.log('保存UA', data)
+          console.log('保存自定义UA')
           // 偷懒
           setting.customUA = setting.data['customUA'] = data
           setting.save()

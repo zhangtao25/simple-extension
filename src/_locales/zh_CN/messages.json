@@ -190,5 +190,8 @@
   },
   "string_about": {
     "message": "关于"
+  },
+  "string_can_not_empty": {
+    "message": "不能留空，请填入内容"
   }
 }

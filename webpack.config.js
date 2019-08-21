@@ -8,7 +8,6 @@ const webpack = require('webpack'),
   VueLoaderPlugin = require('vue-loader/lib/plugin'),
   WriteFilePlugin = require('write-file-webpack-plugin'),
   MiniCssExtractPlugin = require('mini-css-extract-plugin'),
-  UglyJS = require('uglifyjs-webpack-plugin'),
   showdown = require('showdown'),
   converter = new showdown.Converter({ openLinksInNewWindow: true }),
   fs = require('fs')
