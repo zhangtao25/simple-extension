@@ -1,8 +1,9 @@
 import { GetLanguageString, PromptRegexpError } from './i18_string_name'
-import * as pathToRegexp from 'path-to-regexp'
 import { FormatError, NotMatchError } from './errors'
 import url from 'url'
 import { queue } from 'async'
+
+const { pathToRegexp, match, parse, compile } = require('path-to-regexp')
 
 const Difference = require('lodash/difference'),
   keyRegexp = /^:([a-z_][a-z\-_]*)$/i
@@ -26,50 +27,56 @@ export function GetDomain (_url) {
  *
  * @param _url {String}
  * @param _rule {String}
- * @param _value {String}
- * @return {String}
+ * @return {Object}
  * @function
  */
-export function URLRewrite (_url, _rule, _value) {
-  const input = url.parse(_url),
-    inputDomain = input.host,
-    inputQuery = SearchParamsToJSON(input.search)
-  const rule = url.parse(_rule),
-    ruleDomain = rule.host,
-    ruleQuery = SearchParamsToJSON(rule.search)
-  const value = url.parse(_value),
-    valueDomain = value.host,
-    valueQuery = SearchParamsToJSON(value.search)
-
-  if (!inputDomain)
+export function URlPathParameters (_url, _rule) {
+  const urlInput = url.parse(_url),
+    inputDomain = urlInput.host,
+    inputQuery = SearchParamsToJSON(urlInput.search)
+  const ruleInput = url.parse(_rule),
+    ruleDomain = ruleInput.host,
+    ruleQuery = SearchParamsToJSON(ruleInput.search)
+  if (urlInput.protocol == null)
     throw Error(
-      'URL must be a full URL address, Start with http:// or https://')
+      'The URL must start with http://, https://, ftp://')
+
+  if (!ruleDomain && _rule[0] !== '/')
+    throw new FormatError('Rule format error')
 
   //如果Rule有Domain，则要于input的Domain相同才可以继续
   if (ruleDomain && inputDomain !== ruleDomain)
     throw new NotMatchError('The URL domain not equal the Rule domain.')
 
-  if (!ruleDomain && _rule[0] !== '/')
-    throw new FormatError('Rule format error')
-  if (!valueDomain && _value[0] !== '/')
-    throw new FormatError('Value format error')
-  let to,
-    toSearchParams = new URLSearchParams()
+  //如果Rule有Domain，则要于input的Domain相同才可以继续
+  if (ruleDomain && inputDomain !== ruleDomain)
+    throw new Error('The URL domain not equal to the rule domain.')
 
   const data = {}
-  if (input.pathname && rule.pathname) {
-    const ruleKeys = [], rulePath = pathToRegexp(rule.pathname, ruleKeys)
-    const match = rulePath.exec(input.pathname)
-    if (!match) {
-      throw new NotMatchError('The URL path can not match the Rule path.')
+
+  // 处理 路径
+
+  if (urlInput.pathname && ruleInput.pathname) {
+    let rulePath
+    const ruleKeys = []
+    try {
+      rulePath = pathToRegexp(ruleInput.pathname, ruleKeys,
+        { start: false, end: false })
+    } catch (e) {
+      throw new Error('The rule have errors')
     }
+    const match = rulePath.exec(urlInput.pathname)
+    if (!match)
+      throw new NotMatchError('The rule can not match the URL')
+    console.log({ match })
     // console.log('path string', input.pathname, rule.pathname);
     ruleKeys.forEach((key, index) => {
       data[key.name + ''] = match[index + 1]
     })
-    // console.log('path result', data);
+    console.log('path result', data)
   }
 
+  // 处理查询
   if (inputQuery && ruleQuery) {
     const inputQueryKeys = Object.keys(inputQuery),
       ruleQueryKeys = Object.keys(ruleQuery)
@@ -87,7 +94,7 @@ export function URLRewrite (_url, _rule, _value) {
           //与path存在相同的Key
           if (data.hasOwnProperty(queryKey)) {
             throw new Error(
-              `the query key <strong>${queryKey}</strong> repeat with path keys`)
+              `The query key <strong>${queryKey}</strong> repeat with path keys`)
           }
           data[queryKey] = inputQuery[key]
         }
@@ -95,52 +102,67 @@ export function URLRewrite (_url, _rule, _value) {
         else {
           if (ruleQuery[key] !== inputQuery[key]) {
             throw new NotMatchError(
-              `The query <strong>${key}</strong> not equal: Rule ${ruleQuery[key]}, URL ${inputQuery[key]}`)
+              `The query <strong>${key}</strong> not equal to: Rule ${ruleQuery[key]}, URL ${inputQuery[key]}`)
           }
         }
       }
     })
   }
-  // console.log('final', data);
 
-  Object.keys(valueQuery).forEach(key => {
-    const match = valueQuery[key].match(keyRegexp)
-    if (match) {
-      const dataKey = match[1]
-      if (data.hasOwnProperty(dataKey)) {
-        toSearchParams.append(key, data[dataKey])
-      } else {
-        throw new Error(`Missing key <strong>${dataKey}</strong>`)
-      }
-    } else {
-      toSearchParams.append(key, valueQuery[key])
-    }
-  })
-
-  to = pathToRegexp.compile(value.pathname)
-  toSearchParams = toSearchParams.toString()
-  if (toSearchParams.length > 0)
-    toSearchParams = '?' + toSearchParams
-  to = to(data) + toSearchParams
-  if (valueDomain) {
-    to = `${value.protocol}//${valueDomain}${to}`
-  } else {
-    to = `${input.protocol}//${inputDomain}${to}`
-  }
-
-  return to
+  return data
 }
 
 /**
  *
- * @param _url
- * @param _value
- * @returns {string}
+ * @param _url {String}
+ * @param _rule {String}
+ * @param _value {String}
+ * @return {String}
  * @function
  */
-export function URLRedirect (_url, _value) {
-  const input = url.parse(_url)
-  return _url.replace(input.host, _value)
+export function URLRewrite (_url, _rule, _value) {
+  const data = URlPathParameters(_url, _rule)
+
+  const urlInput = url.parse(_url),
+    inputDomain = urlInput.host
+  const toInput = url.parse(_value),
+    toDomain = toInput.host,
+    toQuery = SearchParamsToJSON(toInput.search)
+
+  if (!toDomain && _value[0] !== '/')
+    throw new FormatError('Value format error')
+
+  let toSearchParams = new URLSearchParams()
+
+  if (toQuery)
+    Object.keys(toQuery).forEach(key => {
+      const match = toQuery[key].match(keyRegexp)
+      if (match) {
+        const dataKey = match[1]
+        if (data.hasOwnProperty(dataKey)) {
+          toSearchParams.append(key, data[dataKey])
+        } else {
+          throw new Error(`Missing key: <strong>${dataKey}</strong>`)
+        }
+      } else {
+        toSearchParams.append(key, toQuery[key])
+      }
+    })
+
+  let to = compile(toInput.pathname)
+
+  toSearchParams = toSearchParams.toString()
+  if (toSearchParams.length > 0)
+    toSearchParams = '?' + toSearchParams
+  to = to(data) + toSearchParams
+  console.log({ data, toSearchParams })
+  if (toDomain) {
+    to = `${toInput.protocol}//${toDomain}${to}`
+  } else {
+    to = `${urlInput.protocol}//${inputDomain}${to}`
+  }
+
+  return to
 }
 
 /**

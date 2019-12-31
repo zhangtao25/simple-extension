@@ -15,13 +15,22 @@
                 <li>Full URL: <span>https://google.com/:action?q=:searchString</span></li>
                 <li>Just URL path: <span>/:action?q=:searchString</span></li>
             </ul>
+            <div v-if="parserIsEmpty===false" style="margin-top: 20px">
+                <div>Parameters</div>
+                <table class="parameters">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr v-for="(value,key) in parameters" :key="key">
+                        <td>{{key}}</td>
+                        <td>{{value}}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
         <div>
             <div>
-                <!--<select v-model="type">
-                    <option value="rewrite">Rewrite</option>
-                    <option value="redirect">Redirect</option>
-                </select>-->
                 Rewrite To Value
             </div>
             <span><input v-model="value"/></span>
@@ -42,6 +51,7 @@
         </div>
         <div>
             <button @click="clear">Clear</button>
+            <br/>
             Preset Link <input :value="preset" style="width: 400px" onclick="this.select()"/>
         </div>
         <div>
@@ -52,88 +62,94 @@
 </template>
 
 <script>
-  import {FormatError, NotMatchError} from "../../js/errors";
-  import {URLRedirect, URLRewrite} from "../../js/utils";
+  import { isEmpty } from 'lodash'
+  import { FormatError, NotMatchError } from '../../js/errors'
+  import { URlPathParameters, URLRewrite } from '../../js/utils'
 
-  const url = require('url');
+  const url = require('url')
 
   export default {
     head: {
-      title: 'Simple Extension URL Test Tool'
+      title: 'Simple Extension URL Test Tool',
     },
-    data() {
+    data () {
       return {
         type: 'rewrite',
         input: 'https://www.google.com/b/c/d?e=simple-extenion&f=unused',
         rule: '/b/:action/(.*)?e=:searchString',
         value: 'https://a.com/other/path/:0/:searchString?action=:action&reuse=:action&other=query',
-      };
+        parameters: {},
+      }
     },
     computed: {
-      typeString() {
-        return this.type[0].toUpperCase() + this.type.substr(1);
+      typeString () {
+        return this.type[0].toUpperCase() + this.type.substr(1)
       },
-      result() {
+      parserIsEmpty () {
+        return isEmpty(this.parameters)
+      },
+      result () {
         if (!process.client)
-          return '';
+          return ''
+
         try {
-          let to;
-          if (this.type === 'rewrite') {
-            to = URLRewrite(this.input, this.rule, this.value);
-          } else {
-            to = URLRedirect(this.input, this.value);
-          }
-          to = decodeURI(to);
-          return `<div>Success!</div><div>${this.typeString} To:</div><div><a href="${to}" target="_blank">${to}</a></div>`;
+          this.parameters = URlPathParameters(this.input, this.rule)
         } catch (e) {
-          console.error(e);
-          let errorType = 'Error';
+          this.parameters = {}
+        }
+
+        try {
+          const to = URLRewrite(this.input, this.rule, this.value)
+          return `<div class="success">Success!</div><div>${this.typeString} To:</div><div><a href="${to}" target="_blank">${to}</a></div>`
+        } catch (e) {
+          console.error(e)
+          let errorType = 'Error'
           if (e instanceof NotMatchError)
-            errorType = 'Not Match';
+            errorType = 'Not Match'
           else if (e instanceof FormatError)
-            errorType = 'Format Error';
-          return `<div class="error">${errorType}</div><pre class="error">${e.message}</pre>`;
+            errorType = 'Format Error'
+          return `<div class="error">${errorType}</div><pre class="error">${e.message}</pre>`
         }
       },
-      preset() {
+      preset () {
         if (!process.client)
-          return '';
-        const _url = url.parse(window.location.href);
+          return ''
+        const _url = url.parse(window.location.href)
         const preset = new Buffer(JSON.stringify({
           type: this.type === 'rewrite' ? 0 : 1,
           url: this.input,
           rule: this.rule,
-          value: this.value
-        }), 'utf8').toString('base64');
-        return `${_url.protocol}//${_url.host}${_url.pathname}#preset=${preset}`;
+          value: this.value,
+        }), 'utf8').toString('base64')
+        return `${_url.protocol}//${_url.host}${_url.pathname}#preset=${preset}`
       },
     },
     methods: {
-      clear() {
-        this.input = '';
-        this.rule = '';
-        this.value = '';
+      clear () {
+        this.input = ''
+        this.rule = ''
+        this.value = ''
       },
     },
-    mounted() {
+    beforeMount () {
       if (process.client) {
-        const hash = new URLSearchParams(window.location.hash.substr(1));
+        const hash = new URLSearchParams(window.location.hash.substr(1))
         if (hash.has('preset')) {
           try {
-            const preset = JSON.parse(new Buffer(hash.get('preset'), 'base64').toString('utf8'));
-            const {type, url, rule, value} = preset;
+            const preset = JSON.parse(new Buffer(hash.get('preset'), 'base64').toString('utf8'))
+            const { type, url, rule, value } = preset
             if ([undefined, 0, 1].indexOf(type) !== -1 && url && rule && value) {
-              this.type = type ? 'redirect' : 'rewrite';
-              this.input = url;
-              this.rule = rule;
-              this.value = value;
+              this.type = type ? 'redirect' : 'rewrite'
+              this.input = url
+              this.rule = rule
+              this.value = value
             }
           } catch (e) {
-            console.error('parse preset data error');
+            console.error('parse preset data error')
           }
         }
       }
-    }
+    },
   }
 </script>
 
@@ -181,7 +197,38 @@
         font-size: 12px;
     }
 
+    .success {
+        color: #008548;
+    }
+
     .error {
         color: red;
+    }
+
+    .parameters {
+        width:100%;
+        border-collapse: collapse;
+        border: 1px solid grey;
+    }
+
+    .parameters th, .parameters td {
+        padding: 8px;
+        border: 1px solid grey;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    .parameters th {
+        text-align: left;
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .parameters tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .parameters tr:hover {
+        background-color: #ddd;
     }
 </style>

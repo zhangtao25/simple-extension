@@ -13,6 +13,9 @@ import {
 import { ClearCookies, GetCookies, GetDomain, SetCookies } from './utils'
 import { UA } from './ua_list'
 
+/**
+ * {Setting}
+ */
 let setting
 const __menu__ = {
   title: MenuRootText,
@@ -24,7 +27,7 @@ const __menu__ = {
         {
           //菜单保存Cookies
           title: StringSave,
-          onclick: async(info, tab) => {
+          onclick: async (info, tab) => {
             const domain = GetDomain(info.pageUrl)
             const cookies = await GetCookies(info.pageUrl)
             cookies.forEach(cookie => {
@@ -36,7 +39,7 @@ const __menu__ = {
             chrome.windows.update(tab.windowId, { focused: true })
 
             //取消保存
-            if(name === null || name.trim().length === 0) {
+            if (name === null || name.trim().length === 0) {
               console.log('取消保存Cookies')
               return
             }
@@ -58,7 +61,7 @@ const __menu__ = {
           type: 'checkbox',
           onclick: (info, tab) => {
             const domain = GetDomain(info.pageUrl)
-            if(!domain)
+            if (!domain)
               return
             setting.setDefaultUA(domain)
             chrome.tabs.reload(tab.id)
@@ -74,7 +77,7 @@ export class Menu {
    *
    * @param _setting {Setting}
    */
-  constructor(_setting) {
+  constructor (_setting) {
     setting = _setting
     this.menus = {}
     this.cookiesMenus = []
@@ -84,32 +87,32 @@ export class Menu {
         hasChildren = child.hasOwnProperty('children'),
         hasOnClick = child.hasOwnProperty('onclick')
 
-      if(!hasChildren && !hasOnClick)
+      if (!hasChildren && !hasOnClick)
         throw Error('缺少children数组或onclick事件：' + title)
 
       const data = { title }
-      if(parentId)
+      if (parentId)
         data.parentId = parentId
-      if(hasOnClick) {
+      if (hasOnClick) {
         data.onclick = (info, tab) => {
           const res = child.onclick(info, tab)
-          if(res && res.constructor === Promise) {
+          if (res && res.constructor === Promise) {
             res.then(res => {
               console.log('更新menu', res)
-              if(res && res.domain) {
+              if (res && res.domain) {
                 this.update(info.pageUrl, res.domain)
               }
             })
           }
         }
       }
-      if(child.hasOwnProperty('type'))
+      if (child.hasOwnProperty('type'))
         data.type = child.type
-      if(child.hasOwnProperty('documentUrlPatterns'))
+      if (child.hasOwnProperty('documentUrlPatterns'))
         data.documentUrlPatterns = child.documentUrlPatterns
       const menuId = chrome.contextMenus.create(data)
 
-      if(hasChildren) {
+      if (hasChildren) {
         child.children.forEach(item => {
           this.menus[item.title] = loop(menuId, item)
         })
@@ -124,7 +127,7 @@ export class Menu {
    * @param url
    * @param domain
    */
-  update(url, domain) {
+  update (url, domain) {
     this.__updateRootMenu(domain)
     this.__updateCookiesMenu(url, domain)
     this.__updateUAMenu(domain)
@@ -134,7 +137,7 @@ export class Menu {
    *
    * @param domain {string}
    */
-  __updateRootMenu(domain) {
+  __updateRootMenu (domain) {
     // console.log('updateRootMenu', GetLanguageString(MenuRootText, [['%domain', domain]]));
     chrome.contextMenus.update(this.menus[MenuRootText],
       { title: GetLanguageString(MenuRootText, [['%domain', domain]]) })
@@ -145,7 +148,7 @@ export class Menu {
    * @param url {string}
    * @param domain {string}
    */
-  __updateCookiesMenu(url, domain) {
+  __updateCookiesMenu (url, domain) {
     //保存Cookie的菜单
 
     GetCookies(url).then(cookies => {
@@ -159,7 +162,7 @@ export class Menu {
     // 切换Cookie
     try {
       chrome.contextMenus.remove(this.menus[MenuCookieUseText])
-    } catch(e) {
+    } catch (e) {
       // console.log(e);
     }
     const parentId = this.menus[MenuCookieRootText]
@@ -171,8 +174,8 @@ export class Menu {
       title: GetLanguageString(MenuCookieUseText),
       enabled: domainCookies && Object.keys(domainCookies.cookies).length > 0,
     })
-    if(domainCookies) {
-      for(let name in domainCookies.cookies) {
+    if (domainCookies) {
+      for (let name in domainCookies.cookies) {
         chrome.contextMenus.create({
           parentId: this.menus[MenuCookieUseText],
           title: name,
@@ -197,13 +200,13 @@ export class Menu {
     }
   }
 
-  __updateUAMenu(domain) {
+  __updateUAMenu (domain) {
 
     //清空子菜单
     this.uaMenus.forEach(id => {
       try {
         chrome.contextMenus.remove(id)
-      } catch(e) {
+      } catch (e) {
       }
     })
     this.uaMenus.length = 0
@@ -217,12 +220,12 @@ export class Menu {
     const ua_list = Object.assign({}, UA,
       { custom: setting.customUA })
 
-    for(let os in ua_list) {
+    for (let os in ua_list) {
       const title = os !== 'custom' ? os : GetLanguageString(MenuCustomUA)
       const osId = chrome.contextMenus.create(
         { title, parentId: this.menus[MenuUseragentRootText] })
       this.uaMenus.push(osId)
-      for(let browser in ua_list[os]) {
+      for (let browser in ua_list[os]) {
         const current = os + '_' + browser
         chrome.contextMenus.create({
           parentId: osId,
