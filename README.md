@@ -7,7 +7,7 @@ Base on [chrome-extension-webpack-boilerplate](https://github.com/samuelsimoes/c
 
 Development steps:
 1. Run `npm run start`
-2. Follow [Load Unpacked](https://developer.chrome.com/extensions/getstarted#manifest) step.
+2. Follow the [Load Unpacked](https://developer.chrome.com/extensions/getstarted#manifest) step.
 
 
 [The Privacy Policy](./PrivacyPolicy.md)
