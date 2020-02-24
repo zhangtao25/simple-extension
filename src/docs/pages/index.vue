@@ -54,7 +54,7 @@
             <br/>
             Preset Link <input :value="preset" style="width: 400px" onclick="this.select()"/>
         </div>
-        <div>
+        <div class="result">
             <div>Result</div>
             <div v-html="result"></div>
         </div>
@@ -216,6 +216,7 @@
         border: 1px solid grey;
         white-space: pre-wrap;
         word-break: break-word;
+        min-width: 40px;
     }
 
     .parameters th {
@@ -230,5 +231,10 @@
 
     .parameters tr:hover {
         background-color: #ddd;
+    }
+
+    .result {
+        overflow-wrap: break-word;
+        word-wrap: break-word;
     }
 </style>

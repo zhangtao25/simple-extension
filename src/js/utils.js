@@ -137,16 +137,16 @@ export function URLRewrite (_url, _rule, _value) {
   if (toQuery)
     Object.keys(toQuery).forEach(key => {
       const match = toQuery[key].match(keyRegexp)
+      let value = toQuery[key]
       if (match) {
         const dataKey = match[1]
         if (data.hasOwnProperty(dataKey)) {
-          toSearchParams.append(key, data[dataKey])
+          value = data[dataKey]
         } else {
           throw new Error(`Missing key: <strong>${dataKey}</strong>`)
         }
-      } else {
-        toSearchParams.append(key, toQuery[key])
       }
+      toSearchParams.append(key, decodeURIComponent(value))
     })
 
   let to = compile(toInput.pathname)
