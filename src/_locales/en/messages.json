@@ -12,7 +12,7 @@
     "message": "Cookie"
   },
   "menu_cookie_empty_text": {
-    "message": "Save(But %domain Cookies Empty)"
+    "message": "Save(But %domain No Cookies)"
   },
   "menu_cookie_use_text": {
     "message": "Switch Cookies"
@@ -102,7 +102,7 @@
     "message": "Cancel"
   },
   "string_requests": {
-    "message": "Requests"
+    "message": "Network Request Monitoring"
   },
   "string_ua": {
     "message": "User-Agent"
@@ -138,7 +138,7 @@
     "message": "Listened URL"
   },
   "string_host_rewrite": {
-    "message": "Host Rewrite"
+    "message": "Url Rewrite"
   },
   "string_host_rewrite_to": {
     "message": "Rewrite to"
@@ -192,6 +192,9 @@
     "message": "About"
   },
   "string_can_not_empty": {
-    "message": "value is required"
+    "message": "Required"
+  },
+  "string_no_data": {
+    "message": "No Data"
   }
 }

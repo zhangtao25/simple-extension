@@ -12,7 +12,12 @@
                     <el-button type="text" icon="el-icon-delete" size="mini" @click="clearUrls"></el-button>
                 </div>
                 <div class="urls">
-                    <el-table :show-header="false" :data="urls" stripe max-height="200" size="mini">
+                    <el-table stripe
+                              size="mini"
+                              max-height="200"
+                              :show-header="false"
+                              :data="urls"
+                              :empty-text="ui.noData">
                         <el-table-column>
                             <template slot-scope="scope">
                                 <el-input :value="scope.row.url" size="mini" @focus="clickSelect"/>
@@ -87,6 +92,7 @@
           list: GetLanguageString(StringUrlList),
           read_privacy_policy: GetLanguageString('string_read_privacy_policy'),
           open_privacy_policy: GetLanguageString('string_open_privacy_policy'),
+          noData: GetLanguageString('string_no_data'),
         },
         agree: setting.config['read_privacy_policy'],
       }

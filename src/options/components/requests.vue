@@ -1,39 +1,40 @@
 <template>
-    <div>
-        <el-table :data="list" :show-header="false" :size="size">
-            <el-table-column v-if="editable"
-                             type="index"
-                             width="50">
-            </el-table-column>
-            <!--<el-table-column v-if="editable">
-                <template slot-scope="scope">
-                    <el-input v-model="list[scope.$index]" @change="$emit('changed')"
-                              @keypress.enter.native="checkEmpty"
-                              @blur="checkEmpty" :size="size"></el-input>
-                </template>
-            </el-table-column>
-            <el-table-column v-else>
-                <template slot-scope="scope">
-                    {{scope.row}}
-                </template>
-            </el-table-column>-->
-            <el-table-column>
-                <template slot-scope="scope">
-                    {{scope.row}}
-                </template>
-            </el-table-column>
-            <el-table-column v-if="editable" width="60px">
-                <template slot-scope="scope">
-                    <el-button icon="el-icon-delete" type="text" circle
-                               @click="deleteRequest(scope.$index, scope.row)"></el-button>
-                </template>
+    <el-table :data="list"
+              :show-header="false"
+              :size="size"
+              :empty-text="ui.noData">
+        <el-table-column v-if="editable"
+                         type="index"
+                         width="50">
+        </el-table-column>
+        <!--<el-table-column v-if="editable">
+            <template slot-scope="scope">
+                <el-input v-model="list[scope.$index]" @change="$emit('changed')"
+                          @keypress.enter.native="checkEmpty"
+                          @blur="checkEmpty" :size="size"></el-input>
+            </template>
+        </el-table-column>
+        <el-table-column v-else>
+            <template slot-scope="scope">
+                {{scope.row}}
+            </template>
+        </el-table-column>-->
+        <el-table-column>
+            <template slot-scope="scope">
+                {{scope.row}}
+            </template>
+        </el-table-column>
+        <el-table-column v-if="editable" width="60px">
+            <template slot-scope="scope">
+                <el-button icon="el-icon-delete" type="text" circle
+                           @click="deleteRequest(scope.$index, scope.row)"></el-button>
+            </template>
             </el-table-column>
         </el-table>
-    </div>
 </template>
 
 <script>
-  import { ConfirmDelete, GetLanguageString, PromptHowToGetTheRequestUrl } from '../../js/i18_string_name'
+  import { ConfirmDelete, GetLanguageString, PromptHowToGetTheRequestUrl, StringNoData } from '../../js/i18_string_name'
 
   export default {
     props: {
@@ -46,6 +47,7 @@
         ui: {
           delete: GetLanguageString(ConfirmDelete),
           add: GetLanguageString(PromptHowToGetTheRequestUrl),
+          noData: GetLanguageString(StringNoData),
         },
         addNew: { add: true, value: '', index: '+' },
       }

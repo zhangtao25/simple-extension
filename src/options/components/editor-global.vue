@@ -6,19 +6,17 @@
                     {{ui.string_custom_ua_list}}
                     <el-button size="mini" type="success" @click="addUA">{{ui.add}}</el-button>
                 </div>
-                <el-table :data="customUA" border size="mini" @row-click="rowClick">
+                <el-table :data="customUA" border size="mini" @row-click="rowClick" :empty-text="ui.noData">
                     <el-table-column
                             prop="name"
-                            label="名称"
+                            :label="ui.name"
                             width="300">
                     </el-table-column>
                     <el-table-column
                             prop="value"
-                            label="值">
+                            :label="ui.value">
                     </el-table-column>
-                    <el-table-column
-                            prop="value"
-                            width="150">
+                    <el-table-column width="160">
                         <template slot-scope="scope">
                             <el-button size="mini" @click="editUA(scope.$index)" type="primary">{{ui.edit}}</el-button>
                             <el-button size="mini" type="danger" @click="deleteUA(scope.$index)">{{ui.delete}}
@@ -47,9 +45,9 @@
     StringAdd,
     StringDelete,
     StringEdit,
+    StringNoData,
   } from '../../js/i18_string_name'
   import EditUaDialog from './edit-ua-dialog'
-  import { findIndex, get } from 'lodash'
 
   const { setting } = chrome.extension.getBackgroundPage()
 
@@ -65,6 +63,9 @@
           edit: GetLanguageString(StringEdit),
           delete: GetLanguageString(StringDelete),
           clearData: GetLanguageString('string_clear_extension_data'),
+          noData: GetLanguageString(StringNoData),
+          name: GetLanguageString('string_name'),
+          value: GetLanguageString('string_value'),
         },
         customUA: [],
       }

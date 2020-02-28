@@ -102,7 +102,7 @@
     "message": "取消"
   },
   "string_requests": {
-    "message": "简易网络请求检测"
+    "message": "简易网络请求监测"
   },
   "string_ua": {
     "message": "User-Agent"
@@ -193,5 +193,8 @@
   },
   "string_can_not_empty": {
     "message": "不能留空，请填入内容"
+  },
+  "string_no_data": {
+    "message": "暂无数据"
   }
 }

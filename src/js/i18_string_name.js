@@ -56,7 +56,8 @@ export const
   StringWebsiteSetting = 'string_website_setting',
   StringAddUA = 'string_add_useragent',
   StringEditUA = 'string_edit_useragent',
-  StringPrivacyPolicy='string_privacy_policy'
+  StringPrivacyPolicy='string_privacy_policy',
+  StringNoData='string_no_data'
 
 /**
  * @param name {String}

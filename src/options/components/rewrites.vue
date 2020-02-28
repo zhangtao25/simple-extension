@@ -1,5 +1,8 @@
 <template>
-    <el-table :data="list" :show-header="false" :size="size">
+    <el-table :data="list"
+              :show-header="false"
+              :size="size"
+              :empty-text="ui.noData">
         <el-table-column v-if="editable"
                          type="index"
                          width="50">
@@ -54,7 +57,13 @@
 </template>
 
 <script>
-  import {ConfirmDelete, GetLanguageString, PromptRewriteName, StringRewriteTo} from "../../js/i18_string_name";
+  import {
+    ConfirmDelete,
+    GetLanguageString,
+    PromptRewriteName,
+    StringNoData,
+    StringRewriteTo,
+  } from '../../js/i18_string_name'
 
   export default {
     props: {
@@ -69,6 +78,7 @@
           rewriteTo: GetLanguageString(StringRewriteTo),
           rewriteName: GetLanguageString(PromptRewriteName),
           delete: GetLanguageString(ConfirmDelete),
+          noData: GetLanguageString(StringNoData),
         },
       };
     },
