@@ -5,3 +5,4 @@ secrets.*.js
 .nuxt
 docs
 simple-extension.iml
+yarn.lock
