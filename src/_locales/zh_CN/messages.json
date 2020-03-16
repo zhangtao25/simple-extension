@@ -146,6 +146,9 @@
   "string_chrome_store_page": {
     "message": "Chrome Store 的扩展主页"
   },
+  "string_edge_store_page": {
+    "message": "微软 Edge 的扩展主页"
+  },
   "string_link": {
     "message": "链接"
   },

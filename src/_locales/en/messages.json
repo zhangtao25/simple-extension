@@ -146,6 +146,9 @@
   "string_chrome_store_page": {
     "message": "Chrome Store Extension Home Page"
   },
+  "string_edge_store_page": {
+    "message": "Edge Addon Home Page"
+  },
   "string_link": {
     "message": "Link"
   },

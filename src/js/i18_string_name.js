@@ -44,6 +44,7 @@ export const
   StringBrowserActionEnable = 'string_browser_action_enable',
   StringBrowserActionDisabled = 'string_browser_action_disabled',
   StringChromeStorePage = 'string_chrome_store_page',
+  StringEdgeStorePage = 'string_edge_store_page',
   StringLink = 'string_link',
   StringAuthor = 'string_author',
   StringLibraries = 'string_libraries',

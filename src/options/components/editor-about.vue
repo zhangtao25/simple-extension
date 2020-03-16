@@ -16,8 +16,10 @@
                 <a href="/privacy_policy.html" target="_blank">{{ui.privacy_policy}}</a>
             </li>
             <li class="title">
-                <a href="https://chrome.google.com/webstore/detail/ofhbnimjijmnaigdfhhmhegnlmcbilba"
-                   target="_blank">{{ui.store}}</a>
+<!--                <a href="https://chrome.google.com/webstore/detail/ofhbnimjijmnaigdfhhmhegnlmcbilba"-->
+<!--                   target="_blank">{{ui.store}}</a>-->
+                <a href="https://microsoftedge.microsoft.com/addons/detail/kifnmdppleeacpldkcceoficmncfdmoa"
+                   target="_blank">{{ui.edgeStore}}</a>
             </li>
             <li class="title">
                 <a href="https://gzlock.github.io/simple-extension"
@@ -39,6 +41,7 @@
     StringPrivacyPolicy,
     StringUrlTestTool,
   } from '../../js/i18_string_name'
+  import { StringEdgeStorePage } from '@/Users/lock/Desktop/simple-extension/src/js/i18_string_name'
 
   export default {
     name: 'editor-about',
@@ -51,6 +54,7 @@
           libraries: GetLanguageString(StringLibraries),
           open_source: GetLanguageString(StringOpenSource),
           store: GetLanguageString(StringChromeStorePage),
+          edgeStore: GetLanguageString(StringEdgeStorePage),
           tool: GetLanguageString(StringUrlTestTool),
           link: GetLanguageString(StringLink),
           privacy_policy: GetLanguageString(StringPrivacyPolicy),
