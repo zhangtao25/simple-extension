@@ -7,6 +7,7 @@ import { SetCookies } from '../js/utils'
 //启动Chrome填充所有Cookies
 const setting = window.setting = new Setting()
 
+
 setting.init().then(() => {
   console.log('background setting', setting)
   console.log('setting', setting)

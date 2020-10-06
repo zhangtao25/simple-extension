@@ -1,13 +1,16 @@
 <template>
     <el-tabs type="border-card" v-model="activeName">
         <el-tab-pane :label="ui.tab_global_setting" name="global">
-            <editor-global/>
+            <editor-global v-if="activeName === 'global'"/>
         </el-tab-pane>
         <el-tab-pane :label="ui.tab_website_setting" name="website">
             <editor-domain v-if="activeName === 'website'"/>
         </el-tab-pane>
+        <el-tab-pane :label="ui.data" name="data">
+            <editor-data v-if="activeName === 'data'"/>
+        </el-tab-pane>
         <el-tab-pane :label="ui.about" name="about">
-            <editor-about v-if="activeName === 'about'"/>
+            <editor-about/>
         </el-tab-pane>
     </el-tabs>
 </template>
@@ -18,7 +21,6 @@
     StringGlobalEditor,
     StringGlobalSetting,
     StringWebsiteSetting,
-    PluginName,
   } from '../../js/i18_string_name'
   import Cookies from './cookies'
   import Requests from './requests'
@@ -27,11 +29,11 @@
   import EditorGlobal from './editor-global'
   import EditorDomain from './editor-domain'
   import EditorAbout from './editor-about'
-
-  const { setting } = chrome.extension.getBackgroundPage()
+  import EditorData from './editor-data'
 
   export default {
     components: {
+      EditorData,
       EditorAbout,
       EditorDomain,
       EditorGlobal,
@@ -48,11 +50,11 @@
           tab_global_setting: GetLanguageString(StringGlobalSetting),
           tab_website_setting: GetLanguageString(StringWebsiteSetting),
           about: GetLanguageString('string_about'),
+          data: GetLanguageString('string_data'),
         },
         activeName: 'global',
       }
     },
-    methods: {},
     beforeMount () {
       document.title = this.ui.title
       if (window.location.hash) {

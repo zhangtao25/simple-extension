@@ -261,23 +261,6 @@ export async function ClearCookies (url) {
 }
 
 /**
- * 读取Chrome的Storage
- * @param get
- * @param defaultValue
- * @returns {Promise<{}>}
- * @function
- */
-export function GetStorage (get, defaultValue = {}) {
-  return new Promise(resolve => {
-    chrome.storage.local.get(get, items => {
-      if (Object.keys(items).length === 0 && items.constructor === Object)
-        return resolve(defaultValue)
-      resolve(items)
-    })
-  })
-}
-
-/**
  *
  * @param message
  * @param _default

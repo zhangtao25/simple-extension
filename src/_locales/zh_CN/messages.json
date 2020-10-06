@@ -80,6 +80,18 @@
   "string_clear_extension_data": {
     "message": "清空所有数据"
   },
+  "string_data": {
+    "message": "数据"
+  },
+  "string_data_hint": {
+    "message": "<i class=\"el-icon-info\"/>已经全面使用chrome.storage.sync接口存放数据。<br>请尽量避免使用这个功能。"
+  },
+  "string_get_data": {
+    "message": "导出配置数据"
+  },
+  "string_save_data": {
+    "message": "导入配置数据"
+  },
   "string_cookies": {
     "message": "Cookies"
   },

@@ -80,6 +80,18 @@
   "string_clear_extension_data": {
     "message": "Clear extension data"
   },
+  "string_data": {
+    "message": "Data"
+  },
+  "string_data_hint": {
+    "message": "<i class=\"el-icon-info\"/>The chrome.storage.sync interface has been completely used to store data.<br/>Please avoid using this feature."
+  },
+  "string_get_data": {
+    "message": "Get Data"
+  },
+  "string_save_data": {
+    "message": "Set Data"
+  },
   "string_cookies": {
     "message": "Cookies"
   },

@@ -49,7 +49,6 @@
   import {
     ConfirmDelete,
     GetLanguageString,
-    StringGlobalEditor,
     StringHostRewrite,
     StringRequests,
     StringRewriteTo,
@@ -61,7 +60,6 @@
   import Requests from './requests'
   import Rewrites from './rewrites'
   import Ua from './ua'
-  import { DefaultDomainData } from '@/Users/lock/Desktop/simple-extension/src/js/setting'
 
   const { setting } = chrome.extension.getBackgroundPage()
 
@@ -141,6 +139,19 @@
         if (this.domains.includes(selected) === false)
           this.domains.push(selected)
       }
+    },
+    mounted () {
+      this.domains = Object.keys(setting.domains)
+      console.log('域名编辑器 mounted', this.domains)
+      if (window.location.hash) {
+        const selected = window.location.hash.substr(1)
+        this.selectDomain(selected)
+        if (this.domains.includes(selected) === false)
+          this.domains.push(selected)
+      }
+    },
+    destroyed () {
+      console.log('域名编辑器 destroyed')
     },
   }
 </script>

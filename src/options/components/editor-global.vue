@@ -94,9 +94,9 @@
           console.log('编辑 ua')
           if (lastIndex > -1) {
             const overwrite = await new Promise(resolve => {
-              this.$confirm(GetLanguageString('confirm_has_same_name_ua')).
-                then(() => resolve(true)).
-                catch(() => {resolve(false)})
+              this.$confirm(GetLanguageString('confirm_has_same_name_ua'))
+                .then(() => resolve(true))
+                .catch(() => {resolve(false)})
             })
             if (overwrite === false)
               return
@@ -177,6 +177,16 @@
     created () {
       const keys = Object.keys(setting.customUA)
       keys.forEach(name => {this.customUA.push({ name, value: setting.customUA[name] })})
+    },
+    mounted () {
+      chrome.storage.onChanged.addListener(() => {
+        chrome.storage.sync.get(data => {
+          console.log('UA编辑器 changed', data.customUA)
+          const keys = Object.keys(data.customUA)
+          this.customUA.length = 0
+          keys.forEach(name => {this.customUA.push({ name, value: data.customUA[name] })})
+        })
+      })
     },
   }
 </script>

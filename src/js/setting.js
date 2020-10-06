@@ -1,4 +1,3 @@
-import { GetStorage } from './utils'
 import { get } from 'lodash'
 
 /**
@@ -31,10 +30,16 @@ export function IsDomainSettingEmpty (data) {
 const mainKey = ['domains', 'config', 'customUA']
 
 export class Setting {
-  constructor () {}
+  constructor () {
+    chrome.storage.onChanged.addListener(async () => {
+      await this.init()
+    })
+  }
 
   async init () {
-    this.data = await GetStorage(null, {})
+    this.data = await new Promise(resolve => {
+      chrome.storage.sync.get(resolve)
+    })
 
     //不是现在的版本，处理数据
     if (this.data.hasOwnProperty('domains') === false)
@@ -65,24 +70,7 @@ export class Setting {
     this.config['version'] = chrome.runtime.getManifest().version
 
     //删除无用数据
-    chrome.storage.local.remove(
-      Object.keys(this.data).filter(key => !mainKey.includes(key)))
-
-    chrome.storage.onChanged.addListener((changes, areaName) => {
-      console.log('%c storage Change', 'color: green', changes, areaName)
-      if (Object.keys(changes).length > 0) {
-        for (let key in changes) {
-          const change = changes[key]
-          if (change['newValue']) {
-            if (!this.data[key])
-              this.data[key] = {}
-            // Vue.set(this.data, key, change['newValue']);
-            Object.assign(this.data[key], change['newValue'])
-            // this.data[key] = change['newValue'];
-          }
-        }
-      }
-    })
+    this.data = Object.keys(this.data).filter(key => !mainKey.includes(key))
 
     await this.save()
   }
@@ -383,7 +371,7 @@ export class Setting {
    */
   save () {
     return new Promise(resolve => {
-      chrome.storage.local.set(this.data, () => {
+      chrome.storage.sync.set(this.data, () => {
         resolve()
       })
     })
@@ -393,7 +381,31 @@ export class Setting {
    * 清空所有扩展数据
    */
   clear () {
-    chrome.storage.local.clear()
+    chrome.storage.sync.clear()
     this.init()
+  }
+
+  /**
+   * 同步数据
+   */
+  async sync () {
+    const data = await new Promise(resolve => {
+      chrome.storage.sync.get(data => resolve(data))
+    })
+    await new Promise(resolve => {
+      chrome.storage.sync.set(data, () => {
+        console.log('云存储', 'ok')
+      })
+    })
+  }
+
+  /**
+   * sync用量
+   * @return {Promise<void>}
+   */
+  async used () {
+    return new Promise(resolve => {
+      chrome.storage.sync.getBytesInUse(used => resolve(used))
+    })
   }
 }
