@@ -84,7 +84,7 @@
     "message": "数据"
   },
   "string_data_hint": {
-    "message": "<i class=\"el-icon-info\"/>已经全面使用chrome.storage.sync接口存放数据。<br>请尽量避免使用这个功能。"
+    "message": "<i class=\"el-icon-info\"/>已经全面使用chrome.storage.sync接口存放数据。<br>请尽量避免手动修改数据。"
   },
   "string_get_data": {
     "message": "导出配置数据"
