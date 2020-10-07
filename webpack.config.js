@@ -45,21 +45,21 @@ const entry = {
   popup: path.join(__dirname, 'src', 'popup', 'index.js'),
   options: path.join(__dirname, 'src', 'options', 'index.js'),
   background: path.join(__dirname, 'src', 'background', 'index.js'),
-  privacy_policy: path.join(__dirname, 'src', 'privacy_policy', 'index.js'),
+  // privacy_policy: path.join(__dirname, 'src', 'privacy_policy', 'index.js'),
 }
 
 
-{
-  //将PrivacyPolicy.md转为两种语言的html写入到对应的.vue文件
-  const basePath = path.join(__dirname, 'src', 'privacy_policy')
-  let content = fs.readFileSync('./PrivacyPolicy.md', 'utf-8')
-  content = content.split('\n###')
-  const zh = converter.makeHtml(content[0]),
-    en = converter.makeHtml('###' + content[1])
-  let template = fs.readFileSync(path.join(basePath, 'App.vue'), 'utf-8')
-  template = template.replace('{zh_markdown}', zh).replace('{en_markdown}', en)
-  fs.writeFileSync(path.join(basePath, 'NewApp.vue'), template)
-}
+// {
+//   //将PrivacyPolicy.md转为两种语言的html写入到对应的.vue文件
+//   const basePath = path.join(__dirname, 'src', 'privacy_policy')
+//   let content = fs.readFileSync('./PrivacyPolicy.md', 'utf-8')
+//   content = content.split('\n###')
+//   const zh = converter.makeHtml(content[0]),
+//     en = converter.makeHtml('###' + content[1])
+//   let template = fs.readFileSync(path.join(basePath, 'App.vue'), 'utf-8')
+//   template = template.replace('{zh_markdown}', zh).replace('{en_markdown}', en)
+//   fs.writeFileSync(path.join(basePath, 'NewApp.vue'), template)
+// }
 
 const options = {
   mode: process.env.NODE_ENV || 'development',

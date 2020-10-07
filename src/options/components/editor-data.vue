@@ -28,6 +28,8 @@
   import 'codemirror/addon/fold/indent-fold.js'
   import 'codemirror/addon/fold/markdown-fold.js'
   import 'codemirror/addon/fold/xml-fold.js'
+  import 'codemirror/addon/selection/active-line'
+  import 'codemirror/addon/selection/selection-pointer'
   // import base style
   import 'codemirror/lib/codemirror.css'
   import 'codemirror/theme/base16-light.css'
@@ -91,20 +93,22 @@
         try {
           data = JSON.parse(this.code)
           if (!lodash.isObject(data)) {
-            data = {}
+            await setting.init()
+            data = setting.data
           }
           console.log('数据', data)
           const domains = data['domains']
-          Object.keys(domains).forEach(key => {
-            // console.log('域名', key, domains[key])
-            domains[key] = formatDomainData(domains[key])
-          })
-          this.code = JSON.stringify(data, null, 2)
+          if (domains)
+            Object.keys(domains).forEach(key => {
+              // console.log('域名', key, domains[key])
+              domains[key] = formatDomainData(domains[key])
+            })
         } catch (e) {
           console.error(e)
           this.$message.error(`error: ${e}`)
           return
         }
+        this.code = JSON.stringify(data, null, 2)
         await new Promise(resolve => {
           chrome.storage.sync.set(data, resolve)
         })

@@ -1,66 +1,60 @@
 <template>
     <div class="el-form el-form--label-top">
-        <template v-if="agree">
-            <div class="title el-form-item">
-                <h2 class="title el-form-item__label">
-                    <el-button type="text" @click="goPanel">{{domain}} <i class="el-icon-setting"/></el-button>
-                    <el-button v-if="isDev" type="text" @click="reload">刷新</el-button>
-                </h2>
+        <div class="title el-form-item">
+            <h2 class="title el-form-item__label">
+                <el-button type="text" @click="goPanel">{{domain}} <i class="el-icon-setting"/></el-button>
+                <el-button v-if="isDev" type="text" @click="reload">刷新</el-button>
+            </h2>
+        </div>
+        <div class="el-form-item">
+            <div class="el-form-item__label">{{ui.list}}
+                <el-button type="text" icon="el-icon-delete" size="mini" @click="clearUrls"></el-button>
             </div>
-            <div class="el-form-item">
-                <div class="el-form-item__label">{{ui.list}}
-                    <el-button type="text" icon="el-icon-delete" size="mini" @click="clearUrls"></el-button>
-                </div>
-                <div class="urls">
-                    <el-table stripe
-                              size="mini"
-                              max-height="200"
-                              :show-header="false"
-                              :data="urls"
-                              :empty-text="ui.noData">
-                        <el-table-column>
-                            <template slot-scope="scope">
-                                <el-input :value="scope.row.url" size="mini" @focus="clickSelect"/>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </div>
+            <div class="urls">
+                <el-table stripe
+                          size="mini"
+                          max-height="200"
+                          :show-header="false"
+                          :data="urls"
+                          :empty-text="ui.noData">
+                    <el-table-column>
+                        <template slot-scope="scope">
+                            <el-input :value="scope.row.url" size="mini" @focus="clickSelect"/>
+                        </template>
+                    </el-table-column>
+                </el-table>
             </div>
-            <div class="el-form-item">
-                <div class="el-form-item__label">User-Agent</div>
-                <div>
-                    <ua :ua="data.ua" size="mini" @changed="changed"/>
-                </div>
+        </div>
+        <div class="el-form-item">
+            <div class="el-form-item__label">User-Agent</div>
+            <div>
+                <ua :ua="data.ua" size="mini" @changed="changed"/>
             </div>
-            <div class="el-form-item">
-                <div class="el-form-item__label">Cookies
-                    <el-button type="text" icon="el-icon-plus" @click="addCookie"></el-button>
-                </div>
-                <div>
-                    <cookies :cookies="data.cookies" :domain="domain" size="mini" @changed="changed"/>
-                </div>
+        </div>
+        <div class="el-form-item">
+            <div class="el-form-item__label">Cookies
+                <el-button type="text" icon="el-icon-plus" @click="addCookie"></el-button>
             </div>
-            <div class="el-form-item">
-                <div class="el-form-item__label">{{ui.requests}}
-                    <el-button type="text" icon="el-icon-plus" @click="goPanel"></el-button>
-                </div>
-                <div>
-                    <requests :list="data.requests" :domain="domain" size="mini"/>
-                </div>
+            <div>
+                <cookies :cookies="data.cookies" :domain="domain" size="mini" @changed="changed"/>
             </div>
-            <div class="el-form-item">
-                <div class="el-form-item__label">{{ui.rewrites}}
-                    <el-button type="text" icon="el-icon-plus" @click="goPanel"></el-button>
-                </div>
-                <div>
-                    <rewrites :list="data.rewrites" :domain="domain" size="mini"/>
-                </div>
+        </div>
+        <div class="el-form-item">
+            <div class="el-form-item__label">{{ui.requests}}
+                <el-button type="text" icon="el-icon-plus" @click="goPanel"></el-button>
             </div>
-        </template>
-        <template v-else>
-            <h3>{{ui.read_privacy_policy}}</h3>
-            <el-button @click="openPrivacyPolicy">{{ui.open_privacy_policy}}</el-button>
-        </template>
+            <div>
+                <requests :list="data.requests" :domain="domain" size="mini"/>
+            </div>
+        </div>
+        <div class="el-form-item">
+            <div class="el-form-item__label">{{ui.rewrites}}
+                <el-button type="text" icon="el-icon-plus" @click="goPanel"></el-button>
+            </div>
+            <div>
+                <rewrites :list="data.rewrites" :domain="domain" size="mini"/>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -90,8 +84,6 @@
           requests: GetLanguageString(StringRequests),
           rewrites: GetLanguageString(StringHostRewrite),
           list: GetLanguageString(StringUrlList),
-          read_privacy_policy: GetLanguageString('string_read_privacy_policy'),
-          open_privacy_policy: GetLanguageString('string_open_privacy_policy'),
           noData: GetLanguageString('string_no_data'),
         },
         agree: setting.config['read_privacy_policy'],
@@ -143,9 +135,6 @@
           data.selected = name
           setting.save()
         }
-      },
-      openPrivacyPolicy () {
-        window.open('/privacy_policy.html?domain=' + this.domain)
       },
     },
   }

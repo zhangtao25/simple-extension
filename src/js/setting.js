@@ -70,8 +70,12 @@ export class Setting {
     this.config['version'] = chrome.runtime.getManifest().version
 
     //删除无用数据
-    this.data = Object.keys(this.data).filter(key => !mainKey.includes(key))
-
+    // this.data = Object.keys(this.data).filter(key => !mainKey.includes(key))
+    this.data = {
+      config: this.config,
+      domains: this.domains,
+      customUA: this.customUA,
+    }
     await this.save()
   }
 
@@ -370,6 +374,7 @@ export class Setting {
    * @returns {Promise}
    */
   save () {
+    console.log('save', this.data)
     return new Promise(resolve => {
       chrome.storage.sync.set(this.data, () => {
         resolve()
