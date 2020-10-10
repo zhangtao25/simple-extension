@@ -1,4 +1,4 @@
-import { get } from 'lodash'
+import lodash from 'lodash'
 
 /**
  * default domain data form
@@ -31,30 +31,34 @@ const mainKey = ['domains', 'config', 'customUA']
 
 export class Setting {
   constructor () {
-    chrome.storage.onChanged.addListener(async () => {
-      await this.init()
-    })
+    this.data = this.data || {}
+    console.log('constructor data', this.data)
   }
 
   async init () {
-    this.data = await new Promise(resolve => {
-      chrome.storage.sync.get(resolve)
+    console.log('init data 1', this.data)
+    await new Promise(resolve => {
+      chrome.storage.sync.get((data) => {
+        lodash.merge(this.data, data)
+        resolve()
+      })
     })
+    console.log('init data 2', this.data)
 
     //不是现在的版本，处理数据
-    if (this.data.hasOwnProperty('domains') === false)
+    if (!this.data['domains'])
       this.data['domains'] = {}
     this.domains = this.data['domains']
 
-    if (this.data.hasOwnProperty('customUA') === false)
+    if (!this.data['customUA'])
       this.data['customUA'] = {}
     this.customUA = this.data['customUA']
 
-    if (this.data.hasOwnProperty('config') === false)
+    if (!this.data['config'])
       this.data['config'] = {}
     this.config = this.data['config']
 
-    const configVersion = get(this.data, 'config.version')
+    const configVersion = lodash.get(this.data, 'config.version')
     if (configVersion !== chrome.runtime.getManifest().version) {
       console.log('处理旧版本数据')
       const keys = Object.keys(this.data)
@@ -69,6 +73,7 @@ export class Setting {
     //更新版本记录
     this.config['version'] = chrome.runtime.getManifest().version
 
+    console.log('init 完毕', this.data)
     await this.save()
   }
 

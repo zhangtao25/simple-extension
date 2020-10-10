@@ -93,19 +93,20 @@
         try {
           data = JSON.parse(this.code)
           if (!lodash.isObject(data)) {
+            console.log('重新获取数据')
             await setting.init()
             data = setting.data
           }
-          console.log('数据', data)
           const domains = data['domains']
           if (domains)
             Object.keys(domains).forEach(key => {
               // console.log('域名', key, domains[key])
               domains[key] = formatDomainData(domains[key])
             })
+          console.log('数据', data)
         } catch (e) {
           console.error(e)
-          this.$message.error(`error: ${e}`)
+          this.$message.error(`Error: ${e}`)
           return
         }
         this.code = JSON.stringify(data, null, 2)
@@ -113,7 +114,7 @@
           chrome.storage.sync.set(data, resolve)
         })
         await setting.init()
-        this.$message.success('success')
+        this.$message.success('Saved')
       },
     },
   }

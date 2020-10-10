@@ -60,11 +60,10 @@
           },
         })
         let find = this.list.indexOf(value)
-        if (find !== -1) {
-          return
+        if (find === -1) {
+          this.list.push(value)
+          this.$emit('changed')
         }
-        this.list.splice(0, 0, value)
-        this.$emit('changed')
       },
       async deleteRequest (index, value) {
         if (this.list.length > index) {

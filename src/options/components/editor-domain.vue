@@ -99,6 +99,7 @@
         // console.log('selectDomain', domain, this.data)
       },
       changed () {
+        console.log('changed save')
         setting.save()
       },
       addCookie () {
@@ -130,28 +131,32 @@
           this.selectedDomain = ''
         }).catch(() => {})
       },
+      reload () {
+        this.domains = Object.keys(setting.domains)
+        if (window.location.hash) {
+          const selected = window.location.hash.substr(1)
+          this.selectDomain(selected)
+          if (this.domains.includes(selected) === false)
+            this.domains.push(selected)
+        }
+      },
     },
-    beforeMount () {
-      this.domains = Object.keys(setting.domains)
-      if (window.location.hash) {
-        const selected = window.location.hash.substr(1)
-        this.selectDomain(selected)
-        if (this.domains.includes(selected) === false)
-          this.domains.push(selected)
-      }
-    },
+    // beforeMount () {
+    //   this.domains = Object.keys(setting.domains)
+    //   if (window.location.hash) {
+    //     const selected = window.location.hash.substr(1)
+    //     this.selectDomain(selected)
+    //     if (this.domains.includes(selected) === false)
+    //       this.domains.push(selected)
+    //   }
+    // },
     mounted () {
-      this.domains = Object.keys(setting.domains)
-      console.log('域名编辑器 mounted', this.domains)
-      if (window.location.hash) {
-        const selected = window.location.hash.substr(1)
-        this.selectDomain(selected)
-        if (this.domains.includes(selected) === false)
-          this.domains.push(selected)
-      }
+      this.reload()
+      chrome.storage.onChanged.addListener(this.reload)
     },
-    destroyed () {
-      console.log('域名编辑器 destroyed')
+    beforeDestroy () {
+      console.log('域名编辑器 beforeDestroy')
+      chrome.storage.onChanged.removeListener(this.reload)
     },
   }
 </script>

@@ -158,6 +158,11 @@
           setting.clear()
         }).catch(() => {})
       },
+      reload () {
+        this.customUA.length = 0
+        const keys = Object.keys(setting.customUA)
+        keys.forEach(name => {this.customUA.push({ name, value: setting.customUA[name] })})
+      },
     },
     watch: {
       customUA: {
@@ -174,20 +179,13 @@
         },
       },
     },
-    created () {
-      const keys = Object.keys(setting.customUA)
-      keys.forEach(name => {this.customUA.push({ name, value: setting.customUA[name] })})
-    },
     mounted () {
-      chrome.storage.onChanged.addListener(() => {
-        chrome.storage.sync.get(data => {
-          console.log('UA编辑器 changed', data.customUA)
-          const keys = Object.keys(data.customUA)
-          this.customUA.length = 0
-          keys.forEach(name => {this.customUA.push({ name, value: data.customUA[name] })})
-        })
-      })
+      chrome.storage.onChanged.addListener(this.reload)
     },
+    beforeDestroy () {
+      console.log('全局UA编辑器 beforeDestroy')
+      chrome.storage.onChanged.removeListener(this.reload)
+    }
   }
 </script>
 <style>

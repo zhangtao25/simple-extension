@@ -7,10 +7,10 @@ import { SetCookies } from '../js/utils'
 //启动Chrome填充所有Cookies
 const setting = window.setting = new Setting()
 
-
 setting.init().then(() => {
   console.log('background setting', setting)
-  console.log('setting', setting)
+
+  // 注入cookies
   const domains = Object.keys(setting.domains)
   for (const i in domains) {
     const domain = domains[i]
