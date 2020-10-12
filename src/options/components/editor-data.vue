@@ -92,28 +92,33 @@
         let data
         try {
           data = JSON.parse(this.code)
-          if (!lodash.isObject(data)) {
-            console.log('重新获取数据')
-            await setting.init()
-            data = setting.data
-          }
-          const domains = data['domains']
-          if (domains)
-            Object.keys(domains).forEach(key => {
-              // console.log('域名', key, domains[key])
-              domains[key] = formatDomainData(domains[key])
-            })
-          console.log('数据', data)
         } catch (e) {
           console.error(e)
           this.$message.error(`Error: ${e}`)
           return
         }
+        if (!lodash.isObject(data)) {
+          console.log('重新获取数据')
+          await setting.init()
+          data = setting.data
+        }
+        const domains = data['domains']
+        if (domains)
+          Object.keys(domains).forEach(key => {
+            // console.log('域名', key, domains[key])
+            domains[key] = formatDomainData(domains[key])
+          })
+        console.log('数据', data)
+        setting.domains = domains
+        setting.customUA = data['customUA']
         this.code = JSON.stringify(data, null, 2)
         await new Promise(resolve => {
-          chrome.storage.local.set(data, resolve)
+          chrome.storage.local.set(data, () => {
+            console.log('保存成功')
+            resolve()
+          })
         })
-        await setting.init()
+        await setting.save()
         this.$message.success('Saved')
       },
     },

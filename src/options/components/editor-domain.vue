@@ -132,6 +132,7 @@
         }).catch(() => {})
       },
       reload () {
+        console.log('domain-editor reload')
         this.domains = Object.keys(setting.domains)
         if (window.location.hash) {
           const selected = window.location.hash.substr(1)

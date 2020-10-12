@@ -31,6 +31,8 @@
   import EditorAbout from './editor-about'
   import EditorData from './editor-data'
 
+  const { setting } = chrome.extension.getBackgroundPage()
+
   export default {
     components: {
       EditorData,
@@ -57,9 +59,12 @@
     },
     beforeMount () {
       document.title = this.ui.title
-      if (window.location.hash) {
-        this.activeName = 'website'
-      }
+
+      setting.init().then(() => {
+        if (window.location.hash) {
+          this.activeName = 'website'
+        }
+      })
     },
   }
 </script>

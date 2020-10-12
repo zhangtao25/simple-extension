@@ -36,14 +36,13 @@ export class Setting {
   }
 
   async init () {
-    console.log('init data 1', this.data)
     await new Promise(resolve => {
       chrome.storage.local.get((data) => {
-        lodash.merge(this.data, data)
+        this.data = data || {}
+        // lodash.merge(this.data, data)
         resolve()
       })
     })
-    console.log('init data 2', this.data)
 
     //不是现在的版本，处理数据
     if (!this.data['domains'])
