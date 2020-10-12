@@ -84,7 +84,7 @@
     "message": "Data"
   },
   "string_data_hint": {
-    "message": "<i class=\"el-icon-info\"/>The chrome.storage.sync interface has been completely used to store data.<br/>Please avoid manually modifying the data."
+    "message": "Please avoid manually modifying the data."
   },
   "string_get_data": {
     "message": "Get Data"

@@ -84,7 +84,7 @@
     },
     methods: {
       get () {
-        chrome.storage.sync.get(data => {
+        chrome.storage.local.get(data => {
           this.code = JSON.stringify(data, null, 2)
         })
       },
@@ -111,7 +111,7 @@
         }
         this.code = JSON.stringify(data, null, 2)
         await new Promise(resolve => {
-          chrome.storage.sync.set(data, resolve)
+          chrome.storage.local.set(data, resolve)
         })
         await setting.init()
         this.$message.success('Saved')

@@ -38,7 +38,7 @@ export class Setting {
   async init () {
     console.log('init data 1', this.data)
     await new Promise(resolve => {
-      chrome.storage.sync.get((data) => {
+      chrome.storage.local.get((data) => {
         lodash.merge(this.data, data)
         resolve()
       })
@@ -374,7 +374,7 @@ export class Setting {
   save () {
     console.log('save', this.data)
     return new Promise(resolve => {
-      chrome.storage.sync.set(
+      chrome.storage.local.set(
         { config: this.config, domains: this.domains, customUA: this.customUA },
         () => {
           resolve()
@@ -386,31 +386,7 @@ export class Setting {
    * 清空所有扩展数据
    */
   clear () {
-    chrome.storage.sync.clear()
+    chrome.storage.local.clear()
     this.init()
-  }
-
-  /**
-   * 同步数据
-   */
-  async sync () {
-    const data = await new Promise(resolve => {
-      chrome.storage.sync.get(data => resolve(data))
-    })
-    await new Promise(resolve => {
-      chrome.storage.sync.set(data, () => {
-        console.log('云存储', 'ok')
-      })
-    })
-  }
-
-  /**
-   * sync用量
-   * @return {Promise<void>}
-   */
-  async used () {
-    return new Promise(resolve => {
-      chrome.storage.sync.getBytesInUse(used => resolve(used))
-    })
   }
 }
