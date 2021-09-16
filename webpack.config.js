@@ -45,8 +45,10 @@ const entry = {
   popup: path.join(__dirname, 'src', 'popup', 'index.js'),
   options: path.join(__dirname, 'src', 'options', 'index.js'),
   background: path.join(__dirname, 'src', 'background', 'index.js'),
+  'content-script': path.join(__dirname, 'src', 'content-script', 'index.js'),
   // privacy_policy: path.join(__dirname, 'src', 'privacy_policy', 'index.js'),
 }
+// 张涛改的
 
 
 // {
@@ -139,7 +141,8 @@ const options = {
 }
 
 //自动生成
-Object.keys(entry).forEach(key => {
+// 张涛改的
+Object.keys(entry).filter(item=>item!=='content-script').forEach(key => {
   options.plugins.splice(-1, 0, new HtmlWebpackPlugin({
     template: path.join(__dirname, 'src', key, 'index.html'),
     filename: key + '.html',

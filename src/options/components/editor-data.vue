@@ -36,8 +36,8 @@
   import 'codemirror/addon/merge/merge.css'
   import 'codemirror/mode/javascript/javascript'
   import lodash from 'lodash'
-  import { GetLanguageString } from '@/Users/lock/Desktop/simple-extension/src/js/i18_string_name'
-
+  import { GetLanguageString } from '../../js/i18_string_name'
+  // 张涛改的
   function formatDomainData (data) {
     return Object.assign({
       cookies: {
